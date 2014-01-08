@@ -1,0 +1,2 @@
+#
+sudo ip addr del 10.1.1.14 dev eth0
