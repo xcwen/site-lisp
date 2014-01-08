@@ -8,10 +8,10 @@
 (add-to-list 'term-bind-key-alist '( "C-l". (lambda() (interactive) ( multi-term-next 1 ) (evil-check-close-local-mode )  ) ))
 
 
-  (add-hook
-   'term-mode-hook
-   '(lambda()
-  (yas-minor-mode -1 )))
+(add-hook
+ 'term-mode-hook
+ '(lambda()
+	(yas-minor-mode -1 )))
 
 (custom-set-faces
  '(term-color-blue ((t (:background "blue" :foreground "steel blue"))))

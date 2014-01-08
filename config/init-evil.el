@@ -3,15 +3,9 @@
 
 (require 'evil)
 
-;;重置查找函数
-(evil-define-motion evil-search-word-forward (count &optional symbol)
-  "Search forward for symbol under point."
-  :jump t
-  :type exclusive
-  (interactive (list (prefix-numeric-value current-prefix-arg)
-                     evil-symbol-word-search))
-  (dotimes (var (or count 1))
-    (evil-search-word t nil t)))
+;;设置查找是否按照symbol方式
+(custom-set-variables
+ '(evil-symbol-word-search  t))
 
 (defun do-switch-buffer ()
   "DOCSTRING"

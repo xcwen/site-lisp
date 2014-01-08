@@ -105,7 +105,10 @@ from tradition chinese to simple chinese" t)
 (setq frame-title-format  "file: %f")
 
 (require 'js2-mode)
-(setq js2-idle-timer-delay 100000000)
+
+(custom-set-variables
+ '(js2-idle-timer-delay 1000000))
+
 
 ;;交换.cpp .hpp 文件
 (require 'switch-file)
