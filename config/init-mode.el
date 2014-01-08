@@ -115,6 +115,8 @@
                     ("\\.qml\\'" . qml-mode)
                     ("\\.jl\\'" . lisp-mode)
                     ("\\.asdf\\'" . lisp-mode)
+                    ("\\.js\\'" . js2-mode)
+                    ("\\.h\\'" . c++-mode)
                     ))
   (add-to-alist 'auto-mode-alist elt-cons))
 
@@ -131,15 +133,6 @@
                ))
   (add-hook hook '(lambda () (auto-fill-mode 1))))
 
-;; Zencoding code
-(autoload 'zencoding-mode "zencoding-mode")
-(eval-after-load 'zencoding-mode
-  '(lambda ()
-     (prog
-      (add-hook 'sgml-mode-hook 'zencoding-mode)
-      (add-hook 'html-helper-mode-hook 'zencoding-mode)
-      (setq zencoding-preview-default nil)
-      )))
 
 (provide 'init-mode)
 

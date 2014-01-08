@@ -7,7 +7,6 @@
 (define-key ac-mode-map  [(control tab )] 'auto-complete)
 
 
-(global-set-key (kbd "<f8>") 'switch-file-term)   
 (global-set-key (kbd "M-w") 'copy-region-or-whole-line)
 
 (global-set-key (kbd "C-h") 'delete-backward-char)

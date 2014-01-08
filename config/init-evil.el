@@ -56,14 +56,6 @@
 (set-evil-normal-state-key (kbd ",y") 'copy-whole-word)
 										;(require    'compilation-mode)
 
-(add-hook
- 'compilation-mode-hook
- '(lambda()
-	(interactive)
-	(define-key compilation-mode-map  (kbd  ",o")   'other-window)
-	))
-
-
 
 (set-evil-normal-state-key (kbd ",s") 'cscope-find-egrep-pattern)
 
@@ -75,12 +67,6 @@
 										 (evil-check-close-local-mode ) 
 										 )) 
 
-(set-evil-normal-state-key (kbd ",m")
-						   '(lambda()(interactive)
-							  (if (functionp 'recompile)
-								  (recompile )
-								(compile "cd ./build && make "))
-							  ) )
 
 (set-evil-normal-state-key (kbd ",m")
 						   '(lambda()(interactive)
@@ -118,14 +104,24 @@
 							 (evil-check-close-local-mode ) 
 							 ))
 
+(set-evil-normal-state-key (kbd "C-]")
+						   '(lambda()(interactive)
+							  ;;得到.tags文件夹所在的目录
+							  (set-tags-config-for-cur-file)
+							  (evil-jump-to-tag))) 
 
 
-;;---------------------------- local -------------------------
+(set-evil-normal-state-key (kbd ",t")
+						   '(lambda()(interactive)
+							  (set-tags-config-for-cur-file))) 
+
+
+
+;;---------------------------- 模式特殊处理 -------------------------
 
 
 (mapc (lambda (mode) (evil-set-initial-state mode 'normal ))
-	  '(package-menu-mode help-mode )
-	  )
+	  '(package-menu-mode help-mode ))
 
 
 (add-hook
@@ -136,16 +132,14 @@
 	( define-key evil-insert-state-local-map  (kbd "C-]") 'describe-function )
 	))
 
-;;(define-key evil-motion-state-map "\C-]" 'evil-jump-to-tag)
-(set-evil-normal-state-key (kbd "C-]")
-						   '(lambda()(interactive)
-							  ;;得到.tags文件夹所在的目录
-							  (set-tags-config-for-cur-file)
-							  (evil-jump-to-tag))) 
+(add-hook
+ 'js2-mode-hook
+ '(lambda()
+	(interactive)
+	( define-key evil-normal-state-local-map  (kbd ",m") 'js2-mode-display-warnings-and-errors)
+	))
 
-(set-evil-normal-state-key (kbd ",t")
-						   '(lambda()(interactive)
-							  (set-tags-config-for-cur-file))) 
+
 
 (add-hook
  'cscope-list-entry-hook
@@ -153,6 +147,13 @@
 	(interactive)
 	(define-key evil-normal-state-local-map  (kbd "n") 'cscope-show-next-entry-other-window )
 	( define-key evil-normal-state-local-map (kbd "p") 'cscope-show-prev-entry-other-window ) ))
+(add-hook
+ 'compilation-mode-hook
+ '(lambda()
+	(interactive)
+	(define-key compilation-mode-map  (kbd  ",o")   'other-window)
+	))
+
 
 (evil-mode 1) 
 

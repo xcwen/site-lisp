@@ -102,28 +102,21 @@ from tradition chinese to simple chinese" t)
 
 
 (mouse-avoidance-mode 'jump)	       ; 光标靠近鼠标时让鼠标自动走开
-(global-hl-line-mode 1)
 (setq frame-title-format  "file: %f")
 
-
+(require 'js2-mode)
+(setq js2-idle-timer-delay 100000000)
 
 ;;交换.cpp .hpp 文件
 (require 'switch-file)
-
-
-
 (require 'xcscope)
-
 (setq cscope-do-not-update-database t)
+
+
 
 ;; 将 "_" 也认为是单词的一部分
 (modify-syntax-entry ?_ "w" c++-mode-syntax-table) ;将 _ 加入 单词中
 (modify-syntax-entry ?_ "w" c-mode-syntax-table) ;将 _ 加入 单词中
-;;(modify-syntax-entry ?_ "w" php-mode-syntax-table) ;将 _ 加入 单词中
-;;(modify-syntax-entry ?_ "w" python-mode-syntax-table) ;将 _ 加入 单词中
-;;(modify-syntax-entry ?= "." nxml-mode-syntax-table) ;将 _ 加入 单词中
-;;(modify-syntax-entry ?_ "w" nxml-mode-syntax-table) ;将 _ 加入 单词中
-;;(modify-syntax-entry ?\( "." python-mode-syntax-table) ;将 _ 加入 单词中
 
 
 (package-initialize)

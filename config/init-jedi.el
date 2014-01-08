@@ -101,8 +101,10 @@
           '(lambda ()
              (lazy-set-key
               '(
-                ("C-8" . find-python-define))
-              python-mode-map)))
+                ("C-8" . find-python-define)
+				)
+              python-mode-map)
+			 ))
 
 (provide 'init-jedi)
 
