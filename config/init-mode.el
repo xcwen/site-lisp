@@ -117,6 +117,7 @@
                     ("\\.asdf\\'" . lisp-mode)
                     ("\\.js\\'" . js2-mode)
                     ("\\.h\\'" . c++-mode)
+                    ("\\.tpro\\'" . c++-mode)
                     ))
   (add-to-alist 'auto-mode-alist elt-cons))
 
