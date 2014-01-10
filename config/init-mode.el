@@ -32,6 +32,7 @@
                     ("\\.js\\'" . js2-mode)
                     ("\\.h\\'" . c++-mode)
                     ("\\.tpro\\'" . c++-mode)
+                    ("\\.lua\\'" . lua-mode)
                     ))
   (add-to-alist 'auto-mode-alist elt-cons))
 

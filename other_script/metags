@@ -1,0 +1,18 @@
+#!/bin/bash
+# 放到 .tags 目录下
+cd `dirname $0`
+rm TAGS
+find /usr/include/*.h \
+         /usr/include/bits/\
+         /usr/include/netinet/\
+         /usr/include/arpa/\
+         /usr/include/sys/\
+         /usr/local/include/async_serv/\
+         /usr/include/libtaomee/\
+         /usr/include/libtaomee++\
+         /usr/include/dbser/\
+         /usr/include/mysql/\
+          -name "*.h"  -o -name "*.hpp" > cscope.files
+find  -L ../  -name "*.h" -o -name "*.c" -o -name "*.cpp"  -o -name "*.hpp"  | grep -v build | grep -v "proto/.*src"  >> cscope.files
+cscope -bkq -i cscope.files
+cat cscope.files | etags - 

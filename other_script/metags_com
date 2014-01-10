@@ -1,0 +1,21 @@
+#!/bin/bash
+cd `dirname $0`
+rm tags
+find /usr/include/*.h \
+         /usr/include/bits/\
+         /usr/include/netinet/\
+         /usr/include/arpa/\
+         /usr/include/sys/\
+         /usr/local/include/async_serv/\
+         /usr/include/libtaomee/\
+         /usr/include/libtaomee++\
+         /usr/include/dbser/\
+         /usr/include/mysql/\
+         /usr/include/Poco/\
+         /usr/local/include/\
+         /usr/local/include/async_serv/\
+         /usr/local/include/main_login/\
+          -name "*.h"  -o -name "*.hpp" > cscope.files
+cscope -bkq -i cscope.files
+cat cscope.files |  etags  --declarations -
+mv cscope.* TAGS   ~/.emacs.d/

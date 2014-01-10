@@ -79,7 +79,7 @@ from tradition chinese to simple chinese" t)
 
 
 (custom-set-faces
- '(default ((t (:family "XHei Mono.Ubuntu" :foundry "unknown" :slant normal :weight normal :height 128 :width normal)))))
+ '(default ((t (:family "XHei Mono.Ubuntu" :foundry "unknown" :slant normal :weight normal :height 173 :width normal)))))
  
 
 
@@ -105,6 +105,7 @@ from tradition chinese to simple chinese" t)
 (setq frame-title-format  "file: %f")
 
 (require 'js2-mode)
+(require 'lua-mode)
 
 (custom-set-variables
  '(js2-idle-timer-delay 1000000))
