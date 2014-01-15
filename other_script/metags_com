@@ -18,4 +18,6 @@ find /usr/include/*.h \
           -name "*.h"  -o -name "*.hpp" > cscope.files
 cscope -bkq -i cscope.files
 cat cscope.files |  etags  --declarations -
+
+[ -d  ~/.emacs.d/ ] || mkdir  ~/.emacs.d/ 
 mv cscope.* TAGS   ~/.emacs.d/

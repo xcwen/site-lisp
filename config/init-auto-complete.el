@@ -93,7 +93,6 @@
 (setq-default
  ac-sources
  '(
-   ac-source-yasnippet
    ac-source-imenu
    ac-source-abbrev
    ac-source-words-in-same-mode-buffers

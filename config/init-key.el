@@ -5,7 +5,7 @@
 (define-key ac-completing-map  (kbd  "C-n")   'ac-next)
 (define-key ac-completing-map [f1] nil)
 (define-key ac-mode-map  [(control tab )] 'auto-complete)
-
+(define-key ac-mode-map  [(backtab)] '(lambda()(interactive ) ( auto-complete  '(ac-source-clang ))  ))
 
 (global-set-key (kbd "M-w") 'copy-region-or-whole-line)
 
@@ -24,6 +24,7 @@
 (global-set-key (kbd "<f8>") 'switch-file-term)   
 (global-set-key (kbd "<f7>") 'search-proto-info )   
 (global-set-key (kbd "<f10>") nil )   
+(global-set-key (kbd "M-`") nil )   
 
 
 (global-set-key (kbd "C-*") 'evil-search-word-forward ) 
