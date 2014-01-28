@@ -643,7 +643,21 @@ object satisfying `yas--field-p' to restrict the expansion to."
         (yas--expand-or-prompt-for-template (first templates-and-pos)
                                            (second templates-and-pos)
                                            (third templates-and-pos))
-      (indent-for-tab-command ) )))
+	  (progn
+		(message "do indent-for-tab-command ")
+		(let ((c (char-before)))
+		  (if (or (eq ?\. c)
+					;; ->
+					(and (eq ?> c)
+						 (eq ?- (char-before (1- (point)))))
+					;; ::
+					(and (eq ?: c)
+						 (eq ?: (char-before (1- (point))))))
+			  ( auto-complete  '(ac-source-clang )) 
+			(indent-for-tab-command )))
+
+		)
+     )))
 
 
 (defun search-proto-info ()

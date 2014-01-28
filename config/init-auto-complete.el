@@ -107,6 +107,7 @@
 (setq ac-clang-auto-save t)  
 (setq ac-auto-start nil)
 (setq ac-quick-help-delay 0.5)
+(define-key ac-completing-map "\t" 'ac-complete)
 
 
 (setq ac-clang-flags  
@@ -146,12 +147,10 @@
 (add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)  
 (add-hook 'css-mode-hook 'ac-css-mode-setup)  
 (add-hook 'auto-complete-mode-hook 'ac-common-setup)  
+
 (global-auto-complete-mode t)  
 
-(defun my-ac-cc-mode-setup ()  
-  (setq ac-sources  '(ac-source-clang) ))  
-(add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)  
-
+(setq ac-clang-prefix-header "~/.emacs.d/stdafx.pch")
 
 
 
