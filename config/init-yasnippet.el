@@ -1,22 +1,8 @@
 ;;; Require
 
 (require 'yasnippet)
-
-(defun load-yas ()
-  (setq yas-snippet-dirs   (list   "~/site-lisp/config/my-yas" )  )
-
-  (require 'yasnippet)
-  (yas-global-mode 1)
-
-
-  (add-hook 'c++-mode-common-hook '(lambda()
-  (setq ac-sources '(ac-source-clang ) )
-								   ))
-  
-  )
-
-
-(add-hook 'after-init-hook 'load-yas)
+(setq yas-snippet-dirs   (list   "~/site-lisp/config/my-yas" )  )
+(yas-global-mode 1)
 
 ;; Disable yasnippet mode on some mode.
 (dolist (hook (list

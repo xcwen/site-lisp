@@ -1,4 +1,4 @@
 # name: FILE *fp = fopen(..., ...);
 # key: fopen
 # --
-FILE *${fp} = fopen(${"file"}, "${r}");
+FILE  *${1:fp} = fopen( ${2:"file"}, "${3:$$(yas/choose-value '("r" "w" "a" "r+" "w+" "a+" ))}" ) ;

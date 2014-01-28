@@ -1,9 +1,9 @@
 #!/bin/bash
 cd ~/bin/xptray/ && ./xptray.py &
 virtualbox --startvm xp  &
-
+#fcitx
 rm ~/.emacs.d/session.*
-emacs& 
+#emacs& 
 firefox&
 gnome-terminal --maximize &
 ~/work/sshmount.sh &

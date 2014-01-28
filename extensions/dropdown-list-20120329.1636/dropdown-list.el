@@ -187,10 +187,10 @@
                            (<= (aref key 0) (+ ?0 (min 9 candidate-count))))
                       (setq selection (- (aref key 0) ?1)
                             done      t))
-                     ((member key `(,(char-to-string ?\C-p) [up]))
+                     ((member key `(,(char-to-string ?\M-p) [up]))
                       (setq selidx (mod (+ candidate-count (1- (or selidx 0)))
                                         candidate-count)))
-                     ((member key `(,(char-to-string ?\C-n) [down]))
+                     ((member key `(,(char-to-string ?\M-n) [down]))
                       (setq selidx (mod (1+ (or selidx -1)) candidate-count)))
                      ((member key `(,(char-to-string ?\C-i) [tab]))
                       (setq done t

@@ -33,6 +33,7 @@
                     ("\\.h\\'" . c++-mode)
                     ("\\.tpro\\'" . c++-mode)
                     ("\\.lua\\'" . lua-mode)
+                    ("\\.php\\'" . php-mode)
                     ))
   (add-to-alist 'auto-mode-alist elt-cons))
 
