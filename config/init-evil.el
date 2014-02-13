@@ -122,8 +122,8 @@
  'emacs-lisp-mode-hook
  '(lambda()
 	(interactive)
-	( define-key evil-normal-state-local-map  (kbd "C-]") 'describe-function)
-	( define-key evil-insert-state-local-map  (kbd "C-]") 'describe-function )
+	( define-key evil-normal-state-local-map  (kbd "C-]") 'find-function)
+	( define-key evil-insert-state-local-map  (kbd "C-]") 'find-function )
 	))
 
 (add-hook
