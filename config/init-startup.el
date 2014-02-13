@@ -111,6 +111,7 @@ from tradition chinese to simple chinese" t)
 (require 'js2-mode)
 (require 'lua-mode)
 (require 'php-mode)
+(require 'python)
 (require 'nxml-mode )
 
 (custom-set-variables

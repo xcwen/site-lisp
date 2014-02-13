@@ -152,22 +152,25 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
   "DOCSTRING"
   (let (cmdid  obj-tag)
     (setq  cmdid (thing-at-point 'symbol))
+	(if cmdid 
+		(progn 
+		  (setq obj-tag  cmdid)
+		  (setq obj-tag (replace-regexp-in-string  "\\(.*\\)_in$" "\\1" cmdid ) ) 
+		  (if (string= obj-tag cmdid)
+			  (setq obj-tag (replace-regexp-in-string  "\\(.*\\)_out$" "\\1" cmdid ) ))
+		  (if (string= obj-tag cmdid)
+			  (setq obj-tag (replace-regexp-in-string  "\\(.*\\)_cmd$" "\\1" cmdid ) ))
 
-    (setq obj-tag  cmdid)
-    (setq obj-tag (replace-regexp-in-string  "\\(.*\\)_in$" "\\1" cmdid ) ) 
-    (if (string= obj-tag cmdid)
-	(setq obj-tag (replace-regexp-in-string  "\\(.*\\)_out$" "\\1" cmdid ) ))
-    (if (string= obj-tag cmdid)
-	(setq obj-tag (replace-regexp-in-string  "\\(.*\\)_cmd$" "\\1" cmdid ) ))
+		  (if (string= obj-tag cmdid)
+			  (setq obj-tag (replace-regexp-in-string  "^n_\\(.*\\)$" "\\1" cmdid ) ))
 
-    (if (string= obj-tag cmdid)
-	(setq obj-tag (replace-regexp-in-string  "^n_\\(.*\\)$" "\\1" cmdid ) ))
+		  (if (string= obj-tag cmdid)
+			  (setq obj-tag (replace-regexp-in-string  "0[xX]\\(.*\\)$" "\\1" cmdid ) ))
 
-    (if (string= obj-tag cmdid)
-	(setq obj-tag (replace-regexp-in-string  "0[xX]\\(.*\\)$" "\\1" cmdid ) ))
-
-    obj-tag
-    )
+		  obj-tag
+		  )
+	 "" 
+	  ))
   )
 ;;
 (defun find-cmd-def ( cmdid )
@@ -644,15 +647,15 @@ object satisfying `yas--field-p' to restrict the expansion to."
                                            (second templates-and-pos)
                                            (third templates-and-pos))
 	  (progn
-		(message "do indent-for-tab-command ")
+		(message "do indent-for-tab-command  %s" major-mode )
 		(let ((c (char-before)))
-		  (if (or (eq ?\. c)
+		  (if (and (string= major-mode "c++-mode") (or (eq ?\. c)
 					;; ->
 					(and (eq ?> c)
 						 (eq ?- (char-before (1- (point)))))
 					;; ::
 					(and (eq ?: c)
-						 (eq ?: (char-before (1- (point))))))
+						 (eq ?: (char-before (1- (point)))))))
 			  ( auto-complete  '(ac-source-clang )) 
 			(indent-for-tab-command )))
 
