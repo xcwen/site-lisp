@@ -109,6 +109,11 @@
 						   '(lambda()(interactive)
 							  (set-tags-config-for-cur-file))) 
 
+(set-evil-normal-state-key (kbd ",n")
+						   '(lambda()(interactive)
+							  (backward-page ))) 
+
+
 
 
 ;;---------------------------- 模式特殊处理 -------------------------
