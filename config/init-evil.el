@@ -109,9 +109,14 @@
 						   '(lambda()(interactive)
 							  (set-tags-config-for-cur-file))) 
 
-(set-evil-normal-state-key (kbd ",n")
+(set-evil-normal-state-key (kbd ",N")
 						   '(lambda()(interactive)
 							  (backward-page ))) 
+
+(set-evil-normal-state-key (kbd ",n")
+						   '(lambda()(interactive)
+							  (forward-page ))) 
+
 
 
 

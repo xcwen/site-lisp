@@ -160,6 +160,10 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
 			  (setq obj-tag (replace-regexp-in-string  "\\(.*\\)_out$" "\\1" cmdid ) ))
 		  (if (string= obj-tag cmdid)
 			  (setq obj-tag (replace-regexp-in-string  "\\(.*\\)_cmd$" "\\1" cmdid ) ))
+		  (if (string= obj-tag cmdid)
+			  (setq obj-tag (replace-regexp-in-string  "send_\\(.*\\)$" "\\1" cmdid ) ))
+
+
 
 		  (if (string= obj-tag cmdid)
 			  (setq obj-tag (replace-regexp-in-string  "^n_\\(.*\\)$" "\\1" cmdid ) ))
@@ -204,7 +208,7 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
 
       )
     (if  (string= (trim-string cmd-name) "")
-	(find-tag   obj-tag nil nil)
+		(message  "nofind cmd:[%s] " obj-tag   )
       (find-tag   cmd-name nil nil))
     )
 
