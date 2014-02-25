@@ -317,6 +317,10 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
 		       (re-search-forward ";" (point-max) t 1 )  ))
       ;;处理前置的 virtual static
       (setq func-msg (replace-regexp-in-string  "\\`[ \t\n]*\\(virtual\\|static\\)[ \t\n]+\\(.*\\)" "\\2" func-msg   ) ) 
+
+	  ;;去掉其中的 =0 , =NULL 之类的东西 
+      (setq func-msg (replace-regexp-in-string  "=[ \t]*[a-zA-Z0-9]\+" ""  func-msg ))
+
       
 
       ;;找到是哪一个类的
