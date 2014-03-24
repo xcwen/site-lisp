@@ -35,7 +35,7 @@ map ,b <Esc>:back<CR>
 map ,f <Esc>:forward<CR>
 map ,w <Esc>:tabnext<CR><Esc>
 "qmark 
-qmark 1  http://linux.chinaunix.net/ 
+qmark 1  http://planet.linuxdeepin.com/
 qmark 2  http://www.lupaworld.com/ 
 qmark 3  http://www.csdn.net/ 
 qmark 4  http://www.sina.com.cn/ 
