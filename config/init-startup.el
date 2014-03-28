@@ -108,11 +108,10 @@ from tradition chinese to simple chinese" t)
 (mouse-avoidance-mode 'jump)	       ; 光标靠近鼠标时让鼠标自动走开
 (setq frame-title-format  "file: %f")
 
-(require 'js2-mode)
-(require 'lua-mode)
-(require 'php-mode)
-(require 'python)
-(require 'nxml-mode )
+;;(require 'js2-mode)
+;;(require 'lua-mode)
+;;(require 'python)
+;;(require 'nxml-mode )
 
 (custom-set-variables
  '(js2-idle-timer-delay 1000000))
@@ -126,12 +125,14 @@ from tradition chinese to simple chinese" t)
 
 
 ;; 将 "_" 也认为是单词的一部分
-(modify-syntax-entry ?_ "w" c++-mode-syntax-table) ;将 _ 加入 单词中
-(modify-syntax-entry ?_ "w" c-mode-syntax-table) ;将 _ 加入 单词中
-(modify-syntax-entry ?_ "w" js2-mode-syntax-table) ;将 _ 加入 单词中
-(modify-syntax-entry ?= "." nxml-mode-syntax-table) ;将 _ 加入 单词中
-(modify-syntax-entry ?_ "w" nxml-mode-syntax-table) ;将 _ 加入 单词中
-(modify-syntax-entry ?_ "w" python-mode-syntax-table) ;将 _ 加入 单词中
+;;(modify-syntax-entry ?_ "w" c++-mode-syntax-table) ;将 _ 加入 单词中
+;;(modify-syntax-entry ?_ "w" c-mode-syntax-table) ;将 _ 加入 单词中
+;;(modify-syntax-entry ?_ "w" js2-mode-syntax-table) ;将 _ 加入 单词中
+;;(modify-syntax-entry ?= "." nxml-mode-syntax-table) ;将 _ 加入 单词中
+;;(modify-syntax-entry ?_ "w" nxml-mode-syntax-table) ;将 _ 加入 单词中
+;;(modify-syntax-entry ?_ "w" python-mode-syntax-table) ;将 _ 加入 单词中
+
+
 
 
 

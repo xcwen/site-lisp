@@ -39,6 +39,10 @@
 
 ;;; Qml mode
 (autoload 'qml-mode "qml-mode")
+(autoload 'php-mode "php-mode")
+(autoload 'js2-mode "js2-mode")
+(autoload 'nxml-mode "nxml-mode")
+(autoload 'lua-mode "lua-mode")
 
 ;;; ### Auto-fill ###
 ;;; --- 自动换行
@@ -49,6 +53,37 @@
                'org-mode-hook
                ))
   (add-hook hook '(lambda () (auto-fill-mode 1))))
+
+
+
+(add-hook 'c-mode-hook '(lambda ( )
+							(modify-syntax-entry ?_ "w" c-mode-syntax-table) ;将 _ 加入 单词中
+							 ) )
+
+
+(add-hook 'c++-mode-hook '(lambda ( )
+							(modify-syntax-entry ?_ "w" c++-mode-syntax-table) ;将 _ 加入 单词中
+							 ) )
+
+
+(add-hook 'sgml-mode-hook '(lambda ( )
+							 (modify-syntax-entry ?_ "w" html-mode-syntax-table) ;将 _ 加入 单词中
+							 ) )
+
+(add-hook 'nxml-mode-hook '(lambda ( )
+							 (modify-syntax-entry ?= "." nxml-mode-syntax-table) 
+							 (modify-syntax-entry ?_ "w" nxml-mode-syntax-table) ;将 _ 加入 单词中
+							 ) )
+
+(add-hook 'python-mode-hook '(lambda ( )
+							   (modify-syntax-entry ?_ "w" python-mode-syntax-table) ;将 _ 加入 单词中
+							 ) )
+
+(add-hook 'js2-mode-hook '(lambda ( )
+							(modify-syntax-entry ?_ "w" js2-mode-syntax-table) ;将 _ 加入 单词中
+							 ) )
+
+
 
 
 (provide 'init-mode)
