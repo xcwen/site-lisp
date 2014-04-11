@@ -657,16 +657,22 @@ object satisfying `yas--field-p' to restrict the expansion to."
 	  (progn
 		(message "do indent-for-tab-command  %s" major-mode )
 		(let ((c (char-before)))
-		  (if (and (string= major-mode "c++-mode") (or (eq ?\. c)
+		  (cond
+		   ((and (string= major-mode "c++-mode") (or (eq ?\. c)
 					;; ->
 					(and (eq ?> c)
 						 (eq ?- (char-before (1- (point)))))
 					;; ::
 					(and (eq ?: c)
 						 (eq ?: (char-before (1- (point)))))))
-			  ( auto-complete  '(ac-source-clang )) 
-			(indent-for-tab-command )))
+			( auto-complete  '(ac-source-clang )))
 
+		   ((and (string= major-mode "go-mode")  (eq ?\. c))
+			( auto-complete  '(ac-source-go )))
+
+
+		   ( t (indent-for-tab-command ))))
+		
 		)
      )))
 

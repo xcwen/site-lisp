@@ -5,7 +5,12 @@
 (define-key ac-completing-map  (kbd  "C-n")   'ac-next)
 (define-key ac-completing-map [f1] nil)
 (define-key ac-mode-map  [(control tab )] 'auto-complete)
-(define-key ac-mode-map  [(backtab)] '(lambda()(interactive ) ( auto-complete  '(ac-source-clang ))  ))
+(define-key ac-mode-map  [(backtab)] '(lambda()
+										(interactive )
+										(if (string= major-mode  "go-mode")
+											( auto-complete  '(ac-source-go ))
+										  ( auto-complete  '(ac-source-clang )))
+										))
 
 (global-set-key (kbd "M-w") 'copy-region-or-whole-line)
 (global-set-key (kbd "C-SPC") nil)
