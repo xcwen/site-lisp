@@ -83,7 +83,9 @@
 							(modify-syntax-entry ?_ "w" js2-mode-syntax-table) ;将 _ 加入 单词中
 							 ) )
 
-
+(add-hook 'go-mode-hook '(lambda ( )
+						   (require 'go-autocomplete)
+							 ) )
 
 
 (provide 'init-mode)

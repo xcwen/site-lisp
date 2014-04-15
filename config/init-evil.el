@@ -151,12 +151,21 @@
 	(interactive)
 	(define-key evil-normal-state-local-map  (kbd "n") 'cscope-show-next-entry-other-window )
 	( define-key evil-normal-state-local-map (kbd "p") 'cscope-show-prev-entry-other-window ) ))
+
+(add-hook
+ 'package-menu-mode-hook
+ '(lambda()
+	(interactive)
+	( define-key evil-normal-state-local-map (kbd "E") 'package-menu-execute ) ))
+
+
 (add-hook
  'compilation-mode-hook
  '(lambda()
 	(interactive)
 	(define-key compilation-mode-map  (kbd  ",o")   'other-window)
 	))
+
 
 
 (evil-mode 1) 

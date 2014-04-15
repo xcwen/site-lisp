@@ -12,6 +12,7 @@
 										  ( auto-complete  '(ac-source-clang )))
 										))
 
+
 (global-set-key (kbd "M-w") 'copy-region-or-whole-line)
 (global-set-key (kbd "C-SPC") nil)
 
@@ -27,6 +28,7 @@
 
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-x C-z") 'ignore)
+(global-set-key (kbd "<f4>") 'package-list-packages)   
 (global-set-key (kbd "<f8>") 'switch-file-term)   
 (global-set-key (kbd "<f7>") 'search-proto-info )   
 (global-set-key (kbd "<f10>") nil )   
