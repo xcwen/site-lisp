@@ -144,6 +144,12 @@
 	))
 
 
+(add-hook 'python-mode-hook
+ '(lambda()
+	(interactive)
+	( define-key evil-normal-state-local-map  (kbd "C-]") 'find-python-define)
+	))
+
 
 (add-hook
  'cscope-list-entry-hook

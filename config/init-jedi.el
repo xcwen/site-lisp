@@ -97,15 +97,6 @@
       (switch-to-buffer-other-window (buffer-name))
       (jedi:goto-definition))))
 
-(add-hook 'python-mode-hook
-          '(lambda ()
-             (lazy-set-key
-              '(
-                ("C-8" . find-python-define)
-				)
-              python-mode-map)
-			 ))
-
 (provide 'init-jedi)
 
 ;;; init-jedi.el ends here

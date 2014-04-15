@@ -1,6 +1,4 @@
-(require 'lazy-set-key)
 (require 'xcwen-misc)
-
 (require 'init-jedi)
 (require 'init-mode)
 (require 'init-term)
