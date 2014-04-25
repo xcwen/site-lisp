@@ -51,6 +51,22 @@
 										;(require    'compilation-mode)
 
 
+
+;;按 ESC 同时关闭输入法
+;;(define-key evil-normal-state-map [escape] 'evil-force-normal-state)
+;;(define-key evil-insert-state-map [escape] 'evil-normal-state)
+(define-key evil-normal-state-map [escape] '(lambda()
+											  (interactive )
+											  (fcitx-inactivate-input-method)
+											  (evil-force-normal-state)
+											  ))
+(define-key evil-insert-state-map [escape] '(lambda()
+											  (interactive )
+											  (fcitx-inactivate-input-method)
+											  (evil-normal-state)
+											  ))
+
+
 (set-evil-normal-state-key (kbd ",s") 'cscope-find-egrep-pattern)
 
 
@@ -145,10 +161,10 @@
 
 
 (add-hook 'python-mode-hook
- '(lambda()
-	(interactive)
-	( define-key evil-normal-state-local-map  (kbd "C-]") 'find-python-define)
-	))
+          '(lambda ()
+			 ( define-key evil-normal-state-local-map  (kbd "C-]") 'jedi:jump-to-definition)
+			 ( define-key evil-normal-state-local-map  (kbd "C-t") 'jedi:jump-back)
+			 ))
 
 
 (add-hook

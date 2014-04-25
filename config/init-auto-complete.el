@@ -150,7 +150,8 @@
 
 (global-auto-complete-mode t)  
 
-(setq ac-clang-prefix-header "~/.emacs.d/stdafx.pch")
+;(setq ac-clang-prefix-header "~/.emacs.d/stdafx.pch")
+(setq ac-clang-prefix-header nil)
 
 
 

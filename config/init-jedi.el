@@ -79,11 +79,27 @@
 ;;
 ;;
 
+;; need install 
+;;sudo apt-get install python-jedi python-epc
+;;pip install  epc
+
 ;;; Require
 
 (autoload 'jedi:setup "jedi" nil t)
 (autoload 'jedi:ac-setup "jedi" nil t)
 
+(defvar jedi:goto-stack '())
+(defun jedi:jump-to-definition ()
+  (interactive)
+  (add-to-list 'jedi:goto-stack
+               (list (buffer-name) (point)))
+  (jedi:goto-definition))
+(defun jedi:jump-back ()
+  (interactive)
+  (let ((p (pop jedi:goto-stack)))
+    (if p (progn
+            (switch-to-buffer (nth 0 p))
+            (goto-char (nth 1 p))))))
 ;;; Code:
 
 (add-hook 'python-mode-hook 'jedi:setup)

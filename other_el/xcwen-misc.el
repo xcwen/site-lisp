@@ -224,6 +224,16 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
 	(buffer-substring-no-properties (region-beginning)(region-end)) (current-word )))
     (call-process  cmd nil 0 nil  word   )
     ))
+(defun fcitx-inactivate-input-method()
+  "fcitx 关闭输入法"
+  (interactive)
+  (call-process  "fcitx-remote" nil 0 nil  "-c"))
+
+(defun fcitx-activate-input-method()
+  "fcitx 开启输入法"
+  (interactive)
+  (call-process  "fcitx-remote" nil 0 nil  "-o"))
+
 
 (defun proto-show-msg ()
   "查看协议数据"
@@ -669,6 +679,10 @@ object satisfying `yas--field-p' to restrict the expansion to."
 
 		   ((and (string= major-mode "go-mode")  (eq ?\. c))
 			( auto-complete  '(ac-source-go )))
+
+		   ((and (string= major-mode "python-mode")  (eq ?\. c))
+			( jedi:complete :expand nil ))
+
 
 
 		   ( t (indent-for-tab-command ))))
