@@ -87,6 +87,12 @@
 						   (require 'go-autocomplete)
 							 ) )
 
+(add-hook 'org-agenda-mode-hook '(lambda ( )
+								   (org-defkey org-agenda-mode-map "j"        'org-agenda-next-line)
+								   (org-defkey org-agenda-mode-map "k"        'org-agenda-previous-line)
+							 ) )
+
+
 
 (provide 'init-mode)
 

@@ -683,8 +683,6 @@ object satisfying `yas--field-p' to restrict the expansion to."
 		   ((and (string= major-mode "python-mode")  (eq ?\. c))
 			( jedi:complete :expand nil ))
 
-
-
 		   ( t (indent-for-tab-command ))))
 		
 		)
