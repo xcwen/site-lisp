@@ -101,7 +101,7 @@
    ))
 
 
-(require 'auto-complete-etags)
+;;(require 'auto-complete-etags)
 ;;--clang
 (require 'auto-complete-clang)
 (setq ac-clang-auto-save t)  

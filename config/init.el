@@ -1,3 +1,5 @@
+(require 'init-package)
+
 (require 'xcwen-misc)
 (require 'init-jedi)
 (require 'init-mode)
