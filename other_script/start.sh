@@ -2,9 +2,9 @@
 cd ~/bin/xptray/ && ./xptray.py &
 virtualbox --startvm xp  &
 #fcitx
-rm ~/.emacs.d/session.*
+rm ~/.emacs.d/.emacs.desktop.lock
 emacs& 
-firefox&
+#firefox&
 gnome-terminal --maximize &
 ~/work/sshmount.sh &
 goldendict &
@@ -21,3 +21,4 @@ setxkbmap -option terminate:ctrl_alt_bksp
 
 #flash 开启本地存储
 #echo "LocalStorageLimit = 1" > /etc/adobe/mms.cfg 
+

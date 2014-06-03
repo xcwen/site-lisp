@@ -2,32 +2,13 @@
 (dolist (elt-cons '(
                     ("\\.markdown" . markdown-mode)
                     ("\\.md" . markdown-mode)
-                    ("\\.coffee$" . coffee-mode)
-                    ("\\.iced$" . coffee-mode)
-                    ("Cakefile" . coffee-mode)
-                    ("\\.stumpwmrc\\'" . lisp-mode)
-                    ("\\.[hg]s\\'" . haskell-mode)
-                    ("\\.hi\\'" . haskell-mode)
-                    ("\\.hs-boot\\'" . haskell-mode)
-                    ("\\.chs\\'" . haskell-mode)
-                    ("\\.l[hg]s\\'" . literate-haskell-mode)
-                    ("\\.inc\\'" . asm-mode)
-                    ("\\.max\\'" . maxima-mode)
-                    ("\\.lrc\\'" . emms-lyrics-mode)
                     ("\\.org\\'" . org-mode)
                     ("\\.cron\\(tab\\)?\\'" . crontab-mode)
                     ("cron\\(tab\\)?\\." . crontab-mode)
                     ("\\.a90\\'" . intel-hex-mode)
                     ("\\.hex\\'" . intel-hex-mode)
-                    ("\\.html\\'" . html-helper-mode)
+                    ("\\.html\\'" . html-mode)
                     ("SConstruct". python-mode)
-                    ("\\.ml\\'" . tuareg-mode)
-                    ("\\.mli\\'" . tuareg-mode)
-                    ("\\.mly\\'" . tuareg-mode)
-                    ("\\.mll\\'" . tuareg-mode)
-                    ("\\.mlp\\'" . tuareg-mode)
-                    ("\\.qml\\'" . qml-mode)
-                    ("\\.jl\\'" . lisp-mode)
                     ("\\.asdf\\'" . lisp-mode)
                     ("\\.js\\'" . js2-mode)
                     ("\\.h\\'" . c++-mode)
@@ -38,7 +19,6 @@
   (add-to-alist 'auto-mode-alist elt-cons))
 
 ;;; Qml mode
-(autoload 'qml-mode "qml-mode")
 (autoload 'php-mode "php-mode")
 (autoload 'js2-mode "js2-mode")
 (autoload 'nxml-mode "nxml-mode")
@@ -59,6 +39,17 @@
 (add-hook 'c-mode-hook '(lambda ( )
 							(modify-syntax-entry ?_ "w" c-mode-syntax-table) ;将 _ 加入 单词中
 							 ) )
+
+(add-hook 'php-mode-hook '(lambda ( )
+							(modify-syntax-entry ?$ "." php-mode-syntax-table) 
+							 (modify-syntax-entry ?_ "w" php-mode-syntax-table) ;将 _ 加入 单词中
+							 ) )
+
+(add-hook 'org-mode-hook '(lambda ( )
+							 (modify-syntax-entry ?_ "w" org-mode-syntax-table) ;将 _ 加入 单词中
+							 ) )
+
+
 
 
 (add-hook 'c++-mode-hook '(lambda ( )

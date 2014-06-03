@@ -7,7 +7,6 @@
 
 (package-manifest 'magit
 				  'package+
-				  'ssh
 				  'evil
 				  'js2-mode
 				  'go-mode

@@ -166,6 +166,21 @@
 			 ( define-key evil-normal-state-local-map  (kbd "C-t") 'jedi:jump-back)
 			 ))
 
+(add-hook 'php-mode-hook
+          '(lambda ()
+			 (flymake-stop-all-syntax-checks)
+			 ( define-key evil-normal-state-local-map  (kbd ",m") '(lambda()
+
+																	 (interactive)
+																	 (flymake-mode 1)
+																	 (flymake-goto-next-error)
+																	 (flymake-display-err-menu-for-current-line)
+																	 (flymake-mode 0)
+																	)
+			   )
+			 ))
+
+
 
 (add-hook
  'cscope-list-entry-hook
