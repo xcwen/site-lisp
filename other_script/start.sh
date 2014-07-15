@@ -4,7 +4,7 @@ virtualbox --startvm xp  &
 #fcitx
 rm ~/.emacs.d/.emacs.desktop.lock
 emacs& 
-#firefox&
+firefox&
 gnome-terminal --maximize &
 ~/work/sshmount.sh &
 goldendict &

@@ -12,6 +12,8 @@
                     ("\\.asdf\\'" . lisp-mode)
                     ("\\.js\\'" . js2-mode)
                     ("\\.h\\'" . c++-mode)
+                    ("\\.mm\\'" . objc-mode)
+                    ("\\.m\\'" . objc-mode)
                     ("\\.tpro\\'" . c++-mode)
                     ("\\.lua\\'" . lua-mode)
                     ("\\.php\\'" . php-mode)
