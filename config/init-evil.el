@@ -36,7 +36,6 @@
 (set-evil-normal-state-key "\C-^"  'do-switch-buffer)
 (set-evil-normal-state-key "Y"  'copy-region-or-whole-line )
 (set-evil-normal-state-key "D"  'kill-region-or-whole-line )
-(set-evil-normal-state-key (kbd ",a") 'switch-cc-to-h )
 (set-evil-normal-state-key (kbd ",f") 'gen-function-as-kill  )
 (set-evil-normal-state-key (kbd ",r") 'remake-tags)
 (set-evil-normal-state-key (kbd ",u") 'upper-or-lower-whole-word)
@@ -59,20 +58,16 @@
 
 												  (find-file-at-point)))))
 
-;;(define-key evil-normal-state-map ",a" '(lambda()
-;;											  (interactive )
-;;											  (let ((file-name (buffer-file-name ))
-;;													(second-path-name (file-name-base  (substring  ( file-name-directory  (buffer-file-name ))0 -1)  ))
-;;													)
-;;												(if  (string= major-mode "php-mode")
-;;													(progn
-;;													(if (string= second-path-name "model"    )
-;;
-;;													  ))
-;;
-;;												  (switch-cc-to-h ))
-;;												)))
-;;
+;;(set-evil-normal-state-key (kbd ",a") 'switch-cc-to-h )
+(set-evil-normal-state-key (kbd ",a") '(lambda()
+										  (interactive )
+										  (let ((file-ext (file-name-extension (buffer-file-name ))))
+											(message file-ext )
+											(if  (string= file-ext "html")
+												(progn
+												  (if (string= major-mode "html-mode" ) (js2-mode) (html-mode)))
+											  (switch-cc-to-h )))))
+
 
 
 

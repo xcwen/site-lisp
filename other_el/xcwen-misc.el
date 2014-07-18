@@ -55,7 +55,6 @@ The test for presence of the car of ELT-CONS is done with `equal'."
 			(multi-term-next 0 )
 			(evil-local-mode 0 )
 
-			;;查看最后一行路径是不是和要转的目录一致
 			(unless  (string= file-path-str default-directory ) 
 			  (term-send-raw-string
 			   (concat "\C-c cd " file-path-str  "\r" )))
