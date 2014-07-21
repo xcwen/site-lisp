@@ -73,26 +73,25 @@ The test for presence of the car of ELT-CONS is done with `equal'."
 (defun set-tags-config-for-cur-file ()
   "DOCSTRING"
   (interactive)
-  (let (tags-dir) 
+  (let (tags-dir tags-file) 
     (setq tags-dir (file-name-directory (buffer-file-name)  ))
+    (while (not (or (file-exists-p  (concat tags-dir  ".tags" )) (string= tags-dir "/") ))
+	  (setq tags-dir  ( file-name-directory (directory-file-name  tags-dir ) ) ))
 
-    (setq tags-dir (if (file-exists-p (concat tags-dir ".tags" ) )
-		       (concat tags-dir ".tags" )
-		     (concat (file-name-directory
-			      (substring tags-dir 0 -1)) ".tags" )))
+	(if (not  (string= tags-dir "/"))
+		(progn
+		  (setq  tags-file (concat tags-dir  ".tags/TAGS"  ))
+		  (if (string= major-mode  "c++-mode")
+			  (progn
+				(setq tags-table-list (list "~/.emacs.d/TAGS" tags-file ))
+				(setq cscope-database-regexps
+					  (list
+					   ( list "^/"
+							  ( list t )
+							  ( list (concat  tags-dir ".tags/" ))
+							  ))))
+			(setq tags-table-list (list  tags-file)))))))
 
-    (setq tags-table-list
-	  (list "~/.emacs.d/TAGS" tags-dir))
-
-    (setq cscope-database-regexps
-	  (list
-	   ( list "^/"
-		  ( list t )
-		  ( list tags-dir)
-		  )))
-
-
-    ))
 (defun cscope-find-functions-calling-this-function-and-set-tags-file (symbol)
   "Display functions calling a function."
   (interactive (list

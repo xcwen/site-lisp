@@ -98,6 +98,16 @@
 										 )) 
 
 
+( define-key evil-visual-state-map (kbd "*") '(lambda ()
+										 (interactive )
+										 (setq word (if (and  mark-active
+															  (not  (= (region-beginning) (region-end) )))
+														(buffer-substring-no-properties (region-beginning)(region-end)) (current-word )))
+										 (evil-normal-state)
+										 (evil-search word t t )
+										 ))
+
+
 (set-evil-normal-state-key (kbd ",m")
 						   '(lambda()(interactive)
 							  (let ( cmd )
