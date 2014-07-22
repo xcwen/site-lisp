@@ -1,9 +1,7 @@
 
-(package-initialize)
+(require 'package+)
 (add-to-list 'package-archives
 			 '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(unless (package-installed-p 'package+)
-  (package-install 'package+))
 
 (package-manifest 'magit
 				  'package+
