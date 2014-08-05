@@ -1,0 +1,5 @@
+#!/bin/bash
+# 放到 .tags 目录下
+cd `dirname $0`
+rm TAGS
+find  -L ../  -name "*.php" | etags  -L -
