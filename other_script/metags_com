@@ -17,7 +17,8 @@ find /usr/include/*.h \
          /usr/local/include/main_login/\
           -name "*.h"  -o -name "*.hpp" > cscope.files
 cscope -bkq -i cscope.files
-cat cscope.files |  etags  --declarations -
+#cat cscope.files |  etags  --declarations -L -
+cat cscope.files |  etags   --c-kinds=+p  --c++-kinds=+p -L -
 
 [ -d  ~/.emacs.d/ ] || mkdir  ~/.emacs.d/ 
 mv cscope.* TAGS   ~/.emacs.d/

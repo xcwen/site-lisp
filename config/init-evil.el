@@ -147,7 +147,9 @@
 (set-evil-normal-state-key (kbd "C-]")
 						   '(lambda()(interactive)
 							  ;;得到.tags文件夹所在的目录
+							  (message " tags-table-list=%s " tags-table-list  )
 							  (set-tags-config-for-cur-file)
+							  (message " end tags-table-list=%s " tags-table-list  )
 							  (evil-jump-to-tag))) 
 
 

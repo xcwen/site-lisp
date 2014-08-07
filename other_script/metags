@@ -15,4 +15,4 @@ find /usr/include/*.h \
           -name "*.h"  -o -name "*.hpp" > cscope.files
 find  -L ../  -name "*.h" -o -name "*.cc"  -o -name "*.c" -o -name "*.cpp"  -o -name "*.hpp"  | grep -v build | grep -v "proto/.*src"  >> cscope.files
 cscope -bkq -i cscope.files
-cat cscope.files | etags - 
+cat cscope.files | etags -L - 

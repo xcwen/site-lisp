@@ -141,6 +141,7 @@
  /usr/lib/x86_64-linux-gnu/glib-2.0/include/ 
 ./
     ")))
+;;(push  " -x c++ "  ac-clang-flags)
 
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))  
 (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)  
@@ -151,7 +152,6 @@
 (global-auto-complete-mode t)  
 
 ;(setq ac-clang-prefix-header "~/.emacs.d/stdafx.pch")
-(setq ac-clang-prefix-header nil)
 
 
 
