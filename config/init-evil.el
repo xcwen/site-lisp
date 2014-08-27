@@ -1,7 +1,78 @@
 ;;; ### Unset key ###
-;;; --- 卸载按键
+;;; --- 卸载按键 109
 
 (require 'evil)
+(require 'evil-numbers)
+(require 'evil-leader)
+
+
+(global-evil-leader-mode)
+
+;;normal-state
+(evil-leader/set-key
+  "-" 'evil-numbers/dec-at-pt
+  "=" 'evil-numbers/inc-at-pt
+  "k" 'kill-other-buffers
+  "t" 'set-tags-config-for-cur-file
+  "l" 'revert-buffer 
+  "f" 'gen-function-as-kill  
+  "r" 'remake-tags
+  "u" 'upper-or-lower-whole-word
+  "w" 'save-buffer
+  "o" 'other-window
+  "c" 'find-cmd-def
+  "p" 'proto-show-msg
+  "d" 'show-dict
+  "y" 'copy-whole-word
+  "s" 'cscope-find-egrep-pattern
+  "q" '(lambda ()
+		 (interactive )
+		 (multi-term-prev 0 )
+		 (evil-check-close-local-mode ) 
+		 )
+
+  "a" '(lambda()
+		 (interactive )
+		 (let ((file-ext (file-name-extension (buffer-file-name ))))
+		   (message file-ext )
+		   (if  (string= file-ext "html")
+			   (progn
+				 (if (string= major-mode "html-mode" ) (js2-mode) (html-mode)))
+			 (switch-cc-to-h ))))
+  )
+(evil-leader/set-leader ",") 
+
+;;(evil-leader/set-key-for-mode 'emacs-lisp-mode "b" 'byte-compile-file)
+
+;;编译
+(evil-leader/set-key-for-mode 'js2-mode "m"  'js2-mode-display-warnings-and-errors)
+(evil-leader/set-key-for-mode 'php-mode "m" '(lambda()
+
+											   (interactive)
+											   (flymake-mode 1)
+											   (flymake-goto-next-error)
+											   (flymake-display-err-menu-for-current-line)
+											   (flymake-mode 0)
+											   ))
+(evil-leader/set-key-for-mode 'c++-mode "m" 
+						   '(lambda()(interactive)
+							  (let ( cmd )
+
+								(setq cmd
+									  (concat "cd "
+											  (file-name-directory (buffer-file-name)  )
+											  "/build && make "
+											  (file-name-nondirectory (buffer-file-name) )
+											  ".o" 
+											  )
+									  )
+								(message cmd)
+
+								(compile cmd)
+								)))
+
+
+
 
 ;;设置查找是否按照symbol方式
 (custom-set-variables
@@ -36,17 +107,8 @@
 (set-evil-normal-state-key "\C-^"  'do-switch-buffer)
 (set-evil-normal-state-key "Y"  'copy-region-or-whole-line )
 (set-evil-normal-state-key "D"  'kill-region-or-whole-line )
-(set-evil-normal-state-key (kbd ",f") 'gen-function-as-kill  )
-(set-evil-normal-state-key (kbd ",r") 'remake-tags)
-(set-evil-normal-state-key (kbd ",u") 'upper-or-lower-whole-word)
-(set-evil-normal-state-key (kbd ",w") 'save-buffer)
-(set-evil-normal-state-key (kbd ",o") 'other-window)
-(set-evil-normal-state-key (kbd ",c") 'find-cmd-def)
-(set-evil-normal-state-key (kbd ",k") 'kill-other-buffers)
-(set-evil-normal-state-key (kbd ",p") 'proto-show-msg)
-(set-evil-normal-state-key (kbd ",d") 'show-dict)
+
 (define-key evil-visual-state-map (kbd ",d") 'show-dict ) 
-(set-evil-normal-state-key (kbd ",y") 'copy-whole-word)
 										;(require    'compilation-mode)
 
 (define-key evil-normal-state-map "gf" '(lambda()
@@ -57,16 +119,6 @@
 													(find-file (concat  "../model/" cur-word ".class.php"  )  )
 
 												  (find-file-at-point)))))
-
-;;(set-evil-normal-state-key (kbd ",a") 'switch-cc-to-h )
-(set-evil-normal-state-key (kbd ",a") '(lambda()
-										  (interactive )
-										  (let ((file-ext (file-name-extension (buffer-file-name ))))
-											(message file-ext )
-											(if  (string= file-ext "html")
-												(progn
-												  (if (string= major-mode "html-mode" ) (js2-mode) (html-mode)))
-											  (switch-cc-to-h )))))
 
 
 
@@ -87,15 +139,9 @@
 											  ))
 
 
-(set-evil-normal-state-key (kbd ",s") 'cscope-find-egrep-pattern)
 
 
 
-(set-evil-normal-state-key (kbd ",q") '(lambda ()
-										 (interactive )
-										 (multi-term-prev 0 )
-										 (evil-check-close-local-mode ) 
-										 )) 
 
 
 ( define-key evil-visual-state-map (kbd "*") '(lambda ()
@@ -108,26 +154,9 @@
 										 ))
 
 
-(set-evil-normal-state-key (kbd ",m")
-						   '(lambda()(interactive)
-							  (let ( cmd )
-
-								(setq cmd
-									  (concat "cd "
-											  (file-name-directory (buffer-file-name)  )
-											  "/build && make "
-											  (file-name-nondirectory (buffer-file-name) )
-											  ".o" 
-											  )
-									  )
-								(message cmd)
-
-								(compile cmd)
-								)))
 
 
 (setq revert-without-query '(".*"))
-(set-evil-normal-state-key (kbd ",l") 'revert-buffer )
 
 
 ;;ex 命令行调整
@@ -153,17 +182,6 @@
 							  (evil-jump-to-tag))) 
 
 
-(set-evil-normal-state-key (kbd ",t")
-						   '(lambda()(interactive)
-							  (set-tags-config-for-cur-file))) 
-
-(set-evil-normal-state-key (kbd ",N")
-						   '(lambda()(interactive)
-							  (backward-page ))) 
-
-(set-evil-normal-state-key (kbd ",n")
-						   '(lambda()(interactive)
-							  (forward-page ))) 
 
 
 
@@ -175,6 +193,8 @@
 (mapc (lambda (mode) (evil-set-initial-state mode 'normal ))
 	  '(package-menu-mode help-mode ))
 
+;;(evil-leader/set-key-for-mode 'emacs-lisp-mode "b" 'byte-compile-file)
+
 
 (add-hook
  'emacs-lisp-mode-hook
@@ -184,12 +204,7 @@
 	( define-key evil-insert-state-local-map  (kbd "C-]") 'find-function )
 	))
 
-(add-hook
- 'js2-mode-hook
- '(lambda()
-	(interactive)
-	( define-key evil-normal-state-local-map  (kbd ",m") 'js2-mode-display-warnings-and-errors)
-	))
+
 
 
 (add-hook 'python-mode-hook
@@ -200,17 +215,7 @@
 
 (add-hook 'php-mode-hook
           '(lambda ()
-			 (flymake-stop-all-syntax-checks)
-			 ( define-key evil-normal-state-local-map  (kbd ",m") '(lambda()
-
-																	 (interactive)
-																	 (flymake-mode 1)
-																	 (flymake-goto-next-error)
-																	 (flymake-display-err-menu-for-current-line)
-																	 (flymake-mode 0)
-																	)
-			   )
-			 ))
+			 (flymake-stop-all-syntax-checks)))
 
 
 

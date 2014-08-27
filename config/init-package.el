@@ -6,6 +6,9 @@
 (package-manifest 'magit
 				  'package+
 				  'evil
+				  'evil-surround
+				  'evil-leader 
+				  'evil-numbers
 				  'js2-mode
 				  'go-mode
 				  'lua-mode
