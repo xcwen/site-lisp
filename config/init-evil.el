@@ -205,6 +205,27 @@
 	))
 
 
+;; C C++ tags 调整 
+(add-hook
+ 'c++-mode-hook
+ '(lambda()
+	(interactive)
+	( define-key evil-normal-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
+	( define-key evil-insert-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
+
+	( define-key evil-normal-state-local-map  (kbd "C-t") 'rtags-location-stack-back )
+	( define-key evil-insert-state-local-map  (kbd "C-t") 'rtags-location-stack-back )
+
+	( define-key evil-normal-state-local-map  (kbd "C-S-t") 'rtags-location-stack-forward)
+	( define-key evil-insert-state-local-map  (kbd "C-S-t") 'rtags-location-stack-forward)
+
+	( define-key evil-normal-state-local-map  (kbd ",s") 'rtags-find-all-references-at-point)
+	( define-key evil-normal-state-local-map  (kbd ",r") 'rtags-reparse-file)
+	))
+
+
+
+
 
 
 (add-hook 'python-mode-hook
@@ -217,6 +238,26 @@
           '(lambda ()
 			 (flymake-stop-all-syntax-checks)))
 
+
+
+
+(add-hook
+ 'rtags-mode-hook
+ '(lambda()
+	(interactive)
+	(define-key evil-normal-state-local-map  (kbd "j") '(lambda()
+														  (interactive)
+														  (evil-next-line)
+														  (rtags-show-in-other-window) ))
+	(define-key evil-normal-state-local-map  (kbd "k") '(lambda()
+														  (interactive)
+														  (evil-previous-line)
+														  (rtags-show-in-other-window) ))
+	(define-key evil-normal-state-local-map  (kbd "<return>") '(lambda()
+														  (interactive)
+														  (rtags-select-other-window) ))
+
+	))
 
 
 (add-hook

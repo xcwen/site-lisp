@@ -9,9 +9,9 @@
 										(interactive )
 										(if (string= major-mode  "go-mode")
 											( auto-complete  '(ac-source-go ))
-										  ( auto-complete  '(ac-source-clang )))
-										))
-
+										  ;;( auto-complete  '(ac-source-clang ))
+										  (progn
+											( auto-complete  '(ac-source-rtags )))))) 
 
 (global-set-key (kbd "M-w") 'copy-region-or-whole-line)
 (global-set-key (kbd "C-SPC") nil)

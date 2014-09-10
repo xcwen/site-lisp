@@ -15,6 +15,7 @@
 				  'multi-term
 				  'org
 				  'yasnippet
+				  'rtags
 				  'auto-complete
 				  'auto-complete-clang
 				  'jedi

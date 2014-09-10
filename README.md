@@ -33,7 +33,7 @@ mv ~/.emacs  ~/.emacs.bak #备份原有的文件
 cp ~/site-lisp/other_script/site-start.el ~/.emacs
 
 #C++ 编码需要
-apt-get install  clang
+apt-get install  clang cmake g++ 
 ```
 
 

@@ -66,6 +66,10 @@ from tradition chinese to simple chinese" t)
 (require 'ido)
 (ido-mode t)
 
+(require 'rtags)
+(require 'rtags-ac)
+(setq rtags-rc-log-enabled t)
+(setq rtags-completions-enabled t)
 
 (custom-set-variables
  '(case-fold-search nil)
