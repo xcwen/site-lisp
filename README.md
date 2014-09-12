@@ -16,7 +16,7 @@ GNU Emacs 24.3.1 (x86_64-pc-linux-gnu, GTK+ Version 3.10.7) of 2014-03-08 on lam
 
 * 使用 `EVIL` 模拟 `VIM` 
 
-* 使用  `clang` 作 `c++` 代码补全
+* 使用  `rtags` + `clang` 作 `c++` 代码补全
 
 
 ## 安装 
@@ -34,6 +34,10 @@ cp ~/site-lisp/other_script/site-start.el ~/.emacs
 
 #C++ 编码需要
 apt-get install  clang cmake g++ 
+
+安装 rtags: 地址:
+https://github.com/Andersbakken/rtags/
+
 ```
 
 
