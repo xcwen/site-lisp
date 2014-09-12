@@ -6,6 +6,7 @@
 (package-manifest 'magit
 				  'package+
 				  'evil
+				  '2048-game
 				  'evil-surround
 				  'evil-leader 
 				  'evil-numbers

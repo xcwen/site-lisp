@@ -50,19 +50,15 @@ The test for presence of the car of ELT-CONS is done with `equal'."
       (setq file-path-str "~/"))
     (if (string= major-mode  "term-mode")
 		(evil-buffer nil )
-      (if  (and (functionp 'multi-term-list)   ( multi-term-list ))
+
 		  (progn
 			(multi-term-next 0 )
 			(evil-local-mode 0 )
-
+			;;进入当前文件
 			(unless  (string= file-path-str default-directory ) 
 			  (term-send-raw-string
 			   (concat "\C-c cd " file-path-str  "\r" )))
-			)
-		(progn
-		  (multi-term)
-		  (evil-local-mode 0 ))))
-    ))
+			))))
 
 
 (defun term-send-esc ()
