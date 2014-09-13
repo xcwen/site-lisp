@@ -6,6 +6,7 @@ xcwenn@qq.com
 **测试过的环境**
 
 `ubuntu14.04`: GNU Emacs 24.3.1 (x86_64-pc-linux-gnu, GTK+ Version 3.10.7) of 2014-03-08 on lamiak, modified by Debian
+
 `deepin2014`: GNU Emacs 24.3.1 (x86_64-pc-linux-gnu, X toolkit, Xaw3d scroll bars) of 2014-03-08 on lamiak, modified by Debian
 
 
