@@ -204,12 +204,8 @@
 	( define-key evil-insert-state-local-map  (kbd "C-]") 'find-function )
 	))
 
-
-;; C C++ tags 调整 
-(add-hook
- 'c++-mode-hook
- '(lambda()
-	(interactive)
+(defun set-rtags-bind-key ()
+  "DOCSTRING"
 	( define-key evil-normal-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
 	( define-key evil-insert-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
 
@@ -221,7 +217,12 @@
 
 	( define-key evil-normal-state-local-map  (kbd ",s") 'rtags-find-all-references-at-point)
 	( define-key evil-normal-state-local-map  (kbd ",r") 'rtags-reparse-file)
-	))
+	( define-key evil-normal-state-local-map  (kbd ",h") 'rtags-display-summary)
+	)
+
+;; C C++ tags 调整 
+(add-hook 'c++-mode-hook 'set-rtags-bind-key)
+(add-hook 'c-mode-hook 'set-rtags-bind-key)
 
 
 

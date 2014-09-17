@@ -13,9 +13,11 @@ xcwenn@qq.com
 
 ## 说明 
 
+* 使用 `EVIL` 模拟 `VIM`  ,使得emacs的编辑和vim 保持95%以上的一致性
+
 * 借鉴`deepin emcas` 配置文件的文档结构
 
-* 使用 `EVIL` 模拟 `VIM` 
+* 基于  `package.el`  管理所有的包
 
 * 使用  `rtags` + `clang` 作 `c++` 代码补全
 

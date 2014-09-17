@@ -9,11 +9,18 @@
 										(interactive )
 										(if (string= major-mode  "go-mode")
 											( auto-complete  '(ac-source-go ))
-										  ;;( auto-complete  '(ac-source-clang ))
 										  (progn
-											( auto-complete  '(ac-source-rtags )))))) 
+											(if  (get-tags-dir)
+												( auto-complete  '(ac-source-clang ))
+											  ( auto-complete  '(ac-source-rtags )))
+											)))) 
 
-(global-set-key (kbd "M-w") 'copy-region-or-whole-line)
+;;查找时,使用trim-string,去掉前后空格
+(define-key isearch-mode-map (kbd "C-y")  '(lambda()(interactive)
+											   (isearch-yank-string (trim-string (current-kill 0) ))))
+
+
+(global-set-key (kbd "M-w")  'copy-region-or-whole-line)
 (global-set-key (kbd "C-SPC") nil)
 
 (global-set-key (kbd "C-h") 'delete-backward-char)
