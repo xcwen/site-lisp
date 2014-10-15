@@ -21,7 +21,7 @@ xcwenn@qq.com
 
 * 使用  `rtags` + `clang` 作 `c++` 代码补全
 
-* `rtags` : 基于llvm . 真正实现了能编译，就能补全，跳转
+* `rtags` : 基于llvm . 真正实现了能编译，就能补全，跳转 :https://github.com/Andersbakken/rtags/
 
 ## 安装 
 
@@ -37,14 +37,23 @@ mv ~/.emacs  ~/.emacs.bak #备份原有的文件
 cp ~/site-lisp/other_script/site-start.el ~/.emacs
 
 #C++ 编码需要
-apt-get install  clang cmake g++  libclang-dev libssl-dev
+apt-get install  fcitx  clang cmake g++  libclang-dev libssl-dev
 
+# 查看 rtags 说明: https://github.com/Andersbakken/rtags
 安装 rtags: 地址:
 cd ~/ &&  git clone https://github.com/Andersbakken/rtags/
 cd ~/rtags/src &&  git clone https://github.com/Andersbakken/rct
 cd ~/rtags && mkdir build && cd ~/rtags/build/ && cmake ../ && make && sudo make install 
 
-启动rtags 服务:
+#export 放到~/.bashrc
+export PATH=~/bin/:$PATH
+
+ln -s ~/rtags/bin/gcc-rtags-wrapper.sh ~/bin/c++
+ln -s ~/rtags/bin/gcc-rtags-wrapper.sh ~/bin/cc
+ln -s ~/rtags/bin/gcc-rtags-wrapper.sh ~/bin/g++
+ln -s ~/rtags/bin/gcc-rtags-wrapper.sh ~/bin/gcc
+
+启动 rtags 服务:
 运行：rdm 
 
 ```

@@ -6,13 +6,14 @@
 (package-manifest 'magit
 				  'package+
 				  'evil
-				  '2048-game
 				  'evil-surround
 				  'evil-leader 
 				  'evil-numbers
 				  'js2-mode
 				  'go-mode
+				  'erlang
 				  'lua-mode
+				  'markdown-mode+
 				  'multi-term
 				  'org
 				  'yasnippet
@@ -25,6 +26,7 @@
 				  'xcscope
 				  'go-autocomplete
 				  'php-mode
+				  '2048-game
 				  )
 
 (provide 'init-package)

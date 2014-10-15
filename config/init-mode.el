@@ -20,11 +20,6 @@
                     ))
   (add-to-alist 'auto-mode-alist elt-cons))
 
-;;; Qml mode
-(autoload 'php-mode "php-mode")
-(autoload 'js2-mode "js2-mode")
-(autoload 'nxml-mode "nxml-mode")
-(autoload 'lua-mode "lua-mode")
 
 ;;; ### Auto-fill ###
 ;;; --- 自动换行
