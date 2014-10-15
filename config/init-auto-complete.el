@@ -111,7 +111,7 @@
 
 
 (setq ac-clang-flags  
-	  (mapcar(lambda (item)(concat "-I" item))  
+	  (mapcar (lambda (item)(concat "-I" item))  
 			 (split-string  
 			  "  
 /usr/include/x86_64-linux-gnu/c++/4.8

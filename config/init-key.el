@@ -7,17 +7,6 @@
 (define-key ac-mode-map  [(control tab )] 'auto-complete)
 (define-key ac-mode-map  [(backtab)] 'my-ac-mode-complete ) 
 
-(defun my-ac-mode-complete ()
-  "对mode 指定匹配方案, go , c++  "
-  (interactive)
-  (if (string= major-mode  "go-mode")
-	  ( auto-complete  '(ac-source-go ))
-	(progn
-	  (if  (get-tags-dir) ;; 自己的代码 
-		  ( auto-complete  '(ac-source-clang ))
-		( auto-complete  '(ac-source-rtags )))
-	  ))) 
-
 ;;查找时,使用trim-string,去掉前后空格
 (define-key isearch-mode-map (kbd "C-y")  '(lambda()(interactive)
 											   (isearch-yank-string (trim-string (current-kill 0) ))))

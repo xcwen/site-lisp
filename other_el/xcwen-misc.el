@@ -583,6 +583,49 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 	tags-dir
 	)
   )
+(defun get-string-from-file (filePath)
+  "Return filePath's file content."
+  (with-temp-buffer
+    (insert-file-contents filePath)
+    (buffer-string)))
+(defun get-build-args  ()
+  "得到编译参数, build/self.cxx_flags.conf   "
+  (let (build-dir build-file) 
+    (setq build-dir (file-name-directory (buffer-file-name)  ))
+    (while (not (or (file-exists-p  (concat build-dir  "build/self.cxx_flags.conf" ) ) (string= build-dir "/") ))
+	  (setq build-dir  ( file-name-directory (directory-file-name  build-dir ) ) )
+	  )
+	(if (string= build-dir "/") nil 
+	  (split-string (get-string-from-file (concat build-dir  "build/self.cxx_flags.conf" )  ))
+	)
+  ))
+
+(defun my-ac-mode-complete ()
+  "对mode 指定匹配方案, go , c++  "
+  (interactive)
+  (if (string= major-mode  "go-mode")
+	  ( auto-complete  '(ac-source-go ))
+	(progn
+	  (if  (get-tags-dir) ;; 自己的代码 
+		  (progn 
+			;;查找编译参数	
+			(let ((build-args  (get-build-args))  old-flags  ) 
+			  ;;设置当前ac-clang-flags 配置
+			  (if build-args
+				  (progn
+					(setq old-flags ac-clang-flags )
+					(setq  ac-clang-flags build-args )  ))
+			  
+			  ( auto-complete  '(ac-source-clang ))
+
+			  ;;还原
+			  (if build-args
+				  (setq  ac-clang-flags old-flags ))
+			))
+
+		( auto-complete  '(ac-source-rtags )))
+	  ))) 
+
 (defun remake-tags ()
   "DOCSTRING"
   (interactive)
@@ -680,7 +723,7 @@ object satisfying `yas--field-p' to restrict the expansion to."
 					;; ::
 					(and (eq ?: c)
 						 (eq ?: (char-before (1- (point)))))))
-			( auto-complete  '(ac-source-clang )))
+			(my-ac-mode-complete  ))
 
 		   ((and (string= major-mode "go-mode")  (eq ?\. c))
 			( auto-complete  '(ac-source-go )))
