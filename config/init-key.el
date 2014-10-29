@@ -34,6 +34,8 @@
 (global-set-key (kbd "<f8>") 'switch-file-term)   
 (global-set-key (kbd "<f7>") 'search-proto-info )   
 (global-set-key (kbd "<f10>") nil )   
+
+
 (global-set-key (kbd "M-`") nil )   
 
 
