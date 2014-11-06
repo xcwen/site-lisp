@@ -112,42 +112,18 @@
 
 (setq ac-clang-flags  
 	  (mapcar (lambda (item)(concat "-I" item))  
-			 (split-string  
-			  "  
-/usr/include/x86_64-linux-gnu/c++/4.8
- /usr/include/c++/4.8
- /usr/include/c++/4.8/i686-linux-gnu
- /usr/include/c++/4.8/backward
- /usr/lib/gcc/x86_64-linux-gnu/4.8/include
- /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed
+			 (split-string (shell-command-to-string "g++ -E -x c++ - -v < /dev/null 2>&1  | grep \"^ [^ ]*$\"  "))))
 
-/usr/include/x86_64-linux-gnu/c++/4.7
- /usr/include/c++/4.7
- /usr/include/c++/4.7/i686-linux-gnu
- /usr/include/c++/4.7/backward
- /usr/lib/gcc/x86_64-linux-gnu/4.7/include
- /usr/lib/gcc/x86_64-linux-gnu/4.7/include-fixed
-
- /usr/include/x86_64-linux-gnu/
- /usr/local/include
- /usr/include
- /usr/include/SDL/
-/usr/include/dbser
-/usr/include/mysql/
-/usr/include/glib-2.0
-/usr/lib/glib-2.0/include/
-/usr/include/libxml2
-/usr/local/include/async_serv/
- /usr/lib/x86_64-linux-gnu/glib-2.0/include/ 
-./
-    ")))
-;;(push  " -x c++ "  ac-clang-flags)
 
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))  
 (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)  
 (add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)  
 (add-hook 'css-mode-hook 'ac-css-mode-setup)  
 (add-hook 'auto-complete-mode-hook 'ac-common-setup)  
+
+;;设置c,c++默认的补全方式 clang
+(add-hook 'c-mode-hook '(lambda() (setq ac-sources  '(ac-source-clang ) ) ))
+(add-hook 'c++-mode-hook '(lambda() (setq ac-sources  '(ac-source-clang ) ) ))
 
 (global-auto-complete-mode t)  
 
