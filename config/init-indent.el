@@ -32,7 +32,8 @@
 
 (add-hook 'python-mode-hook
 		  '(lambda()
-			 (setq tab-width 4 indent-tabs-mode t python-indent-offset 4)
+			 (setq tab-width 4 indent-tabs-mode nil  python-indent-offset 4)
+             (message "ssss  indent-tabs-mode  %s" indent-tabs-mode  )
 			 ))
 
 (provide 'init-indent)

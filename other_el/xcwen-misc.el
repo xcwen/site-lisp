@@ -51,14 +51,14 @@ The test for presence of the car of ELT-CONS is done with `equal'."
     (if (string= major-mode  "term-mode")
 		(evil-buffer nil )
 
-		  (progn
-			(multi-term-next 0 )
-			(evil-local-mode 0 )
-			;;进入当前文件
-			(unless  (string= file-path-str default-directory ) 
-			  (term-send-raw-string
-			   (concat "\C-c cd " file-path-str  "\r" )))
-			))))
+	  (progn
+		(multi-term-next 0 )
+		(evil-local-mode 0 )
+		;;进入当前文件
+		(unless  (string= file-path-str default-directory ) 
+		  (term-send-raw-string
+		   (concat "\C-c cd " file-path-str  "\r" )))
+		))))
 
 
 (defun term-send-esc ()
@@ -406,16 +406,18 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
 
 (defun evil-c-mode-auto-pair ()
   (interactive)
-  (make-local-variable 'skeleton-pair-alist)
-  (setq skeleton-pair-alist  '(
-			       (?{ \n > _ \n ?} >)))
-  (setq skeleton-pair t)
-  (define-key evil-insert-state-map  (kbd "(") 'skeleton-pair-insert-maybe)
-  (define-key evil-insert-state-map  (kbd "[") 'skeleton-pair-insert-maybe)
-  (define-key evil-insert-state-map  (kbd "'") 'skeleton-pair-insert-maybe)
-  (define-key evil-insert-state-map  (kbd "\"") 'skeleton-pair-insert-maybe)
-  (define-key evil-insert-state-map  (kbd "{") 'skeleton-pair-insert-maybe)   
+  (electric-pair-mode 1)
+;;  (make-local-variable 'skeleton-pair-alist)
+;;  (setq skeleton-pair-alist  '(
+;;			       (?{ \n > _ \n ?} >)))
+;;  (setq skeleton-pair t)
+;;  (define-key evil-insert-state-map  (kbd "(") 'skeleton-pair-insert-maybe)
+;;  (define-key evil-insert-state-map  (kbd "[") 'skeleton-pair-insert-maybe)
+;;  (define-key evil-insert-state-map  (kbd "'") 'skeleton-pair-insert-maybe)
+;;  (define-key evil-insert-state-map  (kbd "\"") 'skeleton-pair-insert-maybe)
+;;  (define-key evil-insert-state-map  (kbd "{") 'skeleton-pair-insert-maybe)   
   )
+
 
 
 (defun match-paren (arg)

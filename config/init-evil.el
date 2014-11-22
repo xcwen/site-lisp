@@ -238,7 +238,11 @@
 
 (add-hook 'php-mode-hook
           '(lambda ()
-			 (flymake-stop-all-syntax-checks)))
+			 (flymake-stop-all-syntax-checks)
+			 (require 'auto-complete-php)
+			 ))
+
+
 
 
 

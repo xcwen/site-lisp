@@ -101,6 +101,8 @@
    ))
 
 
+
+
 ;;(require 'auto-complete-etags)
 ;;--clang
 (require 'auto-complete-clang)
@@ -124,6 +126,7 @@
 ;;设置c,c++默认的补全方式 clang
 (add-hook 'c-mode-hook '(lambda() (setq ac-sources  '(ac-source-clang ) ) ))
 (add-hook 'c++-mode-hook '(lambda() (setq ac-sources  '(ac-source-clang ) ) ))
+(add-hook 'php-mode-hook '(lambda() (setq ac-sources  '(ac-source-php ) ) ))
 
 (global-auto-complete-mode t)  
 

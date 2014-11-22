@@ -9,9 +9,11 @@
 				  'evil-surround
 				  'evil-leader 
 				  'evil-numbers
+				  'web-mode
 				  'js2-mode
 				  'go-mode
 				  'erlang
+				  'anything
 				  'lua-mode
 				  'markdown-mode+
 				  'multi-term
