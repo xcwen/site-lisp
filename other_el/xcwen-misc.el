@@ -590,6 +590,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
   (with-temp-buffer
     (insert-file-contents filePath)
     (buffer-string)))
+
 (defun get-build-args  ()
   "得到编译参数, build/self.cxx_flags.conf   "
   (let (build-dir build-file) 

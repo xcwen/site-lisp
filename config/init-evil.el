@@ -14,8 +14,8 @@
   "=" 'evil-numbers/inc-at-pt
   "k" 'kill-other-buffers
   "t" 'set-tags-config-for-cur-file
-  "l" 'revert-buffer 
-  "f" 'gen-function-as-kill  
+  "l" 'revert-buffer
+  "f" 'gen-function-as-kill
   "r" 'remake-tags
   "u" 'upper-or-lower-whole-word
   "w" 'save-buffer
@@ -28,7 +28,7 @@
   "q" '(lambda ()
 		 (interactive )
 		 (multi-term-prev 0 )
-		 (evil-check-close-local-mode ) 
+		 (evil-check-close-local-mode )
 		 )
 
   "a" '(lambda()
@@ -40,9 +40,12 @@
 				 (if (string= major-mode "html-mode" ) (js2-mode) (html-mode)))
 			 (switch-cc-to-h ))))
   )
-(evil-leader/set-leader ",") 
+(evil-leader/set-leader ",")
 
 ;;(evil-leader/set-key-for-mode 'emacs-lisp-mode "b" 'byte-compile-file)
+
+;;显示信息
+(evil-leader/set-key-for-mode 'php-mode "i"  'ac-php-show-tip)
 
 ;;编译
 (evil-leader/set-key-for-mode 'js2-mode "m"  'js2-mode-display-warnings-and-errors)
@@ -54,7 +57,7 @@
 											   (flymake-display-err-menu-for-current-line)
 											   (flymake-mode 0)
 											   ))
-(evil-leader/set-key-for-mode 'c++-mode "m" 
+(evil-leader/set-key-for-mode 'c++-mode "m"
 						   '(lambda()(interactive)
 							  (let ( cmd )
 
@@ -63,7 +66,7 @@
 											  (file-name-directory (buffer-file-name)  )
 											  "/build && make "
 											  (file-name-nondirectory (buffer-file-name) )
-											  ".o" 
+											  ".o"
 											  )
 									  )
 								(message cmd)
@@ -85,7 +88,7 @@
   (evil-check-close-local-mode)
   )
 (defun evil-check-close-local-mode ()
-  (when (string= major-mode  "term-mode") (evil-local-mode 0)  ) 
+  (when (string= major-mode  "term-mode") (evil-local-mode 0)  )
   )
 
 
@@ -108,14 +111,14 @@
 (set-evil-normal-state-key "Y"  'copy-region-or-whole-line )
 (set-evil-normal-state-key "D"  'kill-region-or-whole-line )
 
-(define-key evil-visual-state-map (kbd ",d") 'show-dict ) 
+(define-key evil-visual-state-map (kbd ",d") 'show-dict )
 										;(require    'compilation-mode)
 
 (define-key evil-normal-state-map "gf" '(lambda()
 											  (interactive )
 											  (let ((cur-word (current-word )))
 												(if (and (string= major-mode "php-mode")
-														 (string-match  "_model$" cur-word ) ) 
+														 (string-match  "_model$" cur-word ) )
 													(find-file (concat  "../model/" cur-word ".class.php"  )  )
 
 												  (find-file-at-point)))))
@@ -164,23 +167,23 @@
 							  (interactive )
 							  (save-buffer )
 							  (multi-term-prev 0 )
-							  (evil-check-close-local-mode ) 
+							  (evil-check-close-local-mode )
 							  ))
 
 (evil-ex-define-cmd  "q"  '(lambda ()
 							 (interactive )
 							 (multi-term-prev 0 )
-							 (evil-check-close-local-mode ) 
+							 (evil-check-close-local-mode )
 							 ))
 
 (set-evil-normal-state-key (kbd "g C-]")
 						   '(lambda()(interactive)
-							  
+
 							  ;;得到.tags文件夹所在的目录
 							  (message " tags-table-list=%s " tags-table-list  )
 							  (set-tags-config-for-cur-file)
 							  (message " end tags-table-list=%s " tags-table-list  )
-							  (evil-jump-to-tag))) 
+							  (evil-jump-to-tag)))
 
 
 
@@ -221,7 +224,7 @@
 	( define-key evil-normal-state-local-map  (kbd ",h") 'rtags-display-summary)
 	)
 
-;; C C++ tags 调整 
+;; C C++ tags 调整
 (add-hook 'c++-mode-hook 'set-rtags-bind-key)
 (add-hook 'c-mode-hook 'set-rtags-bind-key)
 
@@ -289,6 +292,6 @@
 
 
 
-(evil-mode 1) 
+(evil-mode 1)
 
 (provide 'init-evil)
