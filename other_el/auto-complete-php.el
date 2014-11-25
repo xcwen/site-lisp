@@ -71,20 +71,40 @@
   "Return non-nil if point is in a literal (a comment or string)."
   (nth 8 (syntax-ppss)))
 
+(defun ac-php-candidate-class ()
+  ;;得到变量
+
+
+'(
+#("abs" 0 3 (ac-php-help "[#number#]abs(<#mixed $number#>)"))
+#("acos" 0 4 (ac-php-help "[#float#]acos(<#float $arg#>)"))
+#("acosh" 0 5 (ac-php-help "[#float#]acosh(<#float $arg#>)"))
+))
+
+(defun ac-php-candidate-other ()
+  ac-php-sys-function-list
+  )
+
+
 
 (defun ac-php-candidate ()
-ac-php-sys-function-list
-)
-(defun test_1 ()
-  "DOCSTRING"
-  (interactive)
-  (let (var1 f )
-    (setq var1 '(1 2 3 4 5))
-	(setq f (dolist (v var1 )
-	  (when (= v 3) (return 10 ))
+
+	(let ((opt-class ) (c (char-before)))
+	  ;;去除 
+	  (save-excursion 
+	  (while (or (eq ?\t (char-before) ) (eq ?\s (char-before) )) (backward-char))   
+	  (if (not (eq ?> c))  (backward-word) )
+	  ;;
+	  (while (or (eq ?\t (char-before) ) (eq ?\s (char-before) )) (backward-char))   
+	  (if (and (eq ?> (char-before (point))) (eq ?- (char-before (1- (point)))))
+		  ;;处理类
+		  (setq opt-class t)
+		))
+	  (if opt-class
+		  (ac-php-candidate-class )
+		(ac-php-candidate-other))
 	  ))
-	(message "sdfa %d" f)
-	))
+
 (defun ac-php-show-tip ()
   "show function args tip"
   (interactive)
@@ -149,10 +169,8 @@ ac-php-sys-function-list
       (let ((c (char-before)))
         (when (or
                   ;; ->
-                  (and (eq ?> c)
-                       (eq ?- (char-before (1- (point)))))
-          (point))))))
-
+                  (and (eq ?> c) (eq ?- (char-before (1- (point))))))
+          (point)))))
 
 
 (ac-define-source php
