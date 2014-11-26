@@ -245,6 +245,7 @@
 			 (require 'auto-complete-php)
 
 			 ( define-key evil-normal-state-local-map  (kbd "C-]") 'ac-php-find-symbol-at-point)
+			 ( define-key evil-normal-state-local-map  (kbd "C-}") 'ac-php-location-stack-forward)
 			 ( define-key evil-normal-state-local-map  (kbd "C-t") 'ac-php-location-stack-back   )
 			 ( define-key evil-normal-state-local-map  (kbd ",r") 'ac-php-remake-tags )
 			  

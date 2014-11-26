@@ -176,9 +176,9 @@
 
   (when (and(not frist-class-name) (string= frist-key "this"))
 	(save-excursion
-      (when (re-search-backward "^[ \t]*class[ \t]+" 0 t 1)
+      (when (re-search-backward "^[ \t]*\\(abstract[ \t]+\\)*class[ \t]+" 0 t 1)
 		(setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
-		(if (string-match   "^[ \t]*class[ \t]+\\(\\w+\\)"   line-txt)
+		(if (string-match   "class[ \t]+\\(\\w+\\)"   line-txt)
 			(setq  frist-class-name  (match-string  1 line-txt))))))
   (if frist-class-name 
 	  (progn
@@ -301,7 +301,7 @@
 			(progn
 			  
 			  (dolist (function-str ac-php-sys-function-list )
-				(when (string= function-str cur-word)
+				(when (string= function-str cur-wo)
 
 				  (php-search-documentation cur-word  )
 				  (return )))
@@ -309,6 +309,10 @@
 			  ))
 		  )
 		)))
+
+(defun ac-php-location-stack-forward ()
+  (interactive)
+  (ac-php-location-stack-jump -1))
 
 (defun ac-php-location-stack-back ()
   (interactive)
