@@ -37,7 +37,7 @@ mv ~/.emacs  ~/.emacs.bak #备份原有的文件
 cp ~/site-lisp/other_script/site-start.el ~/.emacs
 
 #c++ 编码需要
-apt-get install  fcitx  clang cmake g++  libclang-dev libssl-dev libcurses-ocaml-dev 
+apt-get install  fcitx  clang cmake g++  libclang-dev libssl-dev libcurses-ocaml-dev  cscope
 # 查看 rtags 说明: https://github.com/Andersbakken/rtags
 安装 rtags: 地址:
 cd ~/ &&  git clone https://github.com/Andersbakken/rtags/
