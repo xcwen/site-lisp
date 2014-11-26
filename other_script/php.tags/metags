@@ -1,0 +1,4 @@
+#!/bin/bash
+cd `dirname $0`
+phpctags `find .. -name "*.php"`
+./gen_el_tags.py 
