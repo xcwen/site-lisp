@@ -33,13 +33,79 @@
 (provide 'auto-complete-php)
 (require 'auto-complete)
 (require 'popup)
+(require 'json)
 
 
-(defcustom ac-php-data-file
-  "~/site-lisp/other_el/php_complete.data"
-  "*Location of php completion data "
-  :group 'auto-complete
-  :type 'file)
+
+(defvar ac-php-location-stack-index 0)
+(defvar ac-php-location-stack nil)
+
+(defvar ac-php-max-bookmark-count 500 )
+(defun ac-php-location-stack-push ()
+  (let ((bm (ac-php-current-location)))
+    (while (> ac-php-location-stack-index 0)
+      (decf ac-php-location-stack-index)
+      (pop ac-php-location-stack))
+    (unless (string= bm (nth 0 ac-php-location-stack))
+      (push bm ac-php-location-stack)
+      (if (> (length ac-php-location-stack) ac-php-max-bookmark-count)
+          (nbutlast ac-php-location-stack (- (length ac-php-location-stack) ac-php-max-bookmark-count))))))
+
+
+(defun ac-php-goto-line-col (line column)
+  (goto-char (point-min))
+  (forward-line (1- line))
+  (beginning-of-line)
+  (forward-char (1- column)))
+
+(defun ac-php-current-location (&optional offset)
+  (format "%s:%d:%d" (or (buffer-file-name) (buffer-name))
+          (line-number-at-pos offset) (1+ (- (or offset (point)) (point-at-bol)))))
+
+(defun ac-php-find-file-or-buffer (file-or-buffer &optional other-window)
+  (if (file-exists-p file-or-buffer)
+      (if other-window
+          (find-file-other-window file-or-buffer)
+        (find-file file-or-buffer))
+    (let ((buf (get-buffer file-or-buffer)))
+      (cond ((not buf) (message "No buffer named %s" file-or-buffer))
+            (other-window (switch-to-buffer-other-window file-or-buffer))
+            (t (switch-to-buffer file-or-buffer))))))
+
+
+(defun ac-php-goto-location (location &optional other-window )
+  "Go to a location passed in. It can be either: file,12 or file:13:14 or plain file"
+  ;; (message (format "ac-php-goto-location \"%s\"" location))
+  (when (> (length location) 0)
+    (cond ((string-match "\\(.*\\):\\([0-9]+\\):\\([0-9]+\\)" location)
+           (let ((line (string-to-number (match-string-no-properties 2 location)))
+                 (column (string-to-number (match-string-no-properties 3 location))))
+             (ac-php-find-file-or-buffer (match-string-no-properties 1 location) other-window)
+             ;;(run-hooks ac-php-after-find-file-hook)
+             (ac-php-goto-line-col line column)
+             t))
+          ((string-match "\\(.*\\):\\([0-9]+\\)" location)
+           (let ((line (string-to-number (match-string-no-properties 2 location))))
+             (ac-php-find-file-or-buffer (match-string-no-properties 1 location) other-window)
+             ;;(run-hooks ac-php-after-find-file-hook)
+             (goto-char (point-min))
+             (forward-line (1- line))
+             t))
+          ((string-match "\\(.*\\),\\([0-9]+\\)" location)
+           (let ((offset (string-to-number (match-string-no-properties 2 location))))
+             (ac-php-find-file-or-buffer (match-string-no-properties 1 location) other-window)
+             ;;(run-hooks ac-php-after-find-file-hook)
+			 (goto-char (1+ pos))
+             t))
+          (t
+           (if (string-match "^ +\\(.*\\)$" location)
+               (setq location (match-string-no-properties 1 location)))
+           (ac-php-find-file-or-buffer location other-window)))
+	(ac-php-location-stack-push)
+   ))
+
+
+
 
 
 (defsubst ac-php-clean-document (s)
@@ -53,7 +119,7 @@
       (let (s)
         (setq s (get-text-property 0 'ac-php-help item))
         (ac-php-clean-document s)))
-  ;; (popup-item-property item 'ac-php-help)
+   ;;(popup-item-property item 'ac-php-help)
   )
 
 
@@ -71,19 +137,195 @@
   "Return non-nil if point is in a literal (a comment or string)."
   (nth 8 (syntax-ppss)))
 
-(defun ac-php-candidate-class ()
+(defun ac-php-get-class-by-value (class-val-name)
+  "DOCSTRING"
+  (let (line-txt class-name )
+	(save-excursion
+	  (re-search-backward (concat  class-val-name"::" ) 0 t 1) 
+	  (setq line-txt (buffer-substring-no-properties
+					  (line-beginning-position)
+					  (line-end-position )))
+	  
+	  (if (string-match ( concat  class-val-name "::\\(\\w+\\)" ) line-txt)
+		  (setq  class-name (match-string  1 line-txt))
+		())
+	  )
+	))
+(defun ac-php-get-class-at-point( )
+  (let (line-txt    key-list   tmp-key-list frist-class-name  frist-key  ret-str )
+  (setq line-txt (buffer-substring-no-properties
+		    (line-beginning-position)
+		    (point )))
+  
+  (setq line-txt (replace-regexp-in-string "\\<return\\>" "" line-txt  ))
+  (setq line-txt (replace-regexp-in-string ".*(" "" line-txt  ))
+  (setq line-txt (replace-regexp-in-string "[\t \\$]" "" line-txt  ))
+  (setq key-list (split-string line-txt "->" ))
+
+  (setq frist-key (nth 0 key-list))
+
+  (save-excursion
+	(re-search-backward (concat  frist-key"::" ) 0 t 1) 
+	(setq key-line-txt (buffer-substring-no-properties
+					(line-beginning-position)
+					(line-end-position )))
+
+	
+	(if (string-match ( concat  frist-key "::\\(\\w+\\)" ) key-line-txt)
+		(setq  frist-class-name  (match-string  1 key-line-txt))))
+
+  (when (and(not frist-class-name) (string= frist-key "this"))
+	(save-excursion
+      (when (re-search-backward "^[ \t]*class[ \t]+" 0 t 1)
+		(setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+		(if (string-match   "^[ \t]*class[ \t]+\\(\\w+\\)"   line-txt)
+			(setq  frist-class-name  (match-string  1 line-txt))))))
+  (if frist-class-name 
+	  (progn
+		(setq ret-str  (concat frist-class-name ))
+		(dolist (field-value (cdr key-list) )
+		  (setq ret-str  (concat  ret-str "." field-value )))
+		ret-str
+		)
+	(message "no find class from %s" frist-key )
+	nil
+	)
+  ))
+
+(defun ac-php-candidate-class ( )
   ;;得到变量
+  (let (key-str-list ret-list key-word output-vec  )
+  (setq key-str-list (ac-php-get-class-at-point))
+  (if key-str-list
+	  (progn
+		(message "key-str-list:%s" key-str-list)
+		(setq output-vec (json-read-from-string (shell-command-to-string   (concat  (ac-php-get-complete-cmd)  " --list-class "  key-str-list   ) )))
+		(mapcar (lambda (x)
+				  (setq key-word (elt x 1))
+				  (setq key-word (propertize key-word 'ac-php-help  (elt   x 2) ))
+				  (push key-word ret-list  )
+				  nil
+				  ) output-vec )
+  ret-list))
+	  ))
 
+(defun ac-php-get-complete-cmd ()
+  "DOCSTRING"
+  (let (tag-dir)
+	(setq  tag-dir (ac-php-get-tags-dir)  )
 
-'(
-#("abs" 0 3 (ac-php-help "[#number#]abs(<#mixed $number#>)"))
-#("acos" 0 4 (ac-php-help "[#float#]acos(<#float $arg#>)"))
-#("acosh" 0 5 (ac-php-help "[#float#]acosh(<#float $arg#>)"))
-))
+	(if tag-dir
+		(concat  tag-dir ".tags/get_php_tags.py")
+	  nil)))
 
 (defun ac-php-candidate-other ()
-  ac-php-sys-function-list
+  
+  (let (ret-list (ac-prefix-len (length ac-prefix)) cmp-value )
+  ;;系统函数
+  (dolist  (key-word ac-php-sys-function-list)
+	
+	(when (>= (length key-word) ac-prefix-len)
+	  (setq cmp-value   (substring-no-properties  key-word 0 ac-prefix-len ) )
+	  (if (string<   ac-prefix  cmp-value) (return ))
+	  (if (string= cmp-value  ac-prefix ) (push key-word ret-list  ))
+	  ))
+  ;;用户函数
+  (let ((key-word)  output-list )
+	(setq output-vec (json-read-from-string (shell-command-to-string  (concat  (ac-php-get-complete-cmd) "  --list-function "  ac-prefix) )))
+	(mapcar (lambda (x)
+			  (setq key-word (elt x 1))
+			  (setq key-word (propertize key-word 'ac-php-help  (elt   x 2) ))
+			  (push key-word ret-list  )
+			  nil
+			  ) output-vec )
+	)
+  ret-list
+  ))
+(defun ac-php-get-tags-dir  ()
+  "DOCSTRING"
+  (let (tags-dir tags-file) 
+    (setq tags-dir (file-name-directory (buffer-file-name)  ))
+    (while (not (or (file-exists-p  (concat tags-dir  ".tags" )) (string= tags-dir "/") ))
+	  (setq tags-dir  ( file-name-directory (directory-file-name  tags-dir ) ) ))
+	(if (string= tags-dir "/") (setq tags-dir nil )   )
+	tags-dir
+	)
   )
+
+(defun ac-php-remake-tags ()
+  "DOCSTRING"
+  (interactive)
+  (let ((tags-dir (ac-php-get-tags-dir) ) ) 
+	(message "remake %s" tags-dir )
+	(if tags-dir 
+		(message (shell-command-to-string  (concat tags-dir "/.tags/metags") )))))
+
+
+
+(defun ac-php-find-symbol-at-point (&optional prefix)
+  (interactive "P")
+  ;;检查是类还是 符号 
+  (let ( key-str-list  line-txt cur-word val-name class-name output-vec    jump-pos  cmd )
+	  (setq line-txt (buffer-substring-no-properties
+					  (line-beginning-position)
+					  (line-end-position )))
+	  (setq cur-word  (current-word))
+	  (if  (string-match ( concat  "\\(\\w+\\)[ \t]*->[\t ]*" cur-word ) line-txt)
+		  (progn
+
+			(setq key-str-list (ac-php-get-class-at-point ))
+			(when key-str-list
+			  (setq key-str-list (replace-regexp-in-string "\\.\\w+$" (concat "." cur-word ) key-str-list ))
+			  (setq cmd (concat  (ac-php-get-complete-cmd) "  --find-class-member " key-str-list     )  )
+			  (message "find class: %s" cmd)
+			  (setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
+				)
+
+			(when (> (length  output-vec) 0)
+			  (ac-php-get-complete-cmd)
+			  (setq jump-pos  (elt (elt  output-vec 0)  3 ))
+			  (ac-php-location-stack-push)
+			  (ac-php-goto-location jump-pos )
+			  ) 
+			)
+		(progn ;;function
+		  (setq cmd (concat  (ac-php-get-complete-cmd) "  --find-function " cur-word    )  )
+		  (setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
+		  (if (> (length  output-vec) 0)
+			  (progn 
+				(ac-php-get-complete-cmd)
+				(setq jump-pos  (elt (elt  output-vec 0)  3 ))
+				(ac-php-location-stack-push)
+				(ac-php-goto-location jump-pos )
+				)
+			(progn
+			  
+			  (dolist (function-str ac-php-sys-function-list )
+				(when (string= function-str cur-word)
+
+				  (php-search-documentation cur-word  )
+				  (return )))
+
+			  ))
+		  )
+		)))
+
+(defun ac-php-location-stack-back ()
+  (interactive)
+  (ac-php-location-stack-jump 1))
+
+
+
+(defun ac-php-location-stack-jump (by)
+  (interactive)
+  (let ((instack (nth ac-php-location-stack-index ac-php-location-stack))
+        (cur (ac-php-current-location)))
+    (if (not (string= instack cur))
+        (ac-php-goto-location instack )
+      (let ((target (+ ac-php-location-stack-index by)))
+        (when (and (>= target 0) (< target (length ac-php-location-stack)))
+          (setq ac-php-location-stack-index target)
+          (ac-php-goto-location (nth ac-php-location-stack-index ac-php-location-stack) ))))))
 
 
 
@@ -104,19 +346,59 @@
 		  (ac-php-candidate-class )
 		(ac-php-candidate-other))
 	  ))
+(defun ac-php-show-tip	(&optional prefix)
+  (interactive "P")
+  ;;检查是类还是 符号 
+  (let ( key-str-list  line-txt cur-word val-name class-name output-vec    class-name doc  cmd )
+	  (setq line-txt (buffer-substring-no-properties
+					  (line-beginning-position)
+					  (line-end-position )))
+	  (setq cur-word  (current-word))
+	  (if  (string-match ( concat  "\\(\\w+\\)[ \t]*->[\t ]*" cur-word ) line-txt)
+		  (progn
 
-(defun ac-php-show-tip ()
-  "show function args tip"
-  (interactive)
-  (let ((cur-function (php-get-pattern) ) function-info)
-	(dolist (function-str ac-php-sys-function-list )
-	  (when (string= function-str cur-function)
-		(setq function-info (get-text-property 0 'ac-php-help  function-str ) )
-		;;显示信息
-		(popup-tip function-info)
-		(return )
-	  )
-	)))
+			(setq key-str-list (ac-php-get-class-at-point ))
+			(when key-str-list
+			  (setq key-str-list (replace-regexp-in-string "\\.\\w+$" (concat "." cur-word ) key-str-list ))
+			  (setq cmd (concat  (ac-php-get-complete-cmd) "  --find-class-member " key-str-list     )  )
+			  (message "find class: %s" cmd)
+			  (setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
+				)
+
+			(when (> (length  output-vec) 0)
+			  (ac-php-get-complete-cmd)
+			  (setq  doc   (elt (elt  output-vec 0)  2 ))
+			  (setq  class-name   (elt (elt  output-vec 0)  6 ))
+			  (popup-tip (concat "[user]:" class-name  "::"  (ac-php-clean-document doc)    ))
+
+			  ) 
+			)
+		(progn ;;function
+		  (setq cmd (concat  (ac-php-get-complete-cmd) " --find-function " cur-word    )  )
+		  (setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
+		  (if (> (length  output-vec) 0)
+			  (progn  ;;user function
+				(ac-php-get-complete-cmd)
+				(setq  doc   (elt (elt  output-vec 0)  2 ))
+				(popup-tip (concat "[user]:"  (ac-php-clean-document doc)  ))
+
+				)
+			(let ((cur-function (php-get-pattern) ) function-info) ;;sys function
+			  (dolist (function-str ac-php-sys-function-list )
+				(when (string= function-str cur-function)
+				  (setq function-info (get-text-property 0 'ac-php-help  function-str ) )
+				  ;;显示信息
+				  (popup-tip (concat "[system]:" (ac-php-clean-document function-info)))
+				  (return )))
+
+			  )
+
+			) 
+		  )
+		)
+	  ))
+
+
 
 (defvar ac-template-start-point nil)
 (defvar ac-template-candidates (list "ok" "no" "yes:)"))
@@ -163,7 +445,6 @@
              (message (replace-regexp-in-string "\n" "   ;    " help))))
           (t
            (message (replace-regexp-in-string "\n" "   ;    " help))))))
-
 (defun ac-php-prefix ()
   (or (ac-prefix-symbol)
       (let ((c (char-before)))
@@ -2476,7 +2757,6 @@
 #("mysql_get_host_info" 0 19 (ac-php-help "[#string#]mysql_get_host_info(<#resource $link_identifier#>)"))
 #("mysql_get_proto_info" 0 20 (ac-php-help "[#int#]mysql_get_proto_info(<#resource $link_identifier#>)"))
 #("mysql_get_server_info" 0 21 (ac-php-help "[#string#]mysql_get_server_info(<#resource $link_identifier#>)"))
-#("mysqli::disable_reads_from_master" 0 33 (ac-php-help "[#void#]mysqli::disable_reads_from_master()"))
 #("mysqli_disable_rpl_parse" 0 24 (ac-php-help "[#bool#]mysqli_disable_rpl_parse(<#mysqli $link#>)"))
 #("mysqli_enable_reads_from_master" 0 31 (ac-php-help "[#bool#]mysqli_enable_reads_from_master(<#mysqli $link#>)"))
 #("mysqli_enable_rpl_parse" 0 23 (ac-php-help "[#bool#]mysqli_enable_rpl_parse(<#mysqli $link#>)"))
