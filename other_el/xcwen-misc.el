@@ -42,7 +42,7 @@ The test for presence of the car of ELT-CONS is done with `equal'."
 (defun switch-file-term ()
   " 交换终端和文件"
   (interactive)
-  (let ( opt-file-name find-path-str )
+  (let ( opt-file-name find-path-str init-cmd )
     (setq opt-file-name (buffer-file-name)   )
     ;;(message "%s %s %s" "====" opt-file-name "kkk")
     (if (and  opt-file-name  (file-exists-p opt-file-name ) )
@@ -52,12 +52,15 @@ The test for presence of the car of ELT-CONS is done with `equal'."
 		(evil-buffer nil )
 
 	  (progn
+		(if (=  (length multi-term-buffer-list) 0)
+			(setq init-cmd  "" )
+		  (setq init-cmd  (concat "\C-c cd " file-path-str  "\r" ) ))
+
 		(multi-term-next 0 )
 		(evil-local-mode 0 )
 		;;进入当前文件
 		(unless  (string= file-path-str default-directory ) 
-		  (term-send-raw-string
-		   (concat "\C-c cd " file-path-str  "\r" )))
+		  (term-send-raw-string init-cmd ))
 		))))
 
 

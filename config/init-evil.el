@@ -248,6 +248,7 @@
 			 ( define-key evil-normal-state-local-map  (kbd "C-}") 'ac-php-location-stack-forward)
 			 ( define-key evil-normal-state-local-map  (kbd "C-t") 'ac-php-location-stack-back   )
 			 ( define-key evil-normal-state-local-map  (kbd ",r") 'ac-php-remake-tags )
+			 ( define-key evil-normal-state-local-map  (kbd ",s") 'cscope-find-egrep-pattern )
 			  
 			 ))
 
@@ -279,8 +280,10 @@
  'cscope-list-entry-hook
  '(lambda()
 	(interactive)
-	(define-key evil-normal-state-local-map  (kbd "n") 'cscope-show-next-entry-other-window )
-	( define-key evil-normal-state-local-map (kbd "p") 'cscope-show-prev-entry-other-window ) ))
+	(define-key evil-normal-state-local-map  (kbd "n") '(lambda()(interactive)(evil-next-line) (cscope-show-entry-other-window)))
+	(define-key evil-normal-state-local-map  (kbd "p") '(lambda()(interactive)(evil-previous-line) (cscope-show-entry-other-window)))
+	;;,wk( define-key evil-normal-state-local-map (kbd "p") 'cscope-show-prev-entry-other-window )
+	))
 
 (add-hook
  'package-menu-mode-hook

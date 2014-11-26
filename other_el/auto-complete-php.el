@@ -159,6 +159,7 @@
   
   (setq line-txt (replace-regexp-in-string "\\<return\\>" "" line-txt  ))
   (setq line-txt (replace-regexp-in-string ".*(" "" line-txt  ))
+  (setq line-txt (replace-regexp-in-string ".*=" "" line-txt  ))
   (setq line-txt (replace-regexp-in-string "[\t \\$]" "" line-txt  ))
   (setq key-list (split-string line-txt "->" ))
 
@@ -230,17 +231,20 @@
 	  (if (string= cmp-value  ac-prefix ) (push key-word ret-list  ))
 	  ))
   ;;用户函数
-  (let ((key-word)  output-list )
-	(setq output-vec (json-read-from-string (shell-command-to-string  (concat  (ac-php-get-complete-cmd) "  --list-function "  ac-prefix) )))
-	(mapcar (lambda (x)
-			  (setq key-word (elt x 1))
-			  (setq key-word (propertize key-word 'ac-php-help  (elt   x 2) ))
-			  (push key-word ret-list  )
-			  nil
-			  ) output-vec )
-	)
+  (let ((key-word) cmd  output-list (complete-cmd  (ac-php-get-complete-cmd)) )
+	(when  complete-cmd  
+	  (setq cmd   (concat   complete-cmd  "  --list-function "  ac-prefix) )
+	  (message "=== %s" cmd)
+	  (setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
+	  (mapcar (lambda (x)
+				(setq key-word (elt x 1))
+				(setq key-word (propertize key-word 'ac-php-help  (elt   x 2) ))
+				(push key-word ret-list  )
+				nil
+				) output-vec )))
   ret-list
   ))
+
 (defun ac-php-get-tags-dir  ()
   "DOCSTRING"
   (let (tags-dir tags-file) 
@@ -265,7 +269,7 @@
 (defun ac-php-find-symbol-at-point (&optional prefix)
   (interactive "P")
   ;;检查是类还是 符号 
-  (let ( key-str-list  line-txt cur-word val-name class-name output-vec    jump-pos  cmd )
+  (let ( key-str-list  line-txt cur-word val-name class-name output-vec    jump-pos  cmd complete-cmd )
 	  (setq line-txt (buffer-substring-no-properties
 					  (line-beginning-position)
 					  (line-end-position )))
@@ -282,32 +286,33 @@
 				)
 
 			(when (> (length  output-vec) 0)
-			  (ac-php-get-complete-cmd)
 			  (setq jump-pos  (elt (elt  output-vec 0)  3 ))
 			  (ac-php-location-stack-push)
 			  (ac-php-goto-location jump-pos )
 			  ) 
 			)
 		(progn ;;function
-		  (setq cmd (concat  (ac-php-get-complete-cmd) "  --find-function " cur-word    )  )
-		  (setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
-		  (if (> (length  output-vec) 0)
-			  (progn 
-				(ac-php-get-complete-cmd)
-				(setq jump-pos  (elt (elt  output-vec 0)  3 ))
-				(ac-php-location-stack-push)
-				(ac-php-goto-location jump-pos )
-				)
+		  (setq complete-cmd (ac-php-get-complete-cmd) )
+		  (message "111111111111:%s" complete-cmd)
+		  (if complete-cmd
+			  (progn
+				(setq cmd (concat  complete-cmd "  --find-function " cur-word    )  )
+				(setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
+				(if (> (length  output-vec) 0)
+					(progn 
+					  (setq jump-pos  (elt (elt  output-vec 0)  3 ))
+					  (ac-php-location-stack-push)
+					  (ac-php-goto-location jump-pos )
+					  )))
 			(progn
 			  
 			  (dolist (function-str ac-php-sys-function-list )
-				(when (string= function-str cur-wo)
+				(when (string= function-str cur-word)
 
 				  (php-search-documentation cur-word  )
 				  (return )))
 
-			  ))
-		  )
+			  )))
 		)))
 
 (defun ac-php-location-stack-forward ()
@@ -353,7 +358,7 @@
 (defun ac-php-show-tip	(&optional prefix)
   (interactive "P")
   ;;检查是类还是 符号 
-  (let ( key-str-list  line-txt cur-word val-name class-name output-vec    class-name doc  cmd )
+  (let ( key-str-list  line-txt cur-word val-name class-name output-vec    class-name doc  cmd complete-cmd )
 	  (setq line-txt (buffer-substring-no-properties
 					  (line-beginning-position)
 					  (line-end-position )))
@@ -370,7 +375,6 @@
 				)
 
 			(when (> (length  output-vec) 0)
-			  (ac-php-get-complete-cmd)
 			  (setq  doc   (elt (elt  output-vec 0)  2 ))
 			  (setq  class-name   (elt (elt  output-vec 0)  6 ))
 			  (popup-tip (concat "[user]:" class-name  "::"  (ac-php-clean-document doc)    ))
@@ -378,15 +382,17 @@
 			  ) 
 			)
 		(progn ;;function
-		  (setq cmd (concat  (ac-php-get-complete-cmd) " --find-function " cur-word    )  )
-		  (setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
-		  (if (> (length  output-vec) 0)
-			  (progn  ;;user function
-				(ac-php-get-complete-cmd)
-				(setq  doc   (elt (elt  output-vec 0)  2 ))
-				(popup-tip (concat "[user]:"  (ac-php-clean-document doc)  ))
+		  (setq complete-cmd  (ac-php-get-complete-cmd))
+		  (if complete-cmd
+			  (progn 
+				(setq cmd (concat  complete-cmd " --find-function " cur-word    )  )
+				(setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
+				(if (> (length  output-vec) 0)
+					(progn  ;;user function
+					  (setq  doc   (elt (elt  output-vec 0)  2 ))
+					  (popup-tip (concat "[user]:"  (ac-php-clean-document doc)  ))
 
-				)
+					  )))
 			(let ((cur-function (php-get-pattern) ) function-info) ;;sys function
 			  (dolist (function-str ac-php-sys-function-list )
 				(when (string= function-str cur-function)
@@ -394,13 +400,9 @@
 				  ;;显示信息
 				  (popup-tip (concat "[system]:" (ac-php-clean-document function-info)))
 				  (return )))
-
-			  )
-
-			) 
-		  )
-		)
-	  ))
+			  
+			  )))
+		)))
 
 
 
