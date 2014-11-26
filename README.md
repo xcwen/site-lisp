@@ -59,9 +59,32 @@ ln -s ~/rtags/bin/gcc-rtags-wrapper.sh ~/bin/gcc
 #python  补全epc 需要
 apt-get install virtualenv
 
-
 ```
 
+###php 补全 
+安装phpctags 
+```
+cd ~
+git clone https://github.com/vim-php/phpctags.git
+cd ~/phpctags/ && make 
+sudo cp phpctags /usr/bin/ 
+```
 
+复制 php 工具到 项目根目录
+```
+cd /project/to/path # 项目根目录
+cp ~/site-lisp/other_script/php.tags .tags
+#测试
+cd .tags/
+metags
+```
+emacs php-mode 快捷键 
+```
+C-tab :补全
+C-]: 跳转到定义
+C-t: 跳转返回
+,i: 查看定义
+,r: 重新生成tags
+```
 
 
