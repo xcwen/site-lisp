@@ -118,6 +118,7 @@ from tradition chinese to simple chinese" t)
 
 ;;交换.cpp .hpp 文件
 (require 'switch-file)
+(require 'multi-term)
 (require 'xcscope)
 (setq cscope-do-not-update-database t)
 

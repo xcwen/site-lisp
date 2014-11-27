@@ -315,6 +315,18 @@
 			  )))
 		)))
 
+(defun ac-php-gen-def ()
+  "DOCSTRING"
+  (interactive)
+  (let (line-txt (cur-word  (current-word) ) )
+	(setq line-txt (buffer-substring-no-properties
+					(line-beginning-position)
+					(line-end-position )))
+	  (if  (string-match ( concat  "$" cur-word ) line-txt)
+		  (kill-new (concat "\t/*$" cur-word "::`<...>` */\n") )
+		(kill-new (concat "\tpublic /*::"cur-word" */ $" cur-word ";\n") )
+		  )
+	))
 (defun ac-php-location-stack-forward ()
   (interactive)
   (ac-php-location-stack-jump -1))

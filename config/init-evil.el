@@ -46,6 +46,7 @@
 
 ;;显示信息
 (evil-leader/set-key-for-mode 'php-mode "i"  'ac-php-show-tip)
+(evil-leader/set-key-for-mode 'php-mode "f"  'ac-php-gen-def)
 
 ;;编译
 (evil-leader/set-key-for-mode 'js2-mode "m"  'js2-mode-display-warnings-and-errors)
@@ -122,6 +123,7 @@
 													(find-file (concat  "../model/" cur-word ".class.php"  )  )
 
 												  (find-file-at-point)))))
+
 
 
 
