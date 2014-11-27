@@ -3,16 +3,20 @@
  'term-mode-hook
  '(lambda()
 	(yas-minor-mode -1 )
+	(setq term-bind-key-alist nil)
 
-	(add-to-list 'term-bind-key-alist '("C-c C-e" . term-send-esc  ))
+	(add-to-list 'term-bind-key-alist '("C-S-e" . term-send-esc  ))
 	(add-to-list 'term-bind-key-alist '("C-^" . do-switch-buffer ))
-	(add-to-list 'term-bind-key-alist '( "M-o". other-window ))
-	(add-to-list 'term-bind-key-alist '( "C-y". term-paste ))
-	(add-to-list 'term-bind-key-alist '( "C-t". (lambda() (interactive) (multi-term) (evil-check-close-local-mode )  ) ))
-	(add-to-list 'term-bind-key-alist '( "C-h". (lambda() (interactive) (multi-term-prev 1 ) (evil-check-close-local-mode )  ) ))
-	(add-to-list 'term-bind-key-alist '( "C-l". (lambda() (interactive) ( multi-term-next 1 ) (evil-check-close-local-mode )  ) ))
+	(add-to-list 'term-bind-key-alist '( "C-S-t". (lambda() (interactive) (multi-term) (evil-check-close-local-mode )  ) ))
+	(add-to-list 'term-bind-key-alist '( "C-S-h". (lambda() (interactive) (multi-term-prev 1 ) (evil-check-close-local-mode )  ) ))
+	(add-to-list 'term-bind-key-alist '( "C-S-l". (lambda() (interactive) ( multi-term-next 1 ) (evil-check-close-local-mode )  ) ))
+	(add-to-list 'term-bind-key-alist '( "C-S-c".   term-interrupt-subjob  ))
 
+	(add-to-list 'term-bind-key-alist '( "C-c".  copy-region-or-whole-line  ))
+	(add-to-list 'term-bind-key-alist '( "C-v". term-paste ))
+	(add-to-list 'term-bind-key-alist '( "C-y". (lambda()(interactive)) ))
 	))
+
 
 (custom-set-faces
  '(term-color-blue ((t (:background "blue" :foreground "steel blue"))))

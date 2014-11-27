@@ -195,12 +195,13 @@
 
 (defun ac-php-candidate-class ( )
   ;;得到变量
-  (let (key-str-list ret-list key-word output-vec  )
+  (let (key-str-list ret-list key-word output-vec cmd  )
   (setq key-str-list (ac-php-get-class-at-point))
   (if key-str-list
 	  (progn
-		(message "key-str-list:%s" key-str-list)
-		(setq output-vec (json-read-from-string (shell-command-to-string   (concat  (ac-php-get-complete-cmd)  " --list-class "  key-str-list   ) )))
+		(setq  cmd (concat  (ac-php-get-complete-cmd)  " --list-class-member "  key-str-list   )  )
+		(message "cmd:%s" cmd )
+		(setq output-vec (json-read-from-string (shell-command-to-string   cmd  )))
 		(mapcar (lambda (x)
 				  (setq key-word (elt x 1))
 				  (setq key-word (propertize key-word 'ac-php-help  (elt   x 2) ))
@@ -292,8 +293,7 @@
 			  ) 
 			)
 		(progn ;;function
-		  (setq complete-cmd (ac-php-get-complete-cmd) )
-		  (message "111111111111:%s" complete-cmd)
+		  (setq complete-cmd (ac-php-get-complete-cmd)  find-flag )
 		  (if complete-cmd
 			  (progn
 				(setq cmd (concat  complete-cmd "  --find-function " cur-word    )  )
@@ -303,7 +303,10 @@
 					  (setq jump-pos  (elt (elt  output-vec 0)  3 ))
 					  (ac-php-location-stack-push)
 					  (ac-php-goto-location jump-pos )
-					  )))
+					  (setq find-flag t)
+					  ))))
+		  (if (not find-flag )
+
 			(progn
 			  
 			  (dolist (function-str ac-php-sys-function-list )
@@ -312,8 +315,8 @@
 				  (php-search-documentation cur-word  )
 				  (return )))
 
-			  )))
-		)))
+			  ))))
+		))
 
 (defun ac-php-gen-def ()
   "DOCSTRING"
@@ -394,7 +397,7 @@
 			  ) 
 			)
 		(progn ;;function
-		  (setq complete-cmd  (ac-php-get-complete-cmd))
+		  (setq complete-cmd  (ac-php-get-complete-cmd ) find-flag)
 		  (if complete-cmd
 			  (progn 
 				(setq cmd (concat  complete-cmd " --find-function " cur-word    )  )
@@ -403,18 +406,20 @@
 					(progn  ;;user function
 					  (setq  doc   (elt (elt  output-vec 0)  2 ))
 					  (popup-tip (concat "[user]:"  (ac-php-clean-document doc)  ))
+					  (setq find-flag t)
 
-					  )))
-			(let ((cur-function (php-get-pattern) ) function-info) ;;sys function
-			  (dolist (function-str ac-php-sys-function-list )
-				(when (string= function-str cur-function)
-				  (setq function-info (get-text-property 0 'ac-php-help  function-str ) )
-				  ;;显示信息
-				  (popup-tip (concat "[system]:" (ac-php-clean-document function-info)))
-				  (return )))
-			  
-			  )))
-		)))
+					  ))))
+		  (if (not find-flag) 
+			  (let ((cur-function (php-get-pattern) ) function-info) ;;sys function
+				(dolist (function-str ac-php-sys-function-list )
+				  (when (string= function-str cur-function)
+					(setq function-info (get-text-property 0 'ac-php-help  function-str ) )
+					;;显示信息
+					(popup-tip (concat "[system]:" (ac-php-clean-document function-info)))
+					(return )))
+				
+				))))
+	  ))
 
 
 

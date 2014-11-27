@@ -2,3 +2,7 @@
 cd `dirname $0`
 phpctags `find .. -name "*.php"`
 ./gen_el_tags.py 
+
+find  -L ../  -name "*.php" > cscope.files
+cscope -bkq -i cscope.files
+

@@ -36,17 +36,28 @@ cp ~/site-lisp/other_script/XHei_Mono.Ubuntu.ttc  ~/.fonts/
 mv ~/.emacs  ~/.emacs.bak #备份原有的文件 
 cp ~/site-lisp/other_script/site-start.el ~/.emacs
 
-#c++ 编码需要
+#export 放到~/.bashrc
+export PATH=~/bin/:$PATH
+alias vi="emacsclient -n"
+
+
+```
+
+###python  补全jedi 需要
+```
+apt-get install virtualenv
+or:
+apt-get install python-virtualenv
+```
+
+###c++ 编码需要
+```
 apt-get install  fcitx  clang cmake g++  libclang-dev libssl-dev libcurses-ocaml-dev  cscope
 # 查看 rtags 说明: https://github.com/Andersbakken/rtags
 安装 rtags: 地址:
 cd ~/ &&  git clone https://github.com/Andersbakken/rtags/
 cd ~/rtags/src &&  git clone https://github.com/Andersbakken/rct
 cd ~/rtags && mkdir build && cd ~/rtags/build/ && cmake ../ && make && sudo make install 
-
-#export 放到~/.bashrc
-export PATH=~/bin/:$PATH
-alias vi="emacsclient -n"
 
 ln -s ~/rtags/bin/gcc-rtags-wrapper.sh ~/bin/c++
 ln -s ~/rtags/bin/gcc-rtags-wrapper.sh ~/bin/cc
@@ -56,10 +67,8 @@ ln -s ~/rtags/bin/gcc-rtags-wrapper.sh ~/bin/gcc
 启动 rtags 服务:
 运行：rdm 
 
-#python  补全epc 需要
-apt-get install virtualenv
-
 ```
+
 
 ###php 补全 
 安装phpctags 
