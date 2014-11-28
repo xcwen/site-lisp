@@ -14,7 +14,7 @@
 
 	(add-to-list 'term-bind-key-alist '( "C-c".  copy-region-or-whole-line  ))
 	(add-to-list 'term-bind-key-alist '( "C-v". term-paste ))
-	(add-to-list 'term-bind-key-alist '( "C-y". (lambda()(interactive)) ))
+	(add-to-list 'term-bind-key-alist '( "C-y". term-paste ))
 	))
 
 
