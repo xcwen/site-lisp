@@ -2,8 +2,15 @@
 # -*- coding: utf-8 -*-
 import sys
 import re
+import os 
 import bisect 
 
+project_path_len=len( os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))))+1
+
+def get_path_without_project_path(path):
+    global project_path_len
+    return path[project_path_len:]
+    pass
 
 func_regex = re.compile(r'.*\((.*)\).*')
 def gen_el_func(func_name,func_doc)  :
@@ -29,18 +36,6 @@ def get_class_list( class_name ):
 
 def main(argv):
 
-    """
-    str="Alog	/home/jim/new_web/lib/functions/functions_general.php	/^function Alog($s_log, $s_type='default', $s_level='debug' , $s_dir = 'app')$/;\"	f	line:1205"
-    
-    regex = re.compile(r'^(\w+)\t(.*)\t/\^(.+)\$/;\"\t(\w)\tline:(\d+)(.*)')
-    m=regex.match(str);
-    if (m):
-        print m.group(2)
-        print m.group(3)
-        print m.group(4)
-        print m.group(5)
-        print m.group(6)
-    """
     
     global class_inherits_map ,class_map
     function_data="";
@@ -56,7 +51,7 @@ def main(argv):
         m=regex.match(line);
         if (m):
             tag_name= m.group(1);
-            file_pos= m.group(2)+":"+m.group(5);
+            file_pos= get_path_without_project_path(m.group(2))+":"+m.group(5);
             doc= m.group(3);
             tag_type= m.group(4);
             if (  tag_type=="f" ) :

@@ -287,7 +287,7 @@
 				)
 
 			(when (> (length  output-vec) 0)
-			  (setq jump-pos  (elt (elt  output-vec 0)  3 ))
+			  (setq jump-pos  (concat (ac-php-get-tags-dir)  (elt (elt  output-vec 0)  3 )))
 			  (ac-php-location-stack-push)
 			  (ac-php-goto-location jump-pos )
 			  ) 
@@ -300,7 +300,7 @@
 				(setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
 				(if (> (length  output-vec) 0)
 					(progn 
-					  (setq jump-pos  (elt (elt  output-vec 0)  3 ))
+					  (setq jump-pos  (concat (ac-php-get-tags-dir)  (elt (elt  output-vec 0)  3 )))
 					  (ac-php-location-stack-push)
 					  (ac-php-goto-location jump-pos )
 					  (setq find-flag t)
