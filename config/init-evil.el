@@ -250,8 +250,9 @@
 			 ( define-key evil-normal-state-local-map  (kbd "C-}") 'ac-php-location-stack-forward)
 			 ( define-key evil-normal-state-local-map  (kbd "C-t") 'ac-php-location-stack-back   )
 			 ( define-key evil-normal-state-local-map  (kbd ",r") 'ac-php-remake-tags )
-			 ( define-key evil-normal-state-local-map  (kbd ",s") 'cscope-find-egrep-pattern )
-			  
+			 ( define-key evil-normal-state-local-map  (kbd ",s") '(lambda()(interactive)
+																	 (setq cscope-initial-directory (ac-php-get-tags-dir))
+																	 (cscope-find-egrep-pattern )))
 			 ))
 
 
