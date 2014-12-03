@@ -38,7 +38,7 @@
 (defun switch-file-opt ()
   "DOCSTRING"
   (interactive)
-  (let (  line-txt  opt-flie )
+  (let (  line-txt  opt-file )
 	(save-excursion
       (when (re-search-backward "SWITCH-TO:" 0 t 1)
 		(message "xxxxx")
@@ -261,17 +261,24 @@
 			 ( define-key evil-normal-state-local-map  (kbd "C-}") 'ac-php-location-stack-forward)
 			 ( define-key evil-normal-state-local-map  (kbd "C-t") 'ac-php-location-stack-back   )
 			 ( define-key evil-normal-state-local-map  (kbd ",r") 'ac-php-remake-tags )
-			 ( define-key evil-normal-state-local-map  (kbd ",S") '(lambda()(interactive)
-																	 (let (cscope-dir)
-																	   (setq cscope-dir  (concat (ac-php-get-tags-dir) ".tags" ))
-																	   (message "dir:%s" cscope-dir)
-																	   (setq cscope-initial-directory  cscope-dir)
-																	   )
-																	 ))
 
-			 ( define-key evil-normal-state-local-map  (kbd ",s") 'cscope-find-egrep-pattern )
+			 ( define-key evil-normal-state-local-map  (kbd ",s") 'php-cscope-find-egrep-pattern )
 
 			 ))
+
+(defun php-cscope-find-egrep-pattern (symbol)
+  "Run egrep over the cscope database."
+  (interactive (list
+		(let (cscope-no-mouse-prompts)
+		  (cscope-prompt-for-symbol "Find this egrep pattern " nil t t))
+		))
+
+  (setq cscope-initial-directory  (concat (ac-php-get-tags-dir) ".tags" )  )
+
+  (setq cscope-previous-user-search `(cscope-find-egrep-pattern ,symbol))
+  (cscope-call "Finding egrep pattern:" 6 symbol)
+  )
+
 
 
 
