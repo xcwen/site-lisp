@@ -34,7 +34,6 @@
 					   ("il" "inline $0" "inline" nil nil nil nil nil nil)
 					   ("io" "#include <iostream>" "io" nil nil nil nil nil nil)
 					   ("iter" "${1:std::}${2:vector<int>}::iterator ${3:iter};\n" "iterator" nil nil nil nil nil nil)
-					   ("main" "int main(${1:int argc, char *argv[]})\n{\n    $0    \n    return 0;\n}\n" "main" nil nil nil nil nil nil)
 					   ("map" "std::map<${1:type1}$0> ${2:var};" "map" nil nil nil nil nil nil)
 					   ("mapf" "typedef  typeof($2)  _T_$1; _T_$1::iterator $1;\n${1:it} = ${2:var}.find($0);\nif ($1 != $2.end()) {\n	return &($1->second);\n}else{\n	return NULL;\n}" "mapf" nil nil nil nil nil nil)
 					   ("mod" "class ${1:Class} : public cSimpleModule\n{\n   $0\n}" "module" nil nil nil nil nil nil)
@@ -69,4 +68,4 @@
 					   ("vec" "std::vector<${1:Class}> ${2:var}${3:(${4:10}, $1($5))};" "vector" nil nil nil nil nil nil)))
 
 
-;;; Do not edit! File generated at Mon Feb 10 18:36:32 2014
+;;; Do not edit! File generated at Wed Dec  3 09:41:49 2014

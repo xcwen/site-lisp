@@ -11,7 +11,8 @@
 					   ("prop" "def ${1:foo}():\n   doc = \"\"\"${2:Doc string}\"\"\"\n   def fget(self):\n       return self._$1\n   def fset(self, value):\n       self._$1 = value\n   def fdel(self):\n       del self._$1\n   return locals()\n$1 = property(**$1())\n\n$0" "prop" nil nil nil nil nil nil)
 					   ("propg" "def _get_${1:foo} (self):\n    return self._$1\n\n$1 = property(_get_$1)\n\n$0" "_get_foo ... foo=property(...)" nil nil nil nil nil nil)
 					   ("propsg" "def _set_${1:foo}(self, value):\n    self._$1 = value\n\ndef _get_$1(self):\n    return self._$1\n\n$1 = property(_get_$1, _set_$1)\n\n$0" "_get_foo ... _set_foo ... foo=property(...)" nil nil nil nil nil nil)
+					   ("utf8 " "\n -*- coding: utf-8 -*-\n" "utf8 " nil nil nil nil nil nil)
 					   ("while" "while ${condition}:\n    $0" "while ... : ..." nil nil nil nil nil nil)))
 
 
-;;; Do not edit! File generated at Mon Feb 10 18:36:33 2014
+;;; Do not edit! File generated at Wed Dec  3 09:41:50 2014

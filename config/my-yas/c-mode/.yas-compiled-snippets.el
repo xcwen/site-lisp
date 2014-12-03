@@ -10,4 +10,4 @@
 					   ("struct" "struct ${1:Name} {\n    $0\n};" "struct ... { ... }" nil nil nil nil nil nil)))
 
 
-;;; Do not edit! File generated at Mon Feb 10 18:36:32 2014
+;;; Do not edit! File generated at Wed Dec  3 09:41:50 2014

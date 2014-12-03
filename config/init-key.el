@@ -7,6 +7,7 @@
 (define-key ac-mode-map  [(control tab )] 'auto-complete)
 (define-key ac-mode-map  [(backtab)] 'my-ac-mode-complete ) 
 
+(define-key ac-mode-map  (kbd "C-:") '(lambda() (interactive) (auto-complete '(ac-source-filename ))))
 ;;查找时,使用trim-string,去掉前后空格
 (define-key isearch-mode-map (kbd "C-y")  '(lambda()(interactive)
 											   (isearch-yank-string (trim-string (current-kill 0) ))))

@@ -31,15 +31,26 @@
 		 (evil-check-close-local-mode )
 		 )
 
-  "a" '(lambda()
-		 (interactive )
-		 (let ((file-ext (file-name-extension (buffer-file-name ))))
-		   (message file-ext )
-		   (if  (string= file-ext "html")
-			   (progn
-				 (if (string= major-mode "html-mode" ) (js2-mode) (html-mode)))
-			 (switch-cc-to-h ))))
+  "a" 'switch-file-opt
   )
+
+;; (switch-cc-to-h ))))
+(defun switch-file-opt ()
+  "DOCSTRING"
+  (interactive)
+  (let (  line-txt  opt-flie )
+	(save-excursion
+      (when (re-search-backward "SWITCH-TO:" 0 t 1)
+		(message "xxxxx")
+		(setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+		(if (string-match   "SWITCH-TO:[ \t]*\\([^ \t]*\\)[ \t]*"   line-txt)
+			(setq  opt-file (match-string  1 line-txt)))))
+	(message "open [%s]"  opt-file )
+	(if opt-file
+		(find-file opt-file)
+	  (switch-cc-to-h)
+		)
+	))
 (evil-leader/set-leader ",")
 
 ;;(evil-leader/set-key-for-mode 'emacs-lisp-mode "b" 'byte-compile-file)
@@ -250,9 +261,16 @@
 			 ( define-key evil-normal-state-local-map  (kbd "C-}") 'ac-php-location-stack-forward)
 			 ( define-key evil-normal-state-local-map  (kbd "C-t") 'ac-php-location-stack-back   )
 			 ( define-key evil-normal-state-local-map  (kbd ",r") 'ac-php-remake-tags )
-			 ( define-key evil-normal-state-local-map  (kbd ",s") '(lambda()(interactive)
-																	 (setq cscope-initial-directory (ac-php-get-tags-dir))
-																	 (cscope-find-egrep-pattern )))
+			 ( define-key evil-normal-state-local-map  (kbd ",S") '(lambda()(interactive)
+																	 (let (cscope-dir)
+																	   (setq cscope-dir  (concat (ac-php-get-tags-dir) ".tags" ))
+																	   (message "dir:%s" cscope-dir)
+																	   (setq cscope-initial-directory  cscope-dir)
+																	   )
+																	 ))
+
+			 ( define-key evil-normal-state-local-map  (kbd ",s") 'cscope-find-egrep-pattern )
+
 			 ))
 
 

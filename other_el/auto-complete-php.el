@@ -158,8 +158,7 @@
 		    (point )))
   
   (setq line-txt (replace-regexp-in-string "\\<return\\>" "" line-txt  ))
-  (setq line-txt (replace-regexp-in-string ".*(" "" line-txt  ))
-  (setq line-txt (replace-regexp-in-string ".*=" "" line-txt  ))
+  (setq line-txt (replace-regexp-in-string ".*[=(,]" "" line-txt  ))
   (setq line-txt (replace-regexp-in-string "[\t \\$]" "" line-txt  ))
   (setq key-list (split-string line-txt "->" ))
 
@@ -280,7 +279,7 @@
 
 			(setq key-str-list (ac-php-get-class-at-point ))
 			(when key-str-list
-			  (setq key-str-list (replace-regexp-in-string "\\.\\w+$" (concat "." cur-word ) key-str-list ))
+			  (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" (concat "." cur-word ) key-str-list ))
 			  (setq cmd (concat  (ac-php-get-complete-cmd) "  --find-class-member " key-str-list     )  )
 			  (message "find class: %s" cmd)
 			  (setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
