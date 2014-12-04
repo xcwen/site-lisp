@@ -5,7 +5,6 @@
 (require 'evil-numbers)
 (require 'evil-leader)
 
-
 (global-evil-leader-mode)
 
 ;;normal-state

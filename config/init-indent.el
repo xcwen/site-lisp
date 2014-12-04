@@ -9,8 +9,22 @@
 	c-basic-offset 4
 	c-hanging-comment-ender-p nil
 	indent-tabs-mode t)
+  (electric-pair-mode 1)
+  )
 
-  (evil-c-mode-auto-pair))
+;;(defun evil-c-mode-auto-pair ()
+;;  (interactive)
+;;;;  (make-local-variable 'skeleton-pair-alist)
+;;;;  (setq skeleton-pair-alist  '(
+;;;;			       (?{ \n > _ \n ?} >)))
+;;;;  (setq skeleton-pair t)
+;;;;  (define-key evil-insert-state-map  (kbd "(") 'skeleton-pair-insert-maybe)
+;;;;  (define-key evil-insert-state-map  (kbd "[") 'skeleton-pair-insert-maybe)
+;;;;  (define-key evil-insert-state-map  (kbd "'") 'skeleton-pair-insert-maybe)
+;;;;  (define-key evil-insert-state-map  (kbd "\"") 'skeleton-pair-insert-maybe)
+;;;;  (define-key evil-insert-state-map  (kbd "{") 'skeleton-pair-insert-maybe)   
+;;  )
+;;
 
 
 (dolist (hook (list                     ;设置用空格替代TAB的模式
@@ -33,7 +47,6 @@
 (add-hook 'python-mode-hook
 		  '(lambda()
 			 (setq tab-width 4 indent-tabs-mode nil  python-indent-offset 4)
-             (message "ssss  indent-tabs-mode  %s" indent-tabs-mode  )
 			 ))
 
 (provide 'init-indent)

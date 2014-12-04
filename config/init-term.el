@@ -33,6 +33,4 @@
 	  (setq term-default-bg-color "#333333")
 	  (setq term-default-fg-color "grey80"))) 
 
-
-
 (provide 'init-term)

@@ -17,10 +17,14 @@
 (setq desktop-base-file-name ".desktop_save" )
 ;;(add-hook 'desktop-after-read-hook '(lambda () (message "desktop-after-read-hook")))
 
+;;创建文件备份目录
+(when  (not (file-exists-p "~/.emacs.d/bak_dir" ))
+	(mkdir "~/.emacs.d/bak_dir" ))
+
 (setq
  backup-by-copying t ; 自动备份
  backup-directory-alist
- '(("." . "~/.saves")) ; 自动备份在目录"~/.saves"下
+ '(("." . "~/.emacs.d/bak_dir")) ; 自动备份在目录"~/.saves"下
  delete-old-versions t ; 自动删除旧的备份文件
  kept-new-versions 6 ; 保留最近的6个备份文件
  kept-old-versions 2 ; 保留最早的2个备份文件

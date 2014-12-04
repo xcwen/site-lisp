@@ -123,6 +123,8 @@ from tradition chinese to simple chinese" t)
 (setq cscope-do-not-update-database t)
 
 
+;; smex set key
+(global-set-key (kbd "M-x") 'smex)
 
 
 

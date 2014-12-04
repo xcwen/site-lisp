@@ -5,6 +5,7 @@
 
 (package-manifest 'magit
 				  'package+
+				  'smex
 				  'evil
 				  'evil-surround
 				  'evil-leader 
@@ -13,7 +14,6 @@
 				  'js2-mode
 				  'go-mode
 				  'erlang
-				  'anything
 				  'lua-mode
 				  'markdown-mode+
 				  'multi-term
@@ -23,7 +23,6 @@
 				  'auto-complete
 				  'auto-complete-clang
 				  'jedi
-				  'epc
 				  'session
 				  'xcscope
 				  'go-autocomplete

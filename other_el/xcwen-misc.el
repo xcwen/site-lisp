@@ -380,46 +380,8 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
 ;;---------------------------------------------------------------------------
 
 
-(defun my-c-mode-auto-pair ()
-  (interactive)
-  (make-local-variable 'skeleton-pair-alist)
-  (setq skeleton-pair-alist  '(
-			       (?{ \n > _ \n ?} >)))
-  (setq skeleton-pair t)
-  (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
-  (local-set-key (kbd "[") 'skeleton-pair-insert-maybe)
-  (local-set-key (kbd "'") 'skeleton-pair-insert-maybe)
-  (local-set-key (kbd "\"") 'skeleton-pair-insert-maybe)
-  (local-set-key (kbd "{") 'skeleton-pair-insert-maybe)   
-  (backward-char))
 
 
-(defun vimpulse-c-mode-auto-pair ()
-  (interactive)
-  (make-local-variable 'skeleton-pair-alist)
-  (setq skeleton-pair-alist  '(
-			       (?{ \n > _ \n ?} >)))
-  (setq skeleton-pair t)
-  ;;(vimpulse-local-set-key 'insert-state (kbd "(") 'skeleton-pair-insert-maybe)
-  ;;(vimpulse-local-set-key 'insert-state (kbd "[") 'skeleton-pair-insert-maybe)
-  ;;(vimpulse-local-set-key 'insert-state (kbd "'") 'skeleton-pair-insert-maybe)
-  ;;(vimpulse-local-set-key 'insert-state (kbd "\"") 'skeleton-pair-insert-maybe)
-  ;;(vimpulse-local-set-key 'insert-state (kbd "{") 'skeleton-pair-insert-maybe)   
-  )
-
-(defun evil-c-mode-auto-pair ()
-  (interactive)
-  (electric-pair-mode 1)
-;;  (make-local-variable 'skeleton-pair-alist)
-;;  (setq skeleton-pair-alist  '(
-;;			       (?{ \n > _ \n ?} >)))
-;;  (setq skeleton-pair t)
-;;  (define-key evil-insert-state-map  (kbd "(") 'skeleton-pair-insert-maybe)
-;;  (define-key evil-insert-state-map  (kbd "[") 'skeleton-pair-insert-maybe)
-;;  (define-key evil-insert-state-map  (kbd "'") 'skeleton-pair-insert-maybe)
-;;  (define-key evil-insert-state-map  (kbd "\"") 'skeleton-pair-insert-maybe)
-;;  (define-key evil-insert-state-map  (kbd "{") 'skeleton-pair-insert-maybe)   
-  )
 
 
 
