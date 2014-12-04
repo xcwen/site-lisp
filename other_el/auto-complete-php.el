@@ -1,10 +1,9 @@
 ;;; auto-complete-php.el --- Auto Completion source for php for GNU Emacs
 
-;; Copyright (C) 2010  Brian Jiang
+;; Copyright (C) 2014  jim 
 
-;; Author: Brian Jiang <brianjcj@gmail.com>
+;; Author: xcwenn@qq.com 
 ;; Keywords: completion, convenience
-;; URL: https://github.com/brianjcj/auto-complete-php
 ;; Version: 20140409.352
 ;; X-Original-Version: 0.1i
 ;; Package-Requires: ((auto-complete "1.3.1"))
@@ -22,6 +21,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;; 参考 auto-complete-clang (补全), rtags (跳转堆栈 ac-php-location-stack-index )
 
 ;;; Commentary:
 ;;
@@ -133,24 +133,7 @@
   "Face for the php selected candidate."
   :group 'auto-complete)
 
-(defsubst ac-in-string/comment ()
-  "Return non-nil if point is in a literal (a comment or string)."
-  (nth 8 (syntax-ppss)))
 
-(defun ac-php-get-class-by-value (class-val-name)
-  "DOCSTRING"
-  (let (line-txt class-name )
-	(save-excursion
-	  (re-search-backward (concat  class-val-name"::" ) 0 t 1) 
-	  (setq line-txt (buffer-substring-no-properties
-					  (line-beginning-position)
-					  (line-end-position )))
-	  
-	  (if (string-match ( concat  class-val-name "::\\(\\w+\\)" ) line-txt)
-		  (setq  class-name (match-string  1 line-txt))
-		())
-	  )
-	))
 (defun ac-php-get-class-at-point( )
   (let (line-txt    key-list   tmp-key-list frist-class-name  frist-key  ret-str )
   (setq line-txt (buffer-substring-no-properties
