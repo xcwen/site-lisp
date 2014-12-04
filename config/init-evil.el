@@ -272,11 +272,8 @@
 		(let (cscope-no-mouse-prompts)
 		  (cscope-prompt-for-symbol "Find this egrep pattern " nil t t))
 		))
-
   (setq cscope-initial-directory  (concat (ac-php-get-tags-dir) ".tags" )  )
-
-  (setq cscope-previous-user-search `(cscope-find-egrep-pattern ,symbol))
-  (cscope-call "Finding egrep pattern:" 6 symbol)
+  (cscope-find-egrep-pattern symbol)
   )
 
 
