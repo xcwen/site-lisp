@@ -6,41 +6,32 @@
 (defun c-setting()
   (interactive)
   (setq tab-width 4
-	c-basic-offset 4
-	c-hanging-comment-ender-p nil
-	indent-tabs-mode t)
+		c-basic-offset 4
+		c-hanging-comment-ender-p nil
+		indent-tabs-mode t)
+  ;;正常符号配对
   (electric-pair-mode 1)
+
+  ;; { 的配对 单独处理
+  (make-local-variable 'skeleton-pair-alist)
+  (setq skeleton-pair-alist  '((?{ \n > _ \n ?} >)))
+  (setq skeleton-pair t)
+  (define-key evil-insert-state-map  (kbd "{") 'skeleton-pair-insert-maybe)   
   )
 
-;;(defun evil-c-mode-auto-pair ()
-;;  (interactive)
-;;;;  (make-local-variable 'skeleton-pair-alist)
-;;;;  (setq skeleton-pair-alist  '(
-;;;;			       (?{ \n > _ \n ?} >)))
-;;;;  (setq skeleton-pair t)
-;;;;  (define-key evil-insert-state-map  (kbd "(") 'skeleton-pair-insert-maybe)
-;;;;  (define-key evil-insert-state-map  (kbd "[") 'skeleton-pair-insert-maybe)
-;;;;  (define-key evil-insert-state-map  (kbd "'") 'skeleton-pair-insert-maybe)
-;;;;  (define-key evil-insert-state-map  (kbd "\"") 'skeleton-pair-insert-maybe)
-;;;;  (define-key evil-insert-state-map  (kbd "{") 'skeleton-pair-insert-maybe)   
-;;  )
-;;
 
 
 (dolist (hook (list                     ;设置用空格替代TAB的模式
                'emacs-lisp-mode-hook
                'lisp-mode-hook
                'lisp-interaction-mode-hook
-               'scheme-mode-hook
                'c-mode-hook
                'c++-mode-hook
-               'java-mode-hook
-               'haskell-mode-hook
-               'asm-mode-hook
-               'emms-tag-editor-mode-hook
+               'js2-mode-hook
                'sh-mode-hook
-               'haskell-cabal-mode-hook
-               'qml-mode-hook
+			   'python-mode-hook
+			   'php-mode-hook
+			   'web-mode-hook
                ))
   (add-hook hook 'c-setting ))
 
