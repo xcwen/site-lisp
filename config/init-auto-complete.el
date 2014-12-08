@@ -133,6 +133,22 @@
 ;(setq ac-clang-prefix-header "~/.emacs.d/stdafx.pch")
 
 
+(define-key  yas-keymap  (kbd "C-e") '(lambda ()
+  "DOCSTRING"
+  (interactive)
+  (let (start-pos end-pos)
+	(save-excursion
+      (re-search-backward "[(,]" ) 
+	  (setq start-pos (point))
+	  (if(= ?\(  (following-char))
+		  (setq start-pos (1+  start-pos ))
+		  )
+	  
+      (re-search-forward ")") 
+	  (setq end-pos (1- (point)) )
+	  (kill-region start-pos end-pos )
+	  )
+	)))
 
 
 (provide 'init-auto-complete)
