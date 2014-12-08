@@ -29,7 +29,6 @@
                'c++-mode-hook
                'js2-mode-hook
                'sh-mode-hook
-			   'python-mode-hook
 			   'php-mode-hook
 			   'web-mode-hook
                ))
@@ -37,7 +36,10 @@
 
 (add-hook 'python-mode-hook
 		  '(lambda()
-			 (setq tab-width 4 indent-tabs-mode nil  python-indent-offset 4)
+
+			 (setq tab-width 4  indent-tabs-mode nil)
+			 ;;正常符号配对
+			 (electric-pair-mode 1)
 			 ))
 
 (provide 'init-indent)

@@ -5,6 +5,9 @@ import os
 import re
 import json
 os.chdir(os.path.dirname ( sys.argv[0] ) )
+def end_for_error( err_msg ):
+    print json.dumps(["__PHP_COMPLETE_ERROR__",err_msg]);
+    sys.exit();
 
 def do_func(ac_prefix):
     import function_data 
@@ -39,7 +42,7 @@ def do_class(class_name ):
     if class_data.class_data.has_key(class_name):
         print json.dumps(class_data.class_data[class_name] );
     else:
-        print json.dumps([]);
+        end_for_error("没有找到class:["+class_name+"]" );
 
 def do_class_member(class_name,member ):
     import class_data 
@@ -50,7 +53,10 @@ def do_class_member(class_name,member ):
             if (member_info[1] == member):
                 ret_list.append(member_info);
                 
-    print json.dumps(ret_list);
+    if(len(ret_list)==0):
+        end_for_error("没有找到[%s.%s]"%( class_name,member  ));
+    else:
+        print json.dumps(ret_list);
 def get_class_member_type(class_data, class_name,member ):
     ret_list=[]
     if class_data.has_key(class_name):
@@ -72,8 +78,10 @@ def get_class_name( key_str ):
         if cur_class=="":
             cur_class=item
         else:
+            tmp_cur_class=cur_class
             cur_class=get_class_member_type(class_data.class_data,cur_class,item )
             if cur_class=="":
+                end_for_error("class["+tmp_cur_class+"]的成员["+item+"]没有定义类型");
                 return "" 
     return cur_class
 

@@ -181,9 +181,7 @@
   (setq key-str-list (ac-php-get-class-at-point))
   (if key-str-list
 	  (progn
-		(setq  cmd (concat  (ac-php-get-complete-cmd)  " --list-class-member "  key-str-list   )  )
-		(message "cmd:%s" cmd )
-		(setq output-vec (json-read-from-string (shell-command-to-string   cmd  )))
+		(setq output-vec  (ac-php-exec-complete-cmd-to-string "--list-class-member" key-str-list    ))
 		(mapcar (lambda (x)
 				  (setq key-word (elt x 1))
 				  (setq key-word (propertize key-word 'ac-php-help  (elt   x 2) ))
@@ -216,9 +214,7 @@
   ;;用户函数
   (let ((key-word) cmd  output-list (complete-cmd  (ac-php-get-complete-cmd)) )
 	(when  complete-cmd  
-	  (setq cmd   (concat   complete-cmd  "  --list-function "  ac-prefix) )
-	  (message "=== %s" cmd)
-	  (setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
+	  (setq output-vec  (ac-php-exec-complete-cmd-to-string "--list-function" ac-prefix))
 	  (mapcar (lambda (x)
 				(setq key-word (elt x 1))
 				(setq key-word (propertize key-word 'ac-php-help  (elt   x 2) ))
@@ -247,12 +243,29 @@
 	(if tags-dir 
 		(message (shell-command-to-string  (concat tags-dir "/.tags/metags") )))))
 
+(defun  ac-php-exec-complete-cmd-to-string( &rest args )
+  "DOCSTRING"
+  (let ((cmd (ac-php-get-complete-cmd)  ) ret_vec err-flag  )
+	;;加入参数
+	(while args 
+	  (setq  cmd (concat cmd  " " (car  args)  ))
+	  (setq args  (cdr  args)))
 
+	(message "CMD:%s" cmd )
+	(setq ret_vec (json-read-from-string (shell-command-to-string  cmd )))
+	(if (= (length ret_vec) 2)
+		(setq err-flag  	(elt ret_vec 0)))
+	(if (and (stringp err-flag)  (string= err-flag "__PHP_COMPLETE_ERROR__") )
+		(progn
+		  (message "ERROR: %s" (elt ret_vec 1)  )
+		  [] 
+		  )
+	  ret_vec))) 
 
 (defun ac-php-find-symbol-at-point (&optional prefix)
   (interactive "P")
   ;;检查是类还是 符号 
-  (let ( key-str-list  line-txt cur-word val-name class-name output-vec    jump-pos  cmd complete-cmd )
+  (let ( key-str-list  line-txt cur-word val-name class-name output-vec    jump-pos  cmd complete-cmd  find-flag)
 	  (setq line-txt (buffer-substring-no-properties
 					  (line-beginning-position)
 					  (line-end-position )))
@@ -263,9 +276,7 @@
 			(setq key-str-list (ac-php-get-class-at-point ))
 			(when key-str-list
 			  (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" (concat "." cur-word ) key-str-list ))
-			  (setq cmd (concat  (ac-php-get-complete-cmd) "  --find-class-member " key-str-list     )  )
-			  (message "find class: %s" cmd)
-			  (setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
+			  (setq output-vec  (ac-php-exec-complete-cmd-to-string "--find-class-member" key-str-list    ))
 				)
 
 			(when (> (length  output-vec) 0)
@@ -275,11 +286,10 @@
 			  ) 
 			)
 		(progn ;;function
-		  (setq complete-cmd (ac-php-get-complete-cmd)  find-flag )
+		  (setq complete-cmd (ac-php-get-complete-cmd)  )
 		  (if complete-cmd
 			  (progn
-				(setq cmd (concat  complete-cmd "  --find-function " cur-word    )  )
-				(setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
+				(setq output-vec  (ac-php-exec-complete-cmd-to-string "--find-function" cur-word   ))
 				(if (> (length  output-vec) 0)
 					(progn 
 					  (setq jump-pos  (concat (ac-php-get-tags-dir)  (elt (elt  output-vec 0)  3 )))
@@ -355,7 +365,7 @@
 (defun ac-php-show-tip	(&optional prefix)
   (interactive "P")
   ;;检查是类还是 符号 
-  (let ( key-str-list  line-txt cur-word val-name class-name output-vec    class-name doc  cmd complete-cmd )
+  (let ( key-str-list  line-txt cur-word val-name class-name output-vec    class-name doc  cmd complete-cmd  find-flag)
 	  (setq line-txt (buffer-substring-no-properties
 					  (line-beginning-position)
 					  (line-end-position )))
@@ -366,9 +376,7 @@
 			(setq key-str-list (ac-php-get-class-at-point ))
 			(when key-str-list
 			  (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" (concat "." cur-word ) key-str-list ))
-			  (setq cmd (concat  (ac-php-get-complete-cmd) "  --find-class-member " key-str-list     )  )
-			  (message "find class: %s" cmd)
-			  (setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
+			  (setq output-vec  (ac-php-exec-complete-cmd-to-string "--find-class-member" key-str-list   ))
 				)
 
 			(when (> (length  output-vec) 0)
@@ -379,11 +387,10 @@
 			  ) 
 			)
 		(progn ;;function
-		  (setq complete-cmd  (ac-php-get-complete-cmd ) find-flag)
+		  (setq complete-cmd  (ac-php-get-complete-cmd ) )
 		  (if complete-cmd
 			  (progn 
-				(setq cmd (concat  complete-cmd " --find-function " cur-word    )  )
-				(setq output-vec (json-read-from-string (shell-command-to-string  cmd )))
+				(setq output-vec  (ac-php-exec-complete-cmd-to-string "--find-function" cur-word   ))
 				(if (> (length  output-vec) 0)
 					(progn  ;;user function
 					  (setq  doc   (elt (elt  output-vec 0)  2 ))
