@@ -5,8 +5,6 @@
                     ("\\.org\\'" . org-mode)
                     ("\\.cron\\(tab\\)?\\'" . crontab-mode)
                     ("cron\\(tab\\)?\\." . crontab-mode)
-                    ("\\.a90\\'" . intel-hex-mode)
-                    ("\\.hex\\'" . intel-hex-mode)
                     ("\\.html\\'" . web-mode)
                     ("SConstruct". python-mode)
                     ("\\.asdf\\'" . lisp-mode)

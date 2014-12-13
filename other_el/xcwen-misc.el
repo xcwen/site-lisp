@@ -568,6 +568,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 	)
   ))
 
+
 (defun my-ac-mode-complete ()
   "对mode 指定匹配方案, go , c++  "
   (interactive)
@@ -578,6 +579,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 		  (progn 
 			;;查找编译参数	
 			(let ((build-args  (get-build-args))  old-flags  ) 
+			  ;;(message "build-args :%s" build-args)
 			  ;;设置当前ac-clang-flags 配置
 			  (if build-args
 				  (progn
@@ -589,7 +591,7 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 			  ;;还原
 			  (if build-args
 				  (setq  ac-clang-flags old-flags ))
-			))
+			  ))
 
 		( auto-complete  '(ac-source-rtags )))
 	  ))) 

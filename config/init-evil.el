@@ -37,7 +37,7 @@
 (defun switch-file-opt ()
   "DOCSTRING"
   (interactive)
-  (let (  line-txt  opt-file )
+  (let (  line-txt  opt-file  file-list obj-file check-file-name file-name file-name-fix )
 	(save-excursion
       (when (re-search-backward "SWITCH-TO:" 0 t 1)
 		(message "xxxxx")
@@ -45,11 +45,28 @@
 		(if (string-match   "SWITCH-TO:[ \t]*\\([^ \t]*\\)[ \t]*"   line-txt)
 			(setq  opt-file (match-string  1 line-txt)))))
 	(message "open [%s]"  opt-file )
-	(if opt-file
-		(find-file opt-file)
-	  (switch-cc-to-h)
-		)
-	))
+	(if (file-directory-p  opt-file)
+		(progn
+		  (setq file-name (file-name-nondirectory (buffer-file-name)))
+		  (setq file-name-fix (file-name-base  file-name))
+
+		  (setq file-list (directory-files opt-file))
+		  (while (and file-list (not obj-file) )
+			(setq check-file-name (car file-list) )
+			(setq file-list (cdr file-list) )
+
+			(if (and
+				 (string= (file-name-base check-file-name ) file-name-fix  ) ;;
+				 (not (string= file-name check-file-name   ));;后缀不一样
+				 )
+				(setq obj-file  (concat opt-file "/" check-file-name) ))))
+	  (setq obj-file opt-file))
+   
+
+	(if obj-file
+		(find-file obj-file)
+	  (switch-cc-to-h))))
+
 (evil-leader/set-leader ",")
 
 ;;(evil-leader/set-key-for-mode 'emacs-lisp-mode "b" 'byte-compile-file)

@@ -10,8 +10,7 @@
                ))
   (add-hook hook '(lambda () (yas-minor-mode -1))))
 
-;;删除多余参数
-(define-key  yas-keymap  (kbd "C-e") '(lambda ()
+(defun delete-args-to-end ()
   "DOCSTRING"
   (interactive)
   (let (start-pos end-pos)
@@ -26,7 +25,10 @@
 	  (setq end-pos (1- (point)) )
 	  (kill-region start-pos end-pos )
 	  )
-	)))
+	))
+
+;;删除多余参数
+(define-key  yas-keymap  (kbd "C-e") 'delete-args-to-end)
 
 
 (provide 'init-yasnippet)
