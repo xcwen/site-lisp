@@ -398,6 +398,14 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
   (interactive "p")
   (join-line 0))
 
+(defun comment-or-uncomment-whole-line(num)
+  (save-excursion
+    (beginning-of-line)
+    (let ((begin-point (point)))
+      (forward-line num)
+      (comment-or-uncomment-region	 begin-point (point)))
+    ))
+
 (defun copy-whole-line(num)
   (save-excursion
     (beginning-of-line)
@@ -434,10 +442,14 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
   "提供高级的复制 剪切功能
 "
   (save-excursion 
-    (if (string= opt-type "copy")
-	(setq do-region-func 'copy-region-as-kill do-line-func  'copy-whole-line  )
-      (setq do-region-func 'kill-region do-line-func  'kill-whole-line  )
-      )
+	(cond
+	 ( (string= opt-type "copy")
+	   (setq do-region-func 'copy-region-as-kill do-line-func  'copy-whole-line  ))
+
+	 ( (string= opt-type "comment")
+	   (setq do-region-func 'comment-or-uncomment-region do-line-func   'comment-or-uncomment-whole-line ))
+	 (t
+	  (setq do-region-func 'kill-region do-line-func  'kill-whole-line  )))
 
     (if (and  mark-active
 	      (not  (= (region-beginning) (region-end) ))
@@ -468,6 +480,20 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
   (interactive "P")
   (opt-region-or-whole-line "copy" arg)
   )
+
+;;;###autoload
+(defun comment-or-uncomment-region-or-whole-line(&optional arg)
+  "有选择区域时：
+	1:comment的内容是跨行的：comment区域所在的所有行的内容。不仅仅是区域内的内容
+	2:comment的内容没有跨行：comment区域中的内内容
+没有选择区域时: 
+	1:comment所在的行
+	2:支持comment多行.  如 comment3行是  M-3 C-w  
+"
+  (interactive "P")
+  (opt-region-or-whole-line "comment" arg)
+  )
+
 
 ;;;###autoload
 (defun kill-region-or-whole-line(&optional arg)

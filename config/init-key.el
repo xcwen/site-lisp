@@ -25,7 +25,10 @@
 (global-set-key (kbd "C-?") 'replace-regexp)
 (global-set-key "\M-;" 'qiang-comment-dwim-line)
 (global-set-key (kbd "C-^") 'do-switch-buffer )
-(global-set-key (kbd "C-/") 'cscope-find-egrep-pattern)
+
+(require 'undo-tree)
+(define-key undo-tree-map    (kbd "C-/")  nil )
+(global-set-key (kbd "C-/") 'comment-or-uncomment-region-or-whole-line )
 
 (define-key global-map (kbd "M-l") 'wcy-mark-some-thing-at-point)
 
