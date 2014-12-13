@@ -80,6 +80,7 @@ sudo cp phpctags /usr/bin/
 ```
 
 复制 php 工具到 项目根目录
+
 ```
 cd /project/to/path # 项目根目录
 cp ~/site-lisp/other_script/php.tags .tags
@@ -87,6 +88,7 @@ cp ~/site-lisp/other_script/php.tags .tags
 cd .tags/
 metags
 ```
+
 emacs php-mode 快捷键 
 ```
 C-tab :补全

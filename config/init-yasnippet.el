@@ -17,11 +17,12 @@
 	(save-excursion
       (re-search-backward "[(,]" ) 
 	  (setq start-pos (point))
-	  (if(= ?\(  (following-char))
-		  (setq start-pos (1+  start-pos ))
+	  (when(= ?\(  (following-char))
+		  (setq start-pos (+  1 start-pos ))
+          (insert "(")
 		  )
 	  
-      (re-search-forward ")") 
+      (re-search-forward "[)\n]")   
 	  (setq end-pos (1- (point)) )
 	  (kill-region start-pos end-pos )
 	  )

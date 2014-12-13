@@ -1,14 +1,15 @@
 ;;; ### Indent ###
 ;;; --- 缩进设置
-(setq-default indent-tabs-mode t)       ;默认用Tab模式
+(setq-default indent-tabs-mode nil)     ;默认用Tab模式
 (setq default-tab-width 4)              ;设置TAB默认的宽度
+(setq tab-width 4)                      ;设置TAB默认的宽度
 
 (defun c-setting()
   (interactive)
   (setq tab-width 4
 		c-basic-offset 4
 		c-hanging-comment-ender-p nil
-		indent-tabs-mode t)
+		indent-tabs-mode nil)
   ;;正常符号配对
   (electric-pair-mode 1)
 
