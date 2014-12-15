@@ -9,8 +9,6 @@
 
 ;;normal-state
 (evil-leader/set-key
-  "-" 'evil-numbers/dec-at-pt
-  "=" 'evil-numbers/inc-at-pt
   "k" 'kill-other-buffers
   "t" 'set-tags-config-for-cur-file
   "l" 'revert-buffer
@@ -25,10 +23,10 @@
   "y" 'copy-whole-word
   "s" 'cscope-find-egrep-pattern
   "q" '(lambda ()
-		 (interactive )
-		 (multi-term-prev 0 )
-		 (evil-check-close-local-mode )
-		 )
+         (interactive )
+         (multi-term-prev 0 )
+         (evil-check-close-local-mode )
+         )
 
   "a" 'switch-file-opt
   )
@@ -38,34 +36,34 @@
   "DOCSTRING"
   (interactive)
   (let (  line-txt  opt-file  file-list obj-file check-file-name file-name file-name-fix )
-	(save-excursion
+    (save-excursion
       (when (re-search-backward "SWITCH-TO:" 0 t 1)
-		(message "xxxxx")
-		(setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
-		(if (string-match   "SWITCH-TO:[ \t]*\\([^ \t]*\\)[ \t]*"   line-txt)
-			(setq  opt-file (match-string  1 line-txt)))))
-	(message "open [%s]"  opt-file )
-	(if (file-directory-p  opt-file)
-		(progn
-		  (setq file-name (file-name-nondirectory (buffer-file-name)))
-		  (setq file-name-fix (file-name-base  file-name))
+        (message "xxxxx")
+        (setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+        (if (string-match   "SWITCH-TO:[ \t]*\\([^ \t]*\\)[ \t]*"   line-txt)
+            (setq  opt-file (match-string  1 line-txt)))))
+    (message "open [%s]"  opt-file )
+    (if (file-directory-p  opt-file)
+        (progn
+          (setq file-name (file-name-nondirectory (buffer-file-name)))
+          (setq file-name-fix (file-name-base  file-name))
 
-		  (setq file-list (directory-files opt-file))
-		  (while (and file-list (not obj-file) )
-			(setq check-file-name (car file-list) )
-			(setq file-list (cdr file-list) )
+          (setq file-list (directory-files opt-file))
+          (while (and file-list (not obj-file) )
+            (setq check-file-name (car file-list) )
+            (setq file-list (cdr file-list) )
 
-			(if (and
-				 (string= (file-name-base check-file-name ) file-name-fix  ) ;;
-				 (not (string= file-name check-file-name   ));;后缀不一样
-				 )
-				(setq obj-file  (concat opt-file "/" check-file-name) ))))
-	  (setq obj-file opt-file))
-   
+            (if (and
+                 (string= (file-name-base check-file-name ) file-name-fix  ) ;;
+                 (not (string= file-name check-file-name   ));;后缀不一样
+                 )
+                (setq obj-file  (concat opt-file "/" check-file-name) ))))
+      (setq obj-file opt-file))
+    
 
-	(if obj-file
-		(find-file obj-file)
-	  (switch-cc-to-h))))
+    (if obj-file
+        (find-file obj-file)
+      (switch-cc-to-h))))
 
 (evil-leader/set-leader ",")
 
@@ -79,28 +77,28 @@
 (evil-leader/set-key-for-mode 'js2-mode "m"  'js2-mode-display-warnings-and-errors)
 (evil-leader/set-key-for-mode 'php-mode "m" '(lambda()
 
-											   (interactive)
-											   (flymake-mode 1)
-											   (flymake-goto-next-error)
-											   (flymake-display-err-menu-for-current-line)
-											   (flymake-mode 0)
-											   ))
+                                               (interactive)
+                                               (flymake-mode 1)
+                                               (flymake-goto-next-error)
+                                               (flymake-display-err-menu-for-current-line)
+                                               (flymake-mode 0)
+                                               ))
 (evil-leader/set-key-for-mode 'c++-mode "m"
-						   '(lambda()(interactive)
-							  (let ( cmd )
+  '(lambda()(interactive)
+     (let ( cmd )
 
-								(setq cmd
-									  (concat "cd "
-											  (file-name-directory (buffer-file-name)  )
-											  "/build && make "
-											  (file-name-nondirectory (buffer-file-name) )
-											  ".o"
-											  )
-									  )
-								(message cmd)
+       (setq cmd
+             (concat "cd "
+                     (file-name-directory (buffer-file-name)  )
+                     "/build && make "
+                     (file-name-nondirectory (buffer-file-name) )
+                     ".o"
+                     )
+             )
+       (message cmd)
 
-								(compile cmd)
-								)))
+       (compile cmd)
+       )))
 
 
 
@@ -120,7 +118,34 @@
   )
 
 
+;; 等号对齐
+(define-key evil-visual-state-map (kbd "=")  'align) 
+(define-key evil-normal-state-map (kbd "g=") 'indent-buffer) 
 
+(defun indent-buffer ()
+  "DOCSTRING"
+  (interactive)
+  (let ( tab-count)
+    (message "start")
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward  "^\t" nil t)
+        ;;(message "1111")
+        (setq tab-count 1)
+        ;;(message "char ====%d" (following-char )  )
+        (while (=  ?\t (following-char ) )
+          (setq tab-count (1+ tab-count))
+          (forward-char 1)
+          )
+        (delete-backward-char tab-count)
+        ;;(message "tab %d" tab-count   )
+        (while (> tab-count  0 )
+          (insert  "    ")
+          (setq tab-count (1- tab-count))
+          )
+        ))
+    (indent-region (point-min ) (point-max ) )
+    ))
 
 (set-evil-all-state-key (kbd  "C-p")   'dabbrev-expand  )
 
@@ -140,16 +165,16 @@
 (set-evil-normal-state-key "D"  'kill-region-or-whole-line )
 
 (define-key evil-visual-state-map (kbd ",d") 'show-dict )
-										;(require    'compilation-mode)
+                                        ;(require    'compilation-mode)
 
 (define-key evil-normal-state-map "gf" '(lambda()
-											  (interactive )
-											  (let ((cur-word (current-word )))
-												(if (and (string= major-mode "php-mode")
-														 (string-match  "_model$" cur-word ) )
-													(find-file (concat  "../model/" cur-word ".class.php"  )  )
+                                          (interactive )
+                                          (let ((cur-word (current-word )))
+                                            (if (and (string= major-mode "php-mode")
+                                                     (string-match  "_model$" cur-word ) )
+                                                (find-file (concat  "../model/" cur-word ".class.php"  )  )
 
-												  (find-file-at-point)))))
+                                              (find-file-at-point)))))
 
 
 
@@ -160,15 +185,15 @@
 ;;(define-key evil-normal-state-map [escape] 'evil-force-normal-state)
 ;;(define-key evil-insert-state-map [escape] 'evil-normal-state)
 (define-key evil-normal-state-map [escape] '(lambda()
-											  (interactive )
-											  (fcitx-inactivate-input-method)
-											  (evil-force-normal-state)
-											  ))
+                                              (interactive )
+                                              (fcitx-inactivate-input-method)
+                                              (evil-force-normal-state)
+                                              ))
 (define-key evil-insert-state-map [escape] '(lambda()
-											  (interactive )
-											  (fcitx-inactivate-input-method)
-											  (evil-normal-state)
-											  ))
+                                              (interactive )
+                                              (fcitx-inactivate-input-method)
+                                              (evil-normal-state)
+                                              ))
 
 
 
@@ -177,13 +202,13 @@
 
 
 ( define-key evil-visual-state-map (kbd "*") '(lambda ()
-										 (interactive )
-										 (setq word (if (and  mark-active
-															  (not  (= (region-beginning) (region-end) )))
-														(buffer-substring-no-properties (region-beginning)(region-end)) (current-word )))
-										 (evil-normal-state)
-										 (evil-search word t t )
-										 ))
+                                                (interactive )
+                                                (setq word (if (and  mark-active
+                                                                     (not  (= (region-beginning) (region-end) )))
+                                                               (buffer-substring-no-properties (region-beginning)(region-end)) (current-word )))
+                                                (evil-normal-state)
+                                                (evil-search word t t )
+                                                ))
 
 
 
@@ -193,26 +218,26 @@
 
 ;;ex 命令行调整
 (evil-ex-define-cmd  "wq"  '(lambda ()
-							  (interactive )
-							  (save-buffer )
-							  (multi-term-prev 0 )
-							  (evil-check-close-local-mode )
-							  ))
+                              (interactive )
+                              (save-buffer )
+                              (multi-term-prev 0 )
+                              (evil-check-close-local-mode )
+                              ))
 
 (evil-ex-define-cmd  "q"  '(lambda ()
-							 (interactive )
-							 (multi-term-prev 0 )
-							 (evil-check-close-local-mode )
-							 ))
+                             (interactive )
+                             (multi-term-prev 0 )
+                             (evil-check-close-local-mode )
+                             ))
 
 (set-evil-normal-state-key (kbd "g C-]")
-						   '(lambda()(interactive)
+                           '(lambda()(interactive)
 
-							  ;;得到.tags文件夹所在的目录
-							  (message " tags-table-list=%s " tags-table-list  )
-							  (set-tags-config-for-cur-file)
-							  (message " end tags-table-list=%s " tags-table-list  )
-							  (evil-jump-to-tag)))
+                              ;;得到.tags文件夹所在的目录
+                              (message " tags-table-list=%s " tags-table-list  )
+                              (set-tags-config-for-cur-file)
+                              (message " end tags-table-list=%s " tags-table-list  )
+                              (evil-jump-to-tag)))
 
 
 
@@ -224,7 +249,7 @@
 
 
 (mapc (lambda (mode) (evil-set-initial-state mode 'normal ))
-	  '(package-menu-mode help-mode ))
+      '(package-menu-mode help-mode ))
 
 ;;(evil-leader/set-key-for-mode 'emacs-lisp-mode "b" 'byte-compile-file)
 
@@ -232,26 +257,26 @@
 (add-hook
  'emacs-lisp-mode-hook
  '(lambda()
-	(interactive)
-	( define-key evil-normal-state-local-map  (kbd "C-]") 'find-function)
-	( define-key evil-insert-state-local-map  (kbd "C-]") 'find-function )
-	))
+    (interactive)
+    ( define-key evil-normal-state-local-map  (kbd "C-]") 'find-function)
+    ( define-key evil-insert-state-local-map  (kbd "C-]") 'find-function )
+    ))
 
 (defun set-rtags-bind-key ()
   "DOCSTRING"
-	( define-key evil-normal-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
-	( define-key evil-insert-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
+  ( define-key evil-normal-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
+  ( define-key evil-insert-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
 
-	( define-key evil-normal-state-local-map  (kbd "C-t") 'rtags-location-stack-back )
-	( define-key evil-insert-state-local-map  (kbd "C-t") 'rtags-location-stack-back )
+  ( define-key evil-normal-state-local-map  (kbd "C-t") 'rtags-location-stack-back )
+  ( define-key evil-insert-state-local-map  (kbd "C-t") 'rtags-location-stack-back )
 
-	( define-key evil-normal-state-local-map  (kbd "C-S-t") 'rtags-location-stack-forward)
-	( define-key evil-insert-state-local-map  (kbd "C-S-t") 'rtags-location-stack-forward)
+  ( define-key evil-normal-state-local-map  (kbd "C-S-t") 'rtags-location-stack-forward)
+  ( define-key evil-insert-state-local-map  (kbd "C-S-t") 'rtags-location-stack-forward)
 
-	( define-key evil-normal-state-local-map  (kbd ",s") 'rtags-find-all-references-at-point)
-	( define-key evil-normal-state-local-map  (kbd ",r") 'rtags-reparse-file)
-	( define-key evil-normal-state-local-map  (kbd ",h") 'rtags-display-summary)
-	)
+  ( define-key evil-normal-state-local-map  (kbd ",s") 'rtags-find-all-references-at-point)
+  ( define-key evil-normal-state-local-map  (kbd ",r") 'rtags-reparse-file)
+  ( define-key evil-normal-state-local-map  (kbd ",h") 'rtags-display-summary)
+  )
 
 ;; C C++ tags 调整
 (add-hook 'c++-mode-hook 'set-rtags-bind-key)
@@ -264,30 +289,30 @@
 
 (add-hook 'python-mode-hook
           '(lambda ()
-			 ( define-key evil-normal-state-local-map  (kbd "C-]") 'jedi:jump-to-definition)
-			 ( define-key evil-normal-state-local-map  (kbd "C-t") 'jedi:jump-back)
-			 ))
+             ( define-key evil-normal-state-local-map  (kbd "C-]") 'jedi:jump-to-definition)
+             ( define-key evil-normal-state-local-map  (kbd "C-t") 'jedi:jump-back)
+             ))
 
 (add-hook 'php-mode-hook
           '(lambda ()
-			 (flymake-stop-all-syntax-checks)
-			 (require 'auto-complete-php)
+             (flymake-stop-all-syntax-checks)
+             (require 'auto-complete-php)
 
-			 ( define-key evil-normal-state-local-map  (kbd "C-]") 'ac-php-find-symbol-at-point)
-			 ( define-key evil-normal-state-local-map  (kbd "C-}") 'ac-php-location-stack-forward)
-			 ( define-key evil-normal-state-local-map  (kbd "C-t") 'ac-php-location-stack-back   )
-			 ( define-key evil-normal-state-local-map  (kbd ",r") 'ac-php-remake-tags )
+             ( define-key evil-normal-state-local-map  (kbd "C-]") 'ac-php-find-symbol-at-point)
+             ( define-key evil-normal-state-local-map  (kbd "C-}") 'ac-php-location-stack-forward)
+             ( define-key evil-normal-state-local-map  (kbd "C-t") 'ac-php-location-stack-back   )
+             ( define-key evil-normal-state-local-map  (kbd ",r") 'ac-php-remake-tags )
 
-			 ( define-key evil-normal-state-local-map  (kbd ",s") 'php-cscope-find-egrep-pattern )
+             ( define-key evil-normal-state-local-map  (kbd ",s") 'php-cscope-find-egrep-pattern )
 
-			 ))
+             ))
 
 (defun php-cscope-find-egrep-pattern (symbol)
   "Run egrep over the cscope database."
   (interactive (list
-		(let (cscope-no-mouse-prompts)
-		  (cscope-prompt-for-symbol "Find this egrep pattern " nil t t))
-		))
+                (let (cscope-no-mouse-prompts)
+                  (cscope-prompt-for-symbol "Find this egrep pattern " nil t t))
+                ))
   (setq cscope-initial-directory  (concat (ac-php-get-tags-dir) ".tags" )  )
   (cscope-find-egrep-pattern symbol)
   )
@@ -301,44 +326,44 @@
 (add-hook
  'rtags-mode-hook
  '(lambda()
-	(interactive)
-	(define-key evil-normal-state-local-map  (kbd "j") '(lambda()
-														  (interactive)
-														  (evil-next-line)
-														  (rtags-show-in-other-window) ))
-	(define-key evil-normal-state-local-map  (kbd "k") '(lambda()
-														  (interactive)
-														  (evil-previous-line)
-														  (rtags-show-in-other-window) ))
-	(define-key evil-normal-state-local-map  (kbd "<return>") '(lambda()
-														  (interactive)
-														  (rtags-select-other-window) ))
+    (interactive)
+    (define-key evil-normal-state-local-map  (kbd "j") '(lambda()
+                                                          (interactive)
+                                                          (evil-next-line)
+                                                          (rtags-show-in-other-window) ))
+    (define-key evil-normal-state-local-map  (kbd "k") '(lambda()
+                                                          (interactive)
+                                                          (evil-previous-line)
+                                                          (rtags-show-in-other-window) ))
+    (define-key evil-normal-state-local-map  (kbd "<return>") '(lambda()
+                                                                 (interactive)
+                                                                 (rtags-select-other-window) ))
 
-	))
+    ))
 
 
 (add-hook
  'cscope-list-entry-hook
  '(lambda()
-	(interactive)
-	(define-key evil-normal-state-local-map  (kbd "n") '(lambda()(interactive)(evil-next-line) (cscope-show-entry-other-window)))
-	(define-key evil-normal-state-local-map  (kbd "p") '(lambda()(interactive)(evil-previous-line) (cscope-show-entry-other-window)))
-	;;,wk( define-key evil-normal-state-local-map (kbd "p") 'cscope-show-prev-entry-other-window )
-	))
+    (interactive)
+    (define-key evil-normal-state-local-map  (kbd "n") '(lambda()(interactive)(evil-next-line) (cscope-show-entry-other-window)))
+    (define-key evil-normal-state-local-map  (kbd "p") '(lambda()(interactive)(evil-previous-line) (cscope-show-entry-other-window)))
+    ;;,wk( define-key evil-normal-state-local-map (kbd "p") 'cscope-show-prev-entry-other-window )
+    ))
 
 (add-hook
  'package-menu-mode-hook
  '(lambda()
-	(interactive)
-	( define-key evil-normal-state-local-map (kbd "E") 'package-menu-execute ) ))
+    (interactive)
+    ( define-key evil-normal-state-local-map (kbd "E") 'package-menu-execute ) ))
 
 
 (add-hook
  'compilation-mode-hook
  '(lambda()
-	(interactive)
-	(define-key compilation-mode-map  (kbd  ",o")   'other-window)
-	))
+    (interactive)
+    (define-key compilation-mode-map  (kbd  ",o")   'other-window)
+    ))
 
 
 
