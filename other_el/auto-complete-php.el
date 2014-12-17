@@ -2281,6 +2281,7 @@
 #("jdtojulian" 0 10 (ac-php-help "[#string#]jdtojulian(<#int $julianday#>)"))
 #("jdtounix" 0 8 (ac-php-help "[#int#]jdtounix(<#int $jday#>)"))
 #("jewishtojd" 0 10 (ac-php-help "[#int#]jewishtojd(<#int $month#>,<#int $day#>,<#int $year#>)"))
+#("join" 0 4 (ac-php-help "[#string#]join(<#string $glue#>,<#array $pieces#>)"))
 #("jpeg2wbmp" 0 9 (ac-php-help "[#bool#]jpeg2wbmp(<#string $jpegname#>,<#string $wbmpname#>,<#int $dest_height#>,<#int $dest_width#>,<#int $threshold#>)"))
 #("json_decode" 0 11 (ac-php-help "[#mixed#]json_decode(<#string $json#>,<#bool $assoc#>,<#int $depth#>,<#int $options#>)"))
 #("json_encode" 0 11 (ac-php-help "[#string#]json_encode(<#mixed $value#>,<#int $options#>)"))

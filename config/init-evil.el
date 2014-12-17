@@ -37,8 +37,8 @@
   (interactive)
   (let (  line-txt  opt-file  file-list obj-file check-file-name file-name file-name-fix )
     (save-excursion
-      (when (re-search-backward "SWITCH-TO:" 0 t 1)
-        (message "xxxxx")
+      (goto-char (point-min))
+      (when (re-search-forward "SWITCH-TO:" )
         (setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
         (if (string-match   "SWITCH-TO:[ \t]*\\([^ \t]*\\)[ \t]*"   line-txt)
             (setq  opt-file (match-string  1 line-txt)))))
