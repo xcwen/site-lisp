@@ -721,8 +721,21 @@ object satisfying `yas--field-p' to restrict the expansion to."
 						 (eq ?: (char-before (1- (point)))))))
 			(my-ac-mode-complete  ))
 
+		   ((and (string= major-mode "php-mode") (or 
+					;; ->
+					(and (eq ?> c)
+						 (eq ?- (char-before (1- (point)))))
+					;; ::
+					(and (eq ?: c)
+						 (eq ?: (char-before (1- (point)))))))
+
+			(auto-complete '(ac-source-php)  ))
+
+
 		   ((and (string= major-mode "go-mode")  (eq ?\. c))
 			( auto-complete  '(ac-source-go )))
+
+
 
 		   ((and (string= major-mode "python-mode")  (eq ?\. c))
 			( jedi:complete :expand nil ))
