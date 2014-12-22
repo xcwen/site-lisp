@@ -1,9 +1,19 @@
 ;;; ### Unset key ###
 ;;; --- 卸载按键 109
 
+
+
+
+
+(global-set-key (kbd  "C-/"  ) nil)
+
 (require 'evil)
 (require 'evil-numbers)
 (require 'evil-leader)
+
+(define-key undo-tree-map (kbd "C-/")  nil)
+(global-set-key  (kbd  "C-/"  )   'comment-or-uncomment-region-or-whole-line )
+
 
 (global-evil-leader-mode)
 
@@ -20,7 +30,20 @@
   "c" 'find-cmd-def
   "p" 'proto-show-msg
   "d" 'show-dict
-  "y" 'copy-whole-word
+  "y" '(lambda ()
+         (interactive )
+         (let ( line-msg  txt )
+           (setq line-msg (buffer-substring-no-properties
+                           (line-beginning-position)
+                           (line-end-position )))
+           
+
+           
+           (setq txt (format "%s:%d\n%s\n" (buffer-file-name) (line-number-at-pos ) line-msg  ) )
+           (message txt)
+           (kill-new txt  )
+           ))
+
   "s" 'cscope-find-egrep-pattern
   "q" '(lambda ()
          (interactive )

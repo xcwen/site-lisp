@@ -342,21 +342,21 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
 
       (setq arg-1  (replace-regexp-in-string re-str "\\1" func-msg))
       (if (or (string= arg-1 class-type ) (string= arg-1 (concat  "~" class-type  ) ) )
-	  (setq func-msg (replace-regexp-in-string
-			  re-str
-			  (concat "\n"  class-type "::\\1\\2\n{\n\n}\n" )
-			  func-msg
-			  ))
+          (setq func-msg (replace-regexp-in-string
+                          re-str
+                          (concat "\n"  class-type "::\\1\\2\n{\n\n}\n" )
+                          func-msg
+                          ))
 
-	(setq func-msg (replace-regexp-in-string
-			re-str
-			(concat "\n\\1\n" class-type "::\\2\n{\n\n}\n" )
-			func-msg
-			))
-	)
+        (setq func-msg (replace-regexp-in-string
+                        re-str
+                        (concat "\n\\1\n" class-type "::\\2\n{\n\n}\n" )
+                        func-msg
+                        )))
 
       ;;加入剪切列表
       (kill-new func-msg))))
+
 
 
 ;;删除当前单词
