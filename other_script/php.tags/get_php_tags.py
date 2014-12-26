@@ -17,8 +17,8 @@ def do_func(ac_prefix):
         key_word=item[1];
         #print key_word
         key_fix=key_word[:ac_prefix_len] 
-        if  (key_fix> ac_prefix ) :
-            break;
+        #if  (key_fix> ac_prefix ) :
+        #    break;
 
         if  (key_fix == ac_prefix ) :
             ret_list.append(item)
@@ -79,7 +79,14 @@ def get_class_name( key_str ):
             cur_class=item
         else:
             tmp_cur_class=cur_class
-            cur_class=get_class_member_type(class_data.class_data,cur_class,item )
+            if (item=="__parent__"):
+                if (class_data.class_inherits_data.has_key(cur_class)):
+                    cur_class=class_data.class_inherits_data[cur_class]
+                else:
+                    cur_class=""
+                
+            else:
+                cur_class=get_class_member_type(class_data.class_data,cur_class,item )
             if cur_class=="":
                 end_for_error("class["+tmp_cur_class+"]的成员["+item+"]没有定义类型");
                 return "" 

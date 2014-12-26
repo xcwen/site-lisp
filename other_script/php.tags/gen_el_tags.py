@@ -111,6 +111,13 @@ def main(argv):
 
                 
         class_data+= "\t],\n"
+        pass
+
+
+    class_inherits_data=""
+    for class_name, parent_name in class_inherits_map.items():
+        class_inherits_data+= "\t\"%s\":\t\"%s\",\n"%(class_name,parent_name )
+        pass
 
     
     open("./function_data.py", "w").write("""#!/usr/bin/env python
@@ -125,7 +132,10 @@ function_data=[
 class_data={
 %s
 }
-   """%(class_data))
+class_inherits_data={
+%s
+}
+    """%(class_data,class_inherits_data ))
 
 
     

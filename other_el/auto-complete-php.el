@@ -158,7 +158,7 @@
         (setq frist-key (nth 0 key-list))
         (setq frist-class-name  frist-key  )
         (when (string= frist-key "parent" ) 
-          (setq frist-class-name (concat (ac-php-get-cur-class-name) "-parent" ) )))
+          (setq frist-class-name (concat (ac-php-get-cur-class-name) ".__parent__" ) )))
 
     (progn
       (setq key-list (split-string line-txt "->" ))
