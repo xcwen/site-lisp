@@ -11,9 +11,16 @@
 (require 'evil-numbers)
 (require 'evil-leader)
 
+;; comment 
 (define-key undo-tree-map (kbd "C-/")  nil)
 (global-set-key  (kbd  "C-/"  )   'comment-or-uncomment-region-or-whole-line )
-
+(defadvice web-mode-comment-or-uncomment (before jim-web-mode-comment-or-uncomment  activate compile)
+  "When called interactively with no active region, cut the current line."
+  (interactive)
+  (if mark-active (mark-region-ex))
+  )
+(define-key   web-mode-map (kbd  "C-/"  )   'web-mode-comment-or-uncomment )
+;; comment  END 
 
 (global-evil-leader-mode)
 

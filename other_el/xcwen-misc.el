@@ -452,21 +452,21 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
 	  (setq do-region-func 'kill-region do-line-func  'kill-whole-line  )))
 
     (if (and  mark-active
-	      (not  (= (region-beginning) (region-end) ))
-	      )
-	(if (string-match "\n"
-			  (buffer-substring-no-properties (region-beginning)(region-end)))
-	    (progn
-	      (if (string= opt-type "copy" ) (point-to-register 0))
-	      (setq tmp-mark-pos  (get-mark-pos-ex))
-	      (funcall do-region-func (car tmp-mark-pos) (cadr tmp-mark-pos)  )
-	      (if (string= opt-type "copy" ) (jump-to-register 0))
-	      ) ;-----------
-	  (funcall do-region-func (region-beginning) (region-end) ))
+              (not  (= (region-beginning) (region-end) ))
+              )
+        (if (string-match "\n"
+                          (buffer-substring-no-properties (region-beginning)(region-end)))
+            (progn
+              (if (string= opt-type "copy" ) (point-to-register 0))
+              (setq tmp-mark-pos  (get-mark-pos-ex))
+              (funcall do-region-func (car tmp-mark-pos) (cadr tmp-mark-pos)  )
+              (if (string= opt-type "copy" ) (jump-to-register 0))
+              ) ;-----------
+          (funcall do-region-func (region-beginning) (region-end) ))
       (progn
-	(or arg (setq arg 1))
-	(message "%s line :%d"  opt-type arg)
-	(funcall do-line-func arg)))))
+        (or arg (setq arg 1))
+        (message "%s line :%d"  opt-type arg)
+        (funcall do-line-func arg)))))
 
 ;;;###autoload
 (defun copy-region-or-whole-line(&optional arg)
@@ -619,7 +619,10 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
 				  (setq  ac-clang-flags old-flags ))
 			  ))
 
-		( auto-complete  '(ac-source-rtags )))
+        (progn
+          (message "use ac-source-rtags")
+		( auto-complete  '(ac-source-rtags ))
+        ))
 	  ))) 
 
 (defun remake-tags ()
