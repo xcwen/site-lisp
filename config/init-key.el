@@ -16,24 +16,24 @@
 
 
 
-(global-set-key (kbd "M-w")  'copy-region-or-whole-line)
+(global-set-key (kbd "M-w")   'copy-region-or-whole-line)
 (global-set-key (kbd "C-SPC") nil)
 
-(global-set-key (kbd "C-h") 'delete-backward-char)
+(global-set-key (kbd "C-h")   'delete-backward-char)
 (global-set-key (kbd "C-S-h") 'region-indent-sub)
 (global-set-key (kbd "C-S-l") 'region-indent-add)
-(global-set-key (kbd "C-?") 'replace-regexp)
-(global-set-key "\M-;" 'qiang-comment-dwim-line)
-(global-set-key (kbd "C-^") 'do-switch-buffer )
+(global-set-key (kbd "C-?")   'replace-regexp)
+(global-set-key "\M-;"        'qiang-comment-dwim-line)
+(global-set-key (kbd "C-^")   'do-switch-buffer )
 
 
 (define-key global-map (kbd "M-l") 'wcy-mark-some-thing-at-point)
 
-(global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "RET")     'newline-and-indent)
 (global-set-key (kbd "C-x C-z") 'ignore)
-(global-set-key (kbd "<f4>") 'package-list-packages)   
-(global-set-key (kbd "<f8>") 'switch-file-term)   
-(global-set-key (kbd "<f7>") 'search-proto-info )   
+(global-set-key (kbd "<f4>")    'package-list-packages)   
+(global-set-key (kbd "<f8>")    'switch-file-term)   
+(global-set-key (kbd "<f7>")    'search-proto-info )   
 (global-set-key (kbd "<f10>") nil )   
 
 

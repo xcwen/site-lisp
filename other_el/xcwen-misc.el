@@ -553,8 +553,8 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
     (setq mark-pos  (get-mark-pos-ex))
     (message  "%d %d" (car mark-pos) (cadr mark-pos) )
     (if is-add
-	(replace-regexp "^" "\t" nil (nth 0 mark-pos) (- (nth 1 mark-pos) 1) )
-      (replace-regexp "^\t" "" nil (nth 0 mark-pos) (- (nth 1 mark-pos)  1)))
+	(replace-regexp "^" "    " nil (nth 0 mark-pos) (- (nth 1 mark-pos) 1) )
+      (replace-regexp "\\(^\t\\)\\|\\(^    \\)" "" nil (nth 0 mark-pos) (- (nth 1 mark-pos)  1)))
     ))
 (defun region-indent-add ()
   "DOCSTRING"
