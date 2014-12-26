@@ -1,17 +1,19 @@
-(require 'init-package)
-
 (require 'xcwen-misc)
-(require 'init-jedi)
+(require 'init-package)
 (require 'init-mode)
+(require 'init-comment)
+(require 'init-indent)
+
+(require 'init-jedi)
 (require 'init-term)
 (require 'init-auto-complete)
 (require 'init-yasnippet)
 
-(require 'init-indent)
-(require 'init-key)
 (require 'init-startup)
 (require 'init-org)
 (require 'init-session)
 (require 'init-evil)
+
+(require 'init-key)
 
 (provide 'init)
