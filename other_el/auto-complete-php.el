@@ -133,7 +133,15 @@
   "Face for the php selected candidate."
   :group 'auto-complete)
 
-
+(defun ac-php-get-cur-class-name ()
+  "DOCSTRING"
+  (let (line-txt cur-class-name )  
+    (save-excursion
+      (when (re-search-backward "^[ \t]*\\(abstract[ \t]+\\)*class[ \t]+" 0 t 1)
+        (setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+        (if (string-match   "class[ \t]+\\(\\w+\\)"   line-txt)
+            (setq  cur-class-name  (match-string  1 line-txt)))))
+    cur-class-name ))
 (defun ac-php-get-class-at-point( )
   (let (line-txt    key-list   tmp-key-list frist-class-name  frist-key  ret-str )
   (setq line-txt (buffer-substring-no-properties
@@ -143,26 +151,32 @@
   (setq line-txt (replace-regexp-in-string "\\<return\\>" "" line-txt  ))
   (setq line-txt (replace-regexp-in-string ".*[=(,]" "" line-txt  ))
   (setq line-txt (replace-regexp-in-string "[\t \\$]" "" line-txt  ))
-  (setq key-list (split-string line-txt "->" ))
+  ;;检查 :: 
+  (if (string-match  "::"  line-txt )
+      (progn 
+        (setq key-list (split-string line-txt "::" ))
+        (setq frist-key (nth 0 key-list))
+        (setq frist-class-name  frist-key  )
+        (when (string= frist-key "parent" ) 
+          (setq frist-class-name (concat (ac-php-get-cur-class-name) "-parent" ) )))
 
-  (setq frist-key (nth 0 key-list))
+    (progn
+      (setq key-list (split-string line-txt "->" ))
+      (setq frist-key (nth 0 key-list))
 
-  (save-excursion
-	(re-search-backward (concat  frist-key"::" ) 0 t 1) 
-	(setq key-line-txt (buffer-substring-no-properties
-					(line-beginning-position)
-					(line-end-position )))
+      (save-excursion
+        (re-search-backward (concat  frist-key"::" ) 0 t 1) 
+        (setq key-line-txt (buffer-substring-no-properties
+                            (line-beginning-position)
+                            (line-end-position )))
+        (if (string-match ( concat  frist-key "::\\(\\w+\\)" ) key-line-txt)
+            (setq  frist-class-name  (match-string  1 key-line-txt))))
 
-	
-	(if (string-match ( concat  frist-key "::\\(\\w+\\)" ) key-line-txt)
-		(setq  frist-class-name  (match-string  1 key-line-txt))))
+      (when (and(not frist-class-name) (or (string= frist-key "this")  ) ) 
+        (setq frist-class-name (ac-php-get-cur-class-name)  ))
+      ))
 
-  (when (and(not frist-class-name) (string= frist-key "this"))
-	(save-excursion
-      (when (re-search-backward "^[ \t]*\\(abstract[ \t]+\\)*class[ \t]+" 0 t 1)
-		(setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
-		(if (string-match   "class[ \t]+\\(\\w+\\)"   line-txt)
-			(setq  frist-class-name  (match-string  1 line-txt))))))
+  
   (if frist-class-name 
 	  (progn
 		(setq ret-str  (concat frist-class-name ))
@@ -170,15 +184,12 @@
 		  (setq ret-str  (concat  ret-str "." field-value )))
 		ret-str
 		)
-	(message "no find class from %s" frist-key )
-	nil
-	)
-  ))
+	;;(message "no find class from %s" frist-key )
+	nil)))
 
-(defun ac-php-candidate-class ( )
+(defun ac-php-candidate-class ( key-str-list  )
   ;;得到变量
-  (let (key-str-list ret-list key-word output-vec cmd  )
-  (setq key-str-list (ac-php-get-class-at-point))
+  (let ( ret-list key-word output-vec cmd  )
   (if key-str-list
 	  (progn
 		(setq output-vec  (ac-php-exec-complete-cmd-to-string "--list-class-member" key-str-list    ))
@@ -270,14 +281,11 @@
 					  (line-beginning-position)
 					  (line-end-position )))
 	  (setq cur-word  (current-word))
-	  (if  (string-match ( concat  "\\(\\w+\\)[ \t]*->[\t ]*" cur-word ) line-txt)
+      (setq key-str-list (ac-php-get-class-at-point ))
+	  (if  key-str-list  
 		  (progn
-
-			(setq key-str-list (ac-php-get-class-at-point ))
-			(when key-str-list
-			  (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" (concat "." cur-word ) key-str-list ))
-			  (setq output-vec  (ac-php-exec-complete-cmd-to-string "--find-class-member" key-str-list    ))
-				)
+            (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" (concat "." cur-word ) key-str-list ))
+            (setq output-vec  (ac-php-exec-complete-cmd-to-string "--find-class-member" key-str-list    ))
 
 			(when (> (length  output-vec) 0)
 			  (setq jump-pos  (concat (ac-php-get-tags-dir)  (elt (elt  output-vec 0)  3 )))
@@ -346,22 +354,12 @@
 
 
 (defun ac-php-candidate ()
-
-	(let ((opt-class ) (c (char-before)))
-	  ;;去除 
-	  (save-excursion 
-	  (while (or (eq ?\t (char-before) ) (eq ?\s (char-before) )) (backward-char))   
-	  (if (not (eq ?> c))  (backward-word) )
-	  ;;
-	  (while (or (eq ?\t (char-before) ) (eq ?\s (char-before) )) (backward-char))   
-	  (if (and (eq ?> (char-before (point))) (eq ?- (char-before (1- (point)))))
-		  ;;处理类
-		  (setq opt-class t)
-		))
-	  (if opt-class
-		  (ac-php-candidate-class )
-		(ac-php-candidate-other))
-	  ))
+  (let ( key-str-list )
+    (setq key-str-list (ac-php-get-class-at-point))
+    (if key-str-list
+        (ac-php-candidate-class key-str-list  )
+      (ac-php-candidate-other))
+    ))
 (defun ac-php-show-tip	(&optional prefix)
   (interactive "P")
   ;;检查是类还是 符号 
@@ -370,14 +368,13 @@
 					  (line-beginning-position)
 					  (line-end-position )))
 	  (setq cur-word  (current-word))
-	  (if  (string-match ( concat  "\\(\\w+\\)[ \t]*->[\t ]*" cur-word ) line-txt)
+
+      (setq key-str-list (ac-php-get-class-at-point ))
+	  (if  key-str-list  
 		  (progn
 
-			(setq key-str-list (ac-php-get-class-at-point ))
-			(when key-str-list
-			  (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" (concat "." cur-word ) key-str-list ))
-			  (setq output-vec  (ac-php-exec-complete-cmd-to-string "--find-class-member" key-str-list   ))
-				)
+            (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" (concat "." cur-word ) key-str-list ))
+            (setq output-vec  (ac-php-exec-complete-cmd-to-string "--find-class-member" key-str-list   ))
 
 			(when (> (length  output-vec) 0)
 			  (setq  doc   (elt (elt  output-vec 0)  2 ))
@@ -462,7 +459,10 @@
       (let ((c (char-before)))
         (when (or
                   ;; ->
-                  (and (eq ?> c) (eq ?- (char-before (1- (point))))))
+                  (and (eq ?> c) (eq ?- (char-before (1- (point)))))
+                  ;; :: 
+                  (and (eq ?: c) (eq ?: (char-before (1- (point))))))
+
           (point)))))
 
 

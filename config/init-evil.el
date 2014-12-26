@@ -54,13 +54,13 @@
   (let (  line-txt  opt-file  file-list obj-file check-file-name file-name file-name-fix )
     (save-excursion
       (goto-char (point-min))
-      (when (re-search-forward "SWITCH-TO:" )
+      (when (search-forward "SWITCH-TO:" nil t  )
         (setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
         (if (string-match   "SWITCH-TO:[ \t]*\\([^ \t]*\\)[ \t]*"   line-txt)
             (setq  opt-file (match-string  1 line-txt)))))
-    (message "open [%s]"  opt-file )
-    (if (file-directory-p  opt-file)
-        (progn
+
+    (if (and opt-file   (file-directory-p  opt-file) )
+        (progn ;;目录
           (setq file-name (file-name-nondirectory (buffer-file-name)))
           (setq file-name-fix (file-name-base  file-name))
 
@@ -76,7 +76,6 @@
                 (setq obj-file  (concat opt-file "/" check-file-name) ))))
       (setq obj-file opt-file))
     
-
     (if obj-file
         (find-file obj-file)
       (switch-cc-to-h))))
@@ -102,17 +101,11 @@
 (evil-leader/set-key-for-mode 'c++-mode "m"
   '(lambda()(interactive)
      (let ( cmd )
-
-       (setq cmd
-             (concat "cd "
-                     (file-name-directory (buffer-file-name)  )
-                     "/build && make "
-                     (file-name-nondirectory (buffer-file-name) )
-                     ".o"
-                     )
-             )
-       (message cmd)
-
+       (setq cmd (concat "cd "
+                         (file-name-directory (buffer-file-name)  )
+                         "/build && make "
+                         (file-name-nondirectory (buffer-file-name) )
+                         ".o"))
        (compile cmd)
        )))
 

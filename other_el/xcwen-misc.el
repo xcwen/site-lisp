@@ -782,23 +782,3 @@ If FORWARD is nil, search backward, otherwise forward."
 (provide 'xcwen-misc)
 
 ;;; xcwen-misc.el ends here
-
-
-;;(require 'emaci)
-
-;;------------------------------------------------------
-;;(eal-define-keys
-;; 'emaci-mode-map
-;; `(
-;;   ("/" ignore) ("." ignore) ("a" switch-cc-to-h)("," ignore)  ("i" emaci-q) ("w" forward-word) ("I"  ignore)
-;;   ("d"  ignore) ("s"  ignore) ("*"  ignore) (";"  ignore) ("g"  ffap) ("u"  ignore)
-;;   ("<backspace>"  backward-word) ("<return>" next-logical-line) ("r"  remake-tags) ("z"  ignore)
-;;   ("p" proto-show-msg)
-;;   ("<SPC>" ignore)
-;;   ("j" my-next-line)
-;;   ("G" end-of-buffer)
-;;   ("k" previous-logical-line)
-;;   ("K" man)
-;;   (":" viper-ex)
-;;   ("["  ignore) ("]" ignore))) 
-;;;;------------------------------------------------------
