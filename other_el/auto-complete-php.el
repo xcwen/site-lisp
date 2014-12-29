@@ -37,8 +37,6 @@
 
 (require 'auto-complete)
 (require 'popup)
-(require 'json)
-
 
 
 (defvar ac-php-location-stack-index 0)
@@ -152,17 +150,20 @@
 		    (line-beginning-position)
 		    (point )))
   
-  (setq line-txt (replace-regexp-in-string "\\<return\\>" "" line-txt  ))
+  (setq line-txt (replace-regexp-in-string "\\<return\\>\\|\\<echo\\>" "" line-txt  ))
   (setq line-txt (replace-regexp-in-string ".*[=(,]" "" line-txt  ))
   (setq line-txt (replace-regexp-in-string "[\t \\$]" "" line-txt  ))
   ;;检查 :: 
-  (if (string-match  "::"  line-txt )
+  (if (and (string-match  "::"  line-txt ) (not (string-match  "\\/\\*"  line-txt ) ))
       (progn 
         (setq key-list (split-string line-txt "::" ))
         (setq frist-key (nth 0 key-list))
         (setq frist-class-name  frist-key  )
         (when (string= frist-key "parent" ) 
-          (setq frist-class-name (concat (ac-php-get-cur-class-name) ".__parent__" ) )))
+          (setq frist-class-name (concat (ac-php-get-cur-class-name) ".__parent__" ) ))
+        (when (string= frist-key "self" ) 
+          (setq frist-class-name (concat (ac-php-get-cur-class-name) ) )))
+
 
     (progn
       (setq key-list (split-string line-txt "->" ))
@@ -191,31 +192,26 @@
 	;;(message "no find class from %s" frist-key )
 	nil)))
 
-(defun ac-php-candidate-class ( key-str-list  )
+(defun ac-php-candidate-class ( tags-data key-str-list  )
   ;;得到变量
-  (let ( ret-list key-word output-vec cmd  )
-  (if key-str-list
+  (let ( ret-list key-word output-list  class-name  (class-list (nth 0 tags-data)) (inherit-list (nth 2 tags-data))  )
+    (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" "" key-str-list ))
+    (setq class-name (ac-php-get-class-name-by-key-list  tags-data key-str-list ))
 	  (progn
-		(setq output-vec  (ac-php-exec-complete-cmd-to-string "--list-class-member" key-str-list    ))
+
+        (setq  output-list (ac-php-get-class-member-list  class-list inherit-list  class-name ) )
+
 		(mapcar (lambda (x)
-				  (setq key-word (elt x 1))
-				  (setq key-word (propertize key-word 'ac-php-help  (elt   x 2) ))
+				  (setq key-word (nth 1 x ))
+				  (setq key-word (propertize key-word 'ac-php-help  (nth 2  x ) ))
 				  (push key-word ret-list  )
 				  nil
-				  ) output-vec )
+				  ) output-list )
+
+      )
   ret-list))
-	  ))
 
-(defun ac-php-get-complete-cmd ()
-  "DOCSTRING"
-  (let (tag-dir)
-	(setq  tag-dir (ac-php-get-tags-dir)  )
-
-	(if tag-dir
-		(concat  tag-dir ".tags/get_php_tags.py")
-	  nil)))
-
-(defun ac-php-candidate-other ()
+(defun ac-php-candidate-other ( tags-data)
   
   (let (ret-list (ac-prefix-len (length ac-prefix)) cmp-value )
   ;;系统函数
@@ -227,17 +223,204 @@
 	  (if (string= cmp-value  ac-prefix ) (push key-word ret-list  ))
 	  ))
   ;;用户函数
-  (let ((key-word) cmd  output-list (complete-cmd  (ac-php-get-complete-cmd)) )
-	(when  complete-cmd  
-	  (setq output-vec  (ac-php-exec-complete-cmd-to-string "--list-function" ac-prefix))
-	  (mapcar (lambda (x)
-				(setq key-word (elt x 1))
-				(setq key-word (propertize key-word 'ac-php-help  (elt   x 2) ))
-				(push key-word ret-list  )
-				nil
-				) output-vec )))
+
+  (if tags-data 
+      (let ((function-list (nth 1 tags-data )  ) key-word )
+
+        (dolist (function-item function-list )
+          (when (string-prefix-p  ac-prefix (nth 1 function-item )  )
+            (setq key-word (nth  1 function-item ))
+            (setq key-word (propertize key-word 'ac-php-help  (nth 2  function-item ) ))
+            (push key-word ret-list  )
+            )))
+    )
+  
+
+
   ret-list
   ))
+;;; ==============BEGIN
+(defun ac-php-find-php-files ( work-dir regex )
+  "get all php file list"
+  (let (results sub-results files file-name file-dir-flag file-change-time file-change-unixtime )
+    (setq files (directory-files-and-attributes work-dir t))
+    (dolist  (file-item  files )
+      (setq file-name  (nth 0 file-item ) )
+      (setq file-dir-flag  (nth 1 file-item ) )
+      (setq file-change-time (nth 6 file-item ) )
+
+      (if (stringp  file-dir-flag  );;link
+          (setq  file-dir-flag (file-directory-p file-dir-flag )))
+
+
+      (when (and (not file-dir-flag) ;;file
+                 (string-match  regex file-name )
+                 )
+        
+        (setq file-change-unixtime (+ (* (nth 0 file-change-time )  65536  ) (nth 1 file-change-time )   ) )
+        (if results
+            (nconc results (list (list file-name  file-change-unixtime)) )
+          (setq results  (list (list file-name  file-change-unixtime) ))))
+
+      (when ( and   file-dir-flag
+                    ;;(not (string= "."   (file-name-base file-name)  ))
+                    ;;(not (string= ".."   (file-name-base file-name)  ))
+                    (not (string= "."  (substring (file-name-base file-name)  0 1 ))) ;; not start with "."
+                    ) 
+        (setq sub-results  (ac-php-find-php-files file-name regex ) )
+
+        (if results
+            (nconc results sub-results)
+          (setq results sub-results))
+        ))
+    results 
+    ))
+
+
+(defun ac-php-gen-data ( tags-lines project-dir-len )
+  "gen-el-data"
+  (let ( class-list function-list inherit-list (file-start-pos project-dir-len ) (count 0 ) )
+    (dolist (line-data tags-lines)
+      (when (and
+             (> (length line-data ) 0)
+             (not (string= (substring line-data 0 1 ) "!" ) )
+             (string-match "^\\(\\w+\\)\t\\(.*\\)\t/\\^\\(.+\\)\\$/;\"\t\\(\\w\\)\tline:\\([0-9]+\\)\\(.*\\)" line-data)
+             )
+
+
+         (let (
+               (tag-name (match-string 1  line-data ))
+               (file-pos (concat (substring  (match-string 2  line-data )  file-start-pos ) ":" (match-string 5  line-data )   ))
+               (doc (match-string 3  line-data ))
+               (tag-type (match-string 4  line-data ))
+               other-data
+
+               return-type
+               class-name
+               access
+
+               ) 
+           (cond
+            ((string= tag-type "f") (push   (list  tag-type  tag-name (ac-php-gen-el-func tag-name doc)  file-pos  ) function-list  ))
+            ((string= tag-type "d") (push   (list  tag-type  tag-name tag-name  file-pos  ) function-list  ))
+            ((string= tag-type "c") ;;class
+             (push   (list  tag-type  tag-name (concat tag-name  "()" ) file-pos  ) function-list  )
+             (setq other-data  (match-string 6  line-data ) )
+             ;; add class-inherits
+             (when (string-match "^\tinherits:\\(\\w+\\)" other-data)
+               (push  (list  tag-name   (match-string 1  other-data  )) inherit-list)))
+            ((or (string= tag-type "p")  (string= tag-type "m") ) ;;class function member
+             (setq other-data  (match-string 6  line-data ) )
+             ;;get  return type
+             (setq return-type  (if (string-match ".*::\\(\\w+\\).*" doc)
+                                    (match-string 1  doc  )
+                                  ""))
+
+
+             (when (string-match "^\tclass:\\(\\w+\\)\taccess:\\(.*\\)" other-data)
+               (setq class-name (match-string 1  other-data  ))
+               (setq access (match-string 2  other-data  ))
+               )
+             ;;add class info 
+             (when (not (assoc class-name class-list ))
+               (push (list class-name nil ) class-list))
+             ;;add member & function 
+
+             (if (string= tag-type "p")
+                 (setq doc tag-name)
+               (setq doc (ac-php-gen-el-func tag-name doc) ))
+
+             (push (list tag-type tag-name doc file-pos return-type class-name   ) (cadr (assoc  class-name class-list ) ) ))
+
+            ))))
+    (list class-list function-list inherit-list )))
+
+(defun  ac-php-gen-el-func ( func-name doc)
+  "DOCSTRING"
+  (let ( func-str ) 
+    (if (string-match ".*(\\(.*\\)).*" doc)
+        (progn
+         (setq func-str (replace-regexp-in-string "," "#>,<#" (match-string 1 doc) ) )
+         (setq func-str (replace-regexp-in-string "[\t ]+" "" func-str  ) )
+         (concat func-name "(<#" func-str "#>)" )
+          )
+      (concat func-name "()")
+      )))
+(defun ac-php-get-tags-file ()
+  ""
+  (let ((tags-dir (ac-php-get-tags-dir)) )
+    (if tags-dir
+        (concat   tags-dir ".tags/tags-data.el"  )
+      nil)))
+
+(defun ac-php-remake-tags ()
+  "DOCSTRING"
+  (interactive)
+  (let ((tags-dir (ac-php-get-tags-dir) ) tags-dir-len file-list  obj-tags-dir file-name obj-file-name cur-obj-list src-time   obj-item cmd  el-data)  
+	(message "remake %s" tags-dir )
+	(when tags-dir 
+      (setq tags-dir-len (length tags-dir) )
+      (setq obj-tags-dir (concat tags-dir ".tags/tags_dir_" (getenv "USER") "/" ))
+      (if (not (file-directory-p obj-tags-dir ))
+          (mkdir obj-tags-dir))
+      (setq file-list (ac-php-find-php-files tags-dir "\\.php$" ) )
+      (setq obj-tags-list (ac-php-find-php-files obj-tags-dir  "\\.tags$" ) )
+      
+      (dolist (file-item file-list )
+
+        (setq  file-name (nth  0 file-item )  )
+        (setq src-time  (nth 1 file-item ) )
+        (setq obj-file-name   (substring file-name  tags-dir-len   ) )
+        (setq obj-file-name (replace-regexp-in-string "/" "-" obj-file-name ))
+        (setq obj-file-name (replace-regexp-in-string "\\.php$" ".tags" obj-file-name ))
+        (setq  obj-file-name (concat obj-tags-dir  obj-file-name ))
+
+        (push obj-file-name cur-obj-list )
+        ;;check change time
+        (setq obj-item (assoc obj-file-name obj-tags-list ))
+        (when (or (not obj-item) (< (nth 1 obj-item) src-time ) )
+          ;;gen tags file
+          (message "rebuild %s" file-name )
+          (shell-command-to-string (concat "phpctags  --sort=no   -f " obj-file-name " "  file-name  ))
+          ;;gen el data file
+          
+          ))
+	;;加入参数
+      (let ((temp-list cur-obj-list) tags-lines )
+        (setq cmd "cat" )
+        (while temp-list  
+          (setq  cmd (concat cmd  " " (car  temp-list  )  ))
+          (setq temp-list (cdr  temp-list)))
+
+        )
+      ;;(message "%s" cmd)
+      (setq tags-lines  (split-string (shell-command-to-string  cmd ) "\n"   ))
+      (ac-php-save-data  (ac-php-get-tags-file ) (ac-php-gen-data  tags-lines tags-dir-len)  )
+      ;;  TODO do cscope  
+      (message "rebuild cscope  data file " )
+      (setq tags-lines  (split-string (shell-command-to-string  cmd ) "\n"   ))
+      (shell-command-to-string  (concat " cd " tags-dir ".tags &&  find  ../ -name \"[A-Za-z0-9_]*.php\" ! -path \"../.tags/*\"  > cscope.files &&  cscope -bkq -i cscope.files  ") )
+      (message "build end.")
+      )))
+
+(defun ac-php-save-data (file data)
+  (with-temp-file file
+    (let ((standard-output (current-buffer))
+          (print-circle t))  ; Allow circular data
+      (prin1 data))))
+
+(defun ac-php-load-data (file)
+  (with-temp-buffer
+    (insert-file-contents file)
+    (read (current-buffer))))
+
+(defun ac-php-get-tags-data ()
+  (let ((tags-file   (ac-php-get-tags-file )))
+    (if tags-file
+        (ac-php-load-data  (ac-php-get-tags-file) )
+      nil))) 
+
+;;; ==============END
 
 (defun ac-php-get-tags-dir  ()
   "DOCSTRING"
@@ -247,70 +430,129 @@
 	  (setq tags-dir  ( file-name-directory (directory-file-name  tags-dir ) ) ))
 	(if (string= tags-dir "/") (setq tags-dir nil )   )
 	tags-dir
-	)
-  )
+	))
 
-(defun ac-php-remake-tags ()
+
+
+
+
+(defun ac-php-get-class-member-info (class-list inherit-list  class-name member )
   "DOCSTRING"
-  (interactive)
-  (let ((tags-dir (ac-php-get-tags-dir) ) ) 
-	(message "remake %s" tags-dir )
-	(if tags-dir 
-		(message (shell-command-to-string  (concat tags-dir "/.tags/metags") )))))
+  (let ((tmp-class class-name ) (check-class-list (list class-name)) (ret ) find-flag )
+    (while (setq  tmp-class (nth 1 (assoc tmp-class inherit-list  )) )
+      (push tmp-class check-class-list )
+      )
+    (setq check-class-list (nreverse check-class-list ) )
+    (let (  class-member-list )
+      (dolist (opt-class check-class-list)
+        (setq  class-member-list  (nth 1 (assoc  opt-class class-list  ))) 
+        (dolist (member-info class-member-list)
+          (when (string= (nth 1 member-info ) member  )
+            (setq ret  member-info)
+            (setq find-flag t)
+            (return)
+            )
+          )
+        (if find-flag (return) )
+        ))
+    ret
+    ))
 
-(defun  ac-php-exec-complete-cmd-to-string( &rest args )
+(defun ac-php-get-class-member-list (class-list inherit-list  class-name  )
   "DOCSTRING"
-  (let ((cmd (ac-php-get-complete-cmd)  ) ret_vec err-flag  )
-	;;加入参数
-	(while args 
-	  (setq  cmd (concat cmd  " " (car  args)  ))
-	  (setq args  (cdr  args)))
+  (let ((tmp-class class-name ) (check-class-list (list class-name)) (ret ) find-flag )
+    (while (setq  tmp-class (nth 1 (assoc tmp-class inherit-list  )) )
+      (push tmp-class check-class-list )
+      )
+    (setq check-class-list (nreverse check-class-list ) )
+    (let (  class-member-list )
+      (dolist (opt-class check-class-list)
+        (setq  class-member-list  (nth 1 (assoc  opt-class class-list  ))) 
+        (if ret 
+            (nconc ret class-member-list   )
+          (setq ret class-member-list  ))
+        ))
+    ret
+    ))
 
-	(message "CMD:%s" cmd )
-	(setq ret_vec (json-read-from-string (shell-command-to-string  cmd )))
-	(if (= (length ret_vec) 2)
-		(setq err-flag  	(elt ret_vec 0)))
-	(if (and (stringp err-flag)  (string= err-flag "__PHP_COMPLETE_ERROR__") )
-		(progn
-		  (message "ERROR: %s" (elt ret_vec 1)  )
-		  [] 
-		  )
-	  ret_vec))) 
+
+
+(defun ac-php-get-class-name-by-key-list ( tags-data key-list-str )
+  "DOCSTRING"
+  (let (temp-class (cur-class "" ) (class-list (nth 0 tags-data) ) (inherit-list (nth 2 tags-data)) (key-list (split-string key-list-str "\\." ) ) )
+    (dolist (item key-list )
+      (if (string= cur-class "" )
+          (setq cur-class item)
+        (progn
+          (setq temp-class cur-class)
+
+          (if (string= item "__parent__" )
+              (progn
+              (setq cur-class (cdr (assoc cur-class inherit-list  ))  ) 
+              (if (not cur-class) (setq cur-class "") ))
+            (let ( member-info)
+              (setq member-info (ac-php-get-class-member-info class-list inherit-list cur-class  item ))
+              (setq cur-class (if  member-info
+                                  (nth 4 member-info)
+                                ""))
+
+              ))
+
+          (when (string= cur-class "")
+            (message (concat " class[" temp-class "]'s member[" item "] not define type "))
+            (return))
+
+          ))
+      )
+    cur-class
+    ))
 
 (defun ac-php-find-symbol-at-point (&optional prefix)
   (interactive "P")
   ;;检查是类还是 符号 
-  (let ( key-str-list  line-txt cur-word val-name class-name output-vec    jump-pos  cmd complete-cmd  find-flag)
+  (let ( key-str-list  line-txt cur-word val-name class-name output-vec    jump-pos  cmd complete-cmd  find-flag tags-data)
 	  (setq line-txt (buffer-substring-no-properties
 					  (line-beginning-position)
 					  (line-end-position )))
 	  (setq cur-word  (current-word))
       (setq key-str-list (ac-php-get-class-at-point ))
+      (setq  tags-data  (ac-php-get-tags-data )  )
 	  (if  key-str-list  
 		  (progn
-            (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" (concat "." cur-word ) key-str-list ))
-            (setq output-vec  (ac-php-exec-complete-cmd-to-string "--find-class-member" key-str-list    ))
+            (if tags-data
+                (progn
+                  (let (class-name member-info  )  
+                  ;;(setq key-str-list (replace-regexp-in-string "\\.[^.]*$" (concat "." cur-word ) key-str-list ))
+                  (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" "" key-str-list ))
+                  (setq class-name (ac-php-get-class-name-by-key-list  tags-data key-str-list ))
+                  (message "class %s" class-name)
+                  (setq member-info (ac-php-get-class-member-info (nth 0 tags-data)  (nth 2 tags-data)  class-name cur-word ) )
+                  (if member-info
+                      (progn
+                        (setq jump-pos  (concat (ac-php-get-tags-dir)  (nth 3 member-info)  ))
+                        (ac-php-location-stack-push)
+                        (ac-php-goto-location jump-pos ))
+                    (message "no find %s.%s " class-name cur-word  )
+                    )
+                  ))))
 
-			(when (> (length  output-vec) 0)
-			  (setq jump-pos  (concat (ac-php-get-tags-dir)  (elt (elt  output-vec 0)  3 )))
-			  (ac-php-location-stack-push)
-			  (ac-php-goto-location jump-pos )
-			  ) 
-			)
 		(progn ;;function
-		  (setq complete-cmd (ac-php-get-complete-cmd)  )
-		  (if complete-cmd
+		  (if tags-data 
 			  (progn
-				(setq output-vec  (ac-php-exec-complete-cmd-to-string "--find-function" cur-word   ))
-				(if (> (length  output-vec) 0)
-					(progn 
-					  (setq jump-pos  (concat (ac-php-get-tags-dir)  (elt (elt  output-vec 0)  3 )))
-					  (ac-php-location-stack-push)
-					  (ac-php-goto-location jump-pos )
-					  (setq find-flag t)
-					  ))))
-		  (if (not find-flag )
+                (let ((function-list (nth 1 tags-data )  ))
 
+                (dolist (function-item function-list )
+                  (when (string=  (nth 1 function-item )  cur-word)
+
+                    (setq jump-pos  (concat (ac-php-get-tags-dir)  (nth 3 function-item)   ))
+                    (ac-php-location-stack-push)
+                    (ac-php-goto-location jump-pos )
+                    (setq find-flag t)
+                    (return )))
+                  )
+                ))
+
+          (if (not find-flag )
 			(progn
 			  
 			  (dolist (function-str ac-php-sys-function-list )
@@ -358,11 +600,12 @@
 
 
 (defun ac-php-candidate ()
-  (let ( key-str-list )
+  (let ( key-str-list  tags-data)
     (setq key-str-list (ac-php-get-class-at-point))
+    (setq  tags-data  (ac-php-get-tags-data )  )
     (if key-str-list
-        (ac-php-candidate-class key-str-list  )
-      (ac-php-candidate-other))
+        (ac-php-candidate-class tags-data key-str-list  )
+      (ac-php-candidate-other tags-data))
     ))
 (defun ac-php-show-tip	(&optional prefix)
   (interactive "P")
@@ -373,32 +616,40 @@
 					  (line-end-position )))
 	  (setq cur-word  (current-word))
 
+      (setq  tags-data  (ac-php-get-tags-data )  )
       (setq key-str-list (ac-php-get-class-at-point ))
 	  (if  key-str-list  
 		  (progn
+            (if tags-data
+                (progn
+                  (let (class-name member-info  )  
+                  (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" "" key-str-list ))
+                  (setq class-name (ac-php-get-class-name-by-key-list  tags-data key-str-list ))
+                  (setq member-info (ac-php-get-class-member-info (nth 0 tags-data)    (nth 2 tags-data)  class-name cur-word ) )
+                  (if member-info
+                      (progn
+                        (setq  doc   (nth 2 member-info) )
+                        (setq  class-name   (nth 5 member-info) )
+                        (popup-tip (concat "[user]:" class-name  "::"  (ac-php-clean-document doc)    ))
+                        )
+                    (message "no find %s.%s " class-name cur-word  )
+                    )
+                  ))))
 
-            (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" (concat "." cur-word ) key-str-list ))
-            (setq output-vec  (ac-php-exec-complete-cmd-to-string "--find-class-member" key-str-list   ))
 
-			(when (> (length  output-vec) 0)
-			  (setq  doc   (elt (elt  output-vec 0)  2 ))
-			  (setq  class-name   (elt (elt  output-vec 0)  6 ))
-			  (popup-tip (concat "[user]:" class-name  "::"  (ac-php-clean-document doc)    ))
-
-			  ) 
-			)
 		(progn ;;function
-		  (setq complete-cmd  (ac-php-get-complete-cmd ) )
-		  (if complete-cmd
-			  (progn 
-				(setq output-vec  (ac-php-exec-complete-cmd-to-string "--find-function" cur-word   ))
-				(if (> (length  output-vec) 0)
-					(progn  ;;user function
-					  (setq  doc   (elt (elt  output-vec 0)  2 ))
-					  (popup-tip (concat "[user]:"  (ac-php-clean-document doc)  ))
-					  (setq find-flag t)
+		  (if tags-data 
+			  (progn
+                (let ((function-list (nth 1 tags-data ) ))
 
-					  ))))
+                  (dolist (function-item function-list )
+                    (when (string=  (nth 1 function-item )  cur-word)
+                      (setq  doc   (nth 2 function-item ) )
+					  (popup-tip (concat "[user]:"  (ac-php-clean-document doc)  ))
+                      (setq find-flag t)
+                      (return )))
+                  ))) 
+
 		  (if (not find-flag) 
 			  (let ((cur-function (php-get-pattern) ) function-info) ;;sys function
 				(dolist (function-str ac-php-sys-function-list )

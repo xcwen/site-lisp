@@ -1,6 +1,7 @@
 #!/bin/bash
 cd `dirname $0 ` 
-[ -d ./tags_dir ] || mkdir ./tags_dir
+tags_dir="./tags_dir_$USER"
+[ -d $tags_dir ] || mkdir $tags_dir
 #
 file_list=`find  ../ -name "[A-Za-z0-9_]*.php" ! -path "../.tags/*" `
 #echo $file_list
@@ -10,7 +11,7 @@ for file_name in $file_list
 {
 	#echo $file_name
 	opt_file_name=${file_name//\//-}
-	obj_file="./tags_dir/"${opt_file_name:3:-3}"tags"
+	obj_file="$tags_dir/${opt_file_name:3:-3}tags"
 	if [ -f  $obj_file ]; then
 		ret_str="`find   $file_name  -newer  $obj_file  2>/dev/null`" 
 	else

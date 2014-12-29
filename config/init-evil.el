@@ -88,7 +88,10 @@
 (evil-leader/set-key-for-mode 'php-mode "i"  'ac-php-show-tip)
 (evil-leader/set-key-for-mode 'php-mode "f"  'ac-php-gen-def)
 
+(evil-leader/set-key-for-mode 'emacs-lisp-mode "e"  'eval-last-sexp)
+
 ;;编译
+
 (evil-leader/set-key-for-mode 'js2-mode "m"  'js2-mode-display-warnings-and-errors)
 (evil-leader/set-key-for-mode 'php-mode "m" '(lambda()
 
