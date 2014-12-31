@@ -79,24 +79,20 @@ cd ~/phpctags/ && make
 sudo cp phpctags /usr/bin/ 
 ```
 
-复制 php 工具到 项目根目录
+指定项目所在的根目录,在项目根目录上生成.tags目录
 
 ```
 cd /project/to/path # 项目根目录
-cp ~/site-lisp/other_script/php.tags .tags
-#测试
-cd .tags/
-metags
+mkdir .tags
 ```
 
 emacs php-mode 快捷键 
 ```
-C-tab :补全
-C-]: 跳转到定义
-C-t: 跳转返回
-,i:  查看定义
-,s:  在项目中查找 引用, 出现的地方
-,r:  重新生成tags
+tab/C-tab : 补全
+C-]       : 跳转到定义
+C-t       : 跳转返回
+,i        : 查看定义
+,s        : 在项目中查找 引用, 出现的地方
+,r        : 重新生成tags
 ```
-
 
