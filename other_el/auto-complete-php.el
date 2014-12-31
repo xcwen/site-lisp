@@ -117,11 +117,12 @@
   s)
 
 (defun ac-php-document (item)
+  (message "===%s" item )
   (if (stringp item)
       (let (s)
         (setq s (get-text-property 0 'ac-php-help item))
         (ac-php-clean-document s)))
-   ;;(popup-item-property item 'ac-php-help)
+  ;;(popup-item-property item 'ac-php-help)
   )
 
 
@@ -363,7 +364,7 @@
       (setq obj-tags-dir (concat tags-dir ".tags/tags_dir_" (getenv "USER") "/" ))
       (if (not (file-directory-p obj-tags-dir ))
           (mkdir obj-tags-dir))
-      (setq file-list (ac-php-find-php-files tags-dir "\\.php$" ) )
+      (setq file-list (ac-php-find-php-files tags-dir "^[^#]+\\.php$" ) )
       (setq obj-tags-list (ac-php-find-php-files obj-tags-dir  "\\.tags$" ) )
       
       (dolist (file-item file-list )
