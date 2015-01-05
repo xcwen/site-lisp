@@ -154,33 +154,34 @@
   (setq line-txt (replace-regexp-in-string "\\<return\\>\\|\\<echo\\>" "" line-txt  ))
   (setq line-txt (replace-regexp-in-string ".*[=(,]" "" line-txt  ))
   (setq line-txt (replace-regexp-in-string "[\t \\$]" "" line-txt  ))
-  ;;检查 :: 
-  (if (and (string-match  "::"  line-txt ) (not (string-match  "\\/\\*"  line-txt ) ))
-      (progn 
-        (setq key-list (split-string line-txt "::" ))
+  (when (not (string=  line-txt "")  )
+    ;;检查 :: 
+    (if (and (string-match  "::"  line-txt ) (not (string-match  "\\/\\*"  line-txt ) ))
+        (progn 
+          (setq key-list (split-string line-txt "::" ))
+          (setq frist-key (nth 0 key-list))
+          (setq frist-class-name  frist-key  )
+          (when (string= frist-key "parent" ) 
+            (setq frist-class-name (concat (ac-php-get-cur-class-name) ".__parent__" ) ))
+          (when (string= frist-key "self" ) 
+            (setq frist-class-name (concat (ac-php-get-cur-class-name) ) )))
+
+
+      (progn
+        (setq key-list (split-string line-txt "->" ))
         (setq frist-key (nth 0 key-list))
-        (setq frist-class-name  frist-key  )
-        (when (string= frist-key "parent" ) 
-          (setq frist-class-name (concat (ac-php-get-cur-class-name) ".__parent__" ) ))
-        (when (string= frist-key "self" ) 
-          (setq frist-class-name (concat (ac-php-get-cur-class-name) ) )))
 
+        (save-excursion
+          (re-search-backward (concat  frist-key"::" ) 0 t 1) 
+          (setq key-line-txt (buffer-substring-no-properties
+                              (line-beginning-position)
+                              (line-end-position )))
+          (if (string-match ( concat  frist-key "::\\(\\w+\\)" ) key-line-txt)
+              (setq  frist-class-name  (match-string  1 key-line-txt))))
 
-    (progn
-      (setq key-list (split-string line-txt "->" ))
-      (setq frist-key (nth 0 key-list))
-
-      (save-excursion
-        (re-search-backward (concat  frist-key"::" ) 0 t 1) 
-        (setq key-line-txt (buffer-substring-no-properties
-                            (line-beginning-position)
-                            (line-end-position )))
-        (if (string-match ( concat  frist-key "::\\(\\w+\\)" ) key-line-txt)
-            (setq  frist-class-name  (match-string  1 key-line-txt))))
-
-      (when (and(not frist-class-name) (or (string= frist-key "this")  ) ) 
-        (setq frist-class-name (ac-php-get-cur-class-name)  ))
-      ))
+        (when (and(not frist-class-name) (or (string= frist-key "this")  ) ) 
+          (setq frist-class-name (ac-php-get-cur-class-name)  ))
+        )))
 
   
   (if frist-class-name 
