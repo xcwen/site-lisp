@@ -149,7 +149,7 @@
   (let (line-txt    key-list   tmp-key-list frist-class-name  frist-key  ret-str )
   (setq line-txt (buffer-substring-no-properties
 		    (line-beginning-position)
-		    (point )))
+		    (1+ (point )) ))
   
   (setq line-txt (replace-regexp-in-string "\\<return\\>\\|\\<echo\\>" "" line-txt  ))
   (setq line-txt (replace-regexp-in-string ".*[=(,]" "" line-txt  ))
