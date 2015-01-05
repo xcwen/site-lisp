@@ -490,8 +490,8 @@
 
           (if (string= item "__parent__" )
               (progn
-              (setq cur-class (cdr (assoc cur-class inherit-list  ))  ) 
-              (if (not cur-class) (setq cur-class "") ))
+                (setq cur-class (nth 1 (assoc cur-class inherit-list  ))  ) 
+                (if (not cur-class) (setq cur-class "") ))
             (let ( member-info)
               (setq member-info (ac-php-get-class-member-info class-list inherit-list cur-class  item ))
               (setq cur-class (if  member-info
@@ -527,14 +527,18 @@
                   ;;(setq key-str-list (replace-regexp-in-string "\\.[^.]*$" (concat "." cur-word ) key-str-list ))
                   (setq key-str-list (replace-regexp-in-string "\\.[^.]*$" "" key-str-list ))
                   (setq class-name (ac-php-get-class-name-by-key-list  tags-data key-str-list ))
-                  (message "class %s" class-name)
-                  (setq member-info (ac-php-get-class-member-info (nth 0 tags-data)  (nth 2 tags-data)  class-name cur-word ) )
-                  (if member-info
-                      (progn
-                        (setq jump-pos  (concat (ac-php-get-tags-dir)  (nth 3 member-info)  ))
-                        (ac-php-location-stack-push)
-                        (ac-php-goto-location jump-pos ))
-                    (message "no find %s.%s " class-name cur-word  )
+                  ;;(message "class %s" class-name)
+                  (if (not (string= class-name "" ) )
+                      (progn 
+                        (setq member-info (ac-php-get-class-member-info (nth 0 tags-data)  (nth 2 tags-data)  class-name cur-word ) )
+                        (if member-info
+                            (progn
+                              (setq jump-pos  (concat (ac-php-get-tags-dir)  (nth 3 member-info)  ))
+                              (ac-php-location-stack-push)
+                              (ac-php-goto-location jump-pos ))
+                          (message "no find %s.%s " class-name cur-word  )
+                          ))
+                    ;;(message "no find class  from key-list %s " key-str-list  )
                     )
                   ))))
 
@@ -634,7 +638,6 @@
                         (setq  class-name   (nth 5 member-info) )
                         (popup-tip (concat "[user]:" class-name  "::"  (ac-php-clean-document doc)    ))
                         )
-                    (message "no find %s.%s " class-name cur-word  )
                     )
                   ))))
 
