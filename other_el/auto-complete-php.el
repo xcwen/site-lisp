@@ -153,7 +153,7 @@
   
   (setq line-txt (replace-regexp-in-string "\\<return\\>\\|\\<echo\\>" "" line-txt  ))
   (setq line-txt (replace-regexp-in-string ".*[=(,]" "" line-txt  ))
-  (setq line-txt (replace-regexp-in-string "[\\t \\$]" "" line-txt  ))
+  (setq line-txt (replace-regexp-in-string "[\t \\$]" "" line-txt  ))
   (when (not (string=  line-txt "")  )
     ;;检查 :: 
     (if (and (string-match  "::"  line-txt ) (not (string-match  "\\/\\*"  line-txt ) ))
@@ -383,7 +383,7 @@
         (when (or (not obj-item) (< (nth 1 obj-item) src-time ) )
           ;;gen tags file
           (message "rebuild %s" file-name )
-          (shell-command-to-string (concat "phpctags  --sort=no   -f " obj-file-name " "  file-name  ))
+          (shell-command-to-string (concat "phpctags -f " obj-file-name " "  file-name  ))
           ;;gen el data file
           
           ))
