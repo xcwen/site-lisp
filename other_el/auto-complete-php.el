@@ -153,7 +153,7 @@
   
   (setq line-txt (replace-regexp-in-string "\\<return\\>\\|\\<echo\\>" "" line-txt  ))
   (setq line-txt (replace-regexp-in-string ".*[=(,]" "" line-txt  ))
-  (setq line-txt (replace-regexp-in-string "[\t \\$]" "" line-txt  ))
+  (setq line-txt (replace-regexp-in-string "[\\t \\$]" "" line-txt  ))
   (when (not (string=  line-txt "")  )
     ;;检查 :: 
     (if (and (string-match  "::"  line-txt ) (not (string-match  "\\/\\*"  line-txt ) ))
