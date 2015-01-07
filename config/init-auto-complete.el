@@ -94,7 +94,6 @@
  ac-sources
  '(
    ac-source-imenu
-   ac-source-abbrev
    ac-source-words-in-same-mode-buffers
    ac-source-files-in-current-dir
    ac-source-filename
@@ -117,7 +116,7 @@
 			 (split-string (shell-command-to-string "g++ -E -x c++ - -v < /dev/null 2>&1  | grep \"^ [^ ]*$\"  "))))
 
 
-(setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))  
+(setq-default ac-sources '( ac-source-dictionary ac-source-words-in-same-mode-buffers))  
 (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)  
 (add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)  
 (add-hook 'css-mode-hook 'ac-css-mode-setup)  

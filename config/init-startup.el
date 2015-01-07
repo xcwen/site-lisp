@@ -42,7 +42,6 @@
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets) ;反方向的显示重复的Buffer名字
 (setq uniquify-after-kill-buffer-p t)                          ;删除重复名字的Buffer后重命名
 ;;(miniedit-install)                                             ;在 minibuffer, 按C-M-e编辑minibuffer
-(global-hl-line-mode 1)                                        ;高亮当前行
 (setq ediff-window-setup-function (quote ediff-setup-windows-plain)) ;比较窗口设置在同一个frame里
 (setq split-width-threshold nil)                                     ;分屏的时候使用上下分屏
 (setq one-key-popup-window nil)                                      ;禁止自动弹出窗口
@@ -73,12 +72,11 @@ from tradition chinese to simple chinese" t)
 
 (custom-set-variables
  '(case-fold-search nil)
+ ;;'(custom-enabled-themes (quote (ubuntu)))
  '(custom-enabled-themes (quote (tsdh-dark)))
- '(quote (ansi-color-names-vector ["#2e3436" "#a40000" "#4e9a06" "#c4a000" "#204a87" "#5c3566" "#729fcf" "#eeeeec"]))
  '(show-paren-mode t)
  '(menu-bar-mode nil)
  '(tool-bar-mode nil))
-
 
 
 
@@ -118,7 +116,6 @@ from tradition chinese to simple chinese" t)
 
 ;;交换.cpp .hpp 文件
 (require 'switch-file)
-(require 'multi-term)
 (require 'xcscope)
 (setq cscope-do-not-update-database t)
 

@@ -58,6 +58,7 @@ The test for presence of the car of ELT-CONS is done with `equal'."
 
 		(multi-term-next 0 )
 		(evil-local-mode 0 )
+        (undo-tree-mode -1 )
 		;;进入当前文件
 		(unless  (string= file-path-str default-directory ) 
 		  (term-send-raw-string init-cmd ))

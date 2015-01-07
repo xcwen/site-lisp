@@ -126,7 +126,10 @@
   (evil-check-close-local-mode)
   )
 (defun evil-check-close-local-mode ()
-  (when (string= major-mode  "term-mode") (evil-local-mode 0)  )
+  (when (string= major-mode  "term-mode")
+    (evil-local-mode 0)
+    (undo-tree-mode -1 )
+    )
   )
 
 
@@ -159,8 +162,7 @@
     (indent-region (point-min ) (point-max ) )
     ))
 
-(set-evil-all-state-key (kbd  "C-p")   'dabbrev-expand  )
-
+;;(set-evil-all-state-key (kbd  "C-p")   'dabbrev-expand  )
 
 (setq evil-default-cursor  '("white" box) )
 (set-evil-all-state-key  (kbd "<tab>")  'yas-expand-for-vim )
