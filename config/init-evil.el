@@ -162,7 +162,6 @@
     (indent-region (point-min ) (point-max ) )
     ))
 
-;;(set-evil-all-state-key (kbd  "C-p")   'dabbrev-expand  )
 
 (setq evil-default-cursor  '("white" box) )
 (set-evil-all-state-key  (kbd "<tab>")  'yas-expand-for-vim )
@@ -180,7 +179,6 @@
 
 (define-key evil-visual-state-map (kbd ",d") 'show-dict )
                                         ;(require    'compilation-mode)
-
 (define-key evil-normal-state-map "gf" '(lambda()
                                           (interactive )
                                           (let ((cur-word (current-word )))
@@ -362,7 +360,6 @@
     (interactive)
     (define-key evil-normal-state-local-map  (kbd "n") '(lambda()(interactive)(evil-next-line) (cscope-show-entry-other-window)))
     (define-key evil-normal-state-local-map  (kbd "p") '(lambda()(interactive)(evil-previous-line) (cscope-show-entry-other-window)))
-    ;;,wk( define-key evil-normal-state-local-map (kbd "p") 'cscope-show-prev-entry-other-window )
     ))
 
 (add-hook

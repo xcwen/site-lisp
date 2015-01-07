@@ -48,12 +48,7 @@
 (setq scroll-step 1                     ;流畅滚屏
       scroll-conservatively 10000
       auto-window-vscroll nil)
-(autoload 'hanconvert-region "hanconvert" ;简繁中文互相转换
-  "Convert a region from simple chinese to tradition chinese or
-from tradition chinese to simple chinese" t)
-(autoload 'kill-ring-search "kill-ring-search"
-  "Search the kill ring in the minibuffer."
-  (interactive))
+
 (setq isearch-allow-scroll t)           ;isearch搜索时是可以滚动屏幕的
 ;;(autoload 'auto-install "init-auto-install")
 ;;(autoload 'auto-install-from-emacswiki "init-auto-install")
