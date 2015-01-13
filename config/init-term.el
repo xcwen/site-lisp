@@ -9,21 +9,23 @@
 	(setq term-unbind-key-list  '("C-x"))
 	(setq term-bind-key-alist nil)
 
-	(add-to-list 'term-bind-key-alist '("C-S-e" . term-send-esc  ))
-	(add-to-list 'term-bind-key-alist '("TAB" . term-send-raw))
 	(add-to-list 'term-bind-key-alist '("M-x" . smex ))
 	(add-to-list 'term-bind-key-alist '("M-1" .  delete-other-windows ))
 	(add-to-list 'term-bind-key-alist '("C-^" . do-switch-buffer ))
 	;;(add-to-list 'term-bind-key-alist '("C-6" . do-switch-buffer ))
+
+    ;; C-6 -> C-^ 
+	(add-to-list 'term-bind-key-alist '( "C-6". (lambda() (interactive)  (term-send-raw-string "\C-^" ) ) ))
+
 	(add-to-list 'term-bind-key-alist '( "C-S-t". (lambda() (interactive) (multi-term) (evil-check-close-local-mode )  ) ))
 	(add-to-list 'term-bind-key-alist '( "C-S-h". (lambda() (interactive) (multi-term-prev 1 ) (evil-check-close-local-mode )  ) ))
 	(add-to-list 'term-bind-key-alist '( "C-S-l". (lambda() (interactive) ( multi-term-next 1 ) (evil-check-close-local-mode )  ) ))
 	(add-to-list 'term-bind-key-alist '( "C-S-c".   term-interrupt-subjob  ))
 
 	(add-to-list 'term-bind-key-alist '( "C-c".  copy-region-or-whole-line  ))
+	(add-to-list 'term-bind-key-alist '( "M-w". copy-region-or-whole-line ))
 	(add-to-list 'term-bind-key-alist '( "C-v". term-paste ))
 	(add-to-list 'term-bind-key-alist '( "C-y". term-paste ))
-    
 	))
 
 
@@ -31,7 +33,22 @@
  '(term-color-blue ((t (:background "blue" :foreground "steel blue"))))
  '(term-color-green ((t (:background "green3" :foreground "lime green"))))
  '(term-color-red ((t (:background "red3" :foreground "brown")))))
- 
+
+(defun  multi-term-goto-last-term ()
+  "DOCSTRING"
+  (interactive)
+  (let (find-flag)
+  (dolist  ( opt-buffer (buffer-list) )
+    (when (term-check-proc opt-buffer )
+      (switch-to-buffer opt-buffer) 
+      (setq find-flag t)
+      (return )
+      ))
+  (unless find-flag
+    (multi-term-next 0 )
+
+    )))
+
 (defun switch-file-term ()
   " 交换终端和文件"
   (interactive)
@@ -52,10 +69,7 @@
               )
           (progn
             ;;找到最近的term
-            (dolist  ( opt-buffer (buffer-list) )
-              (when (term-check-proc opt-buffer )
-                (switch-to-buffer opt-buffer) 
-                (return )))
+            (multi-term-goto-last-term)
             (setq init-cmd  (concat "\C-c cd " file-path-str  "\r" ) )))
 
 		(evil-local-mode 0 )

@@ -232,13 +232,13 @@
 (evil-ex-define-cmd  "wq"  '(lambda ()
                               (interactive )
                               (save-buffer )
-                              (multi-term-prev 0 )
+                              (multi-term-goto-last-term )
                               (evil-check-close-local-mode )
                               ))
 
 (evil-ex-define-cmd  "q"  '(lambda ()
                              (interactive )
-                             (multi-term-prev 0 )
+                              (multi-term-goto-last-term )
                              (evil-check-close-local-mode )
                              ))
 
