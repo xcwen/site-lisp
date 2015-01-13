@@ -1,5 +1,6 @@
 
 (require 'multi-term)
+
 (add-hook
  'term-mode-hook
  '(lambda()
@@ -31,5 +32,48 @@
  '(term-color-green ((t (:background "green3" :foreground "lime green"))))
  '(term-color-red ((t (:background "red3" :foreground "brown")))))
  
+(defun switch-file-term ()
+  " 交换终端和文件"
+  (interactive)
+  (let ( opt-file-name find-path-str init-cmd  line-txt)
+    (setq opt-file-name (buffer-file-name)   )
+    ;;(message "%s %s %s" "====" opt-file-name "kkk")
+    (if (and  opt-file-name  (file-exists-p opt-file-name ) )
+		(setq file-path-str (file-name-directory opt-file-name ) )
+      (setq file-path-str "~/"))
+    (if (string= major-mode  "term-mode")
+		(evil-buffer nil )
+
+	  (progn
+		(if (=  (length multi-term-buffer-list) 0)
+            (progn
+              (setq init-cmd  "" )
+              (multi-term-next 0 )
+              )
+          (progn
+            ;;找到最近的term
+            (dolist  ( opt-buffer (buffer-list) )
+              (when (term-check-proc opt-buffer )
+                (switch-to-buffer opt-buffer) 
+                (return )))
+            (setq init-cmd  (concat "\C-c cd " file-path-str  "\r" ) )))
+
+		(evil-local-mode 0 )
+        (undo-tree-mode -1 )
+
+        (when (not (string=  init-cmd "" ) )
+          (setq line-txt (buffer-substring-no-properties
+                          (line-beginning-position)
+                          (line-end-position )))
+
+          ;;进入当前文件所在文件夹
+          (when (and  (not (string= file-path-str default-directory ))
+                      (string-match "^localhost.*\\$[ \t]*$" line-txt ) ;;本地，处于命令行完成状态
+                      )
+
+            (term-send-raw-string init-cmd )) )
+
+		))))
+
 
 (provide 'init-term)
