@@ -1,11 +1,11 @@
 #!/bin/bash
-cd ~/bin/xptray/ && ./xptray.py &
-virtualbox --startvm xp  &
+#cd ~/bin/xptray/ && ./xptray.py &
+#virtualbox --startvm xp  &
 #fcitx
 rm ~/.emacs.d/.emacs.desktop.lock
 emacs& 
 firefox&
-gnome-terminal --maximize &
+#gnome-terminal --maximize &
 ~/work/sshmount.sh &
 goldendict &
 

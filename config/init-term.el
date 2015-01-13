@@ -5,7 +5,7 @@
  '(lambda()
 	(yas-minor-mode -1 )
 
-	(setq term-unbind-key-list  nil)
+	(setq term-unbind-key-list  '("C-x"))
 	(setq term-bind-key-alist nil)
 
 	(add-to-list 'term-bind-key-alist '("C-S-e" . term-send-esc  ))
