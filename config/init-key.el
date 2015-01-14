@@ -41,7 +41,7 @@
 
 
 (global-set-key (kbd "C-*") 'evil-search-word-forward ) 
-(global-set-key (kbd "C-x C-k") 'kill-this-buffer ) 
+
 
 (global-set-key "\M-1" 'delete-other-windows)
 
