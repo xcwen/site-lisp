@@ -1,6 +1,12 @@
 
 (require 'multi-term)
 
+(defvar term-local-cmd-start-line-regex-str
+  "^localhost.*\\$[ \t]*$"
+  "doc ,line like:
+localhost:~/site-lisp/config$"
+  )
+
 (add-hook
  'term-mode-hook
  '(lambda()
@@ -37,57 +43,47 @@
 (defun  multi-term-goto-last-term ()
   "DOCSTRING"
   (interactive)
-  (let (find-flag)
-  (dolist  ( opt-buffer (buffer-list) )
-    (when (term-check-proc opt-buffer )
-      (switch-to-buffer opt-buffer) 
-      (setq find-flag t)
-      (return )
-      ))
-  (unless find-flag
-    (multi-term-next 0 )
+  (let (find-flag opt-file-name find-path-str init-cmd  line-txt)
+    (setq opt-file-name (buffer-file-name)   )
 
-    )))
+    (dolist  ( opt-buffer (buffer-list) )
+      (when (term-check-proc opt-buffer )
+        (switch-to-buffer opt-buffer) 
+        (setq find-flag t)
+        (return )
+        ))
+    (unless find-flag
+      (multi-term  ))
+
+    (evil-local-mode 0)
+    (undo-tree-mode -1 )
+
+    ;;go to file location dir 
+    (if (and  opt-file-name  (file-exists-p opt-file-name ) )
+        (setq file-path-str (file-name-directory opt-file-name ) )
+      (setq file-path-str (concat  (getenv "HOME") "/" )))
+
+    (setq line-txt (buffer-substring-no-properties
+                    (line-beginning-position)
+                    (line-end-position )))
+
+    ;;(message "===%s %s" default-directory file-path-str )
+    ;;进入当前文件所在文件夹
+    (when (and  (not (string= file-path-str default-directory ))
+                (string-match term-local-cmd-start-line-regex-str line-txt ) ;;本地，处于命令行完成状态
+                )
+      (setq init-cmd  (concat "cd " file-path-str  " # goto file location   \r" ) )
+      (term-send-raw-string init-cmd ))
+    ))
 
 (defun switch-file-term ()
   " 交换终端和文件"
   (interactive)
-  (let ( opt-file-name find-path-str init-cmd  line-txt)
-    (setq opt-file-name (buffer-file-name)   )
-    ;;(message "%s %s %s" "====" opt-file-name "kkk")
-    (if (and  opt-file-name  (file-exists-p opt-file-name ) )
-		(setq file-path-str (file-name-directory opt-file-name ) )
-      (setq file-path-str "~/"))
-    (if (string= major-mode  "term-mode")
-		(evil-buffer nil )
-
-	  (progn
-		(if (=  (length multi-term-buffer-list) 0)
-            (progn
-              (setq init-cmd  "" )
-              (multi-term-next 0 )
-              )
-          (progn
-            ;;找到最近的term
-            (multi-term-goto-last-term)
-            (setq init-cmd  (concat "\C-c cd " file-path-str  "\r" ) )))
-
-		(evil-local-mode 0 )
-        (undo-tree-mode -1 )
-
-        (when (not (string=  init-cmd "" ) )
-          (setq line-txt (buffer-substring-no-properties
-                          (line-beginning-position)
-                          (line-end-position )))
-
-          ;;进入当前文件所在文件夹
-          (when (and  (not (string= file-path-str default-directory ))
-                      (string-match "^localhost.*\\$[ \t]*$" line-txt ) ;;本地，处于命令行完成状态
-                      )
-
-            (term-send-raw-string init-cmd )) )
-
-		))))
+  ;;(message "%s %s %s" "====" opt-file-name "kkk")
+  (if (string= major-mode  "term-mode")
+      (evil-buffer nil )
+    (multi-term-goto-last-term)
+    ))
 
 
 (provide 'init-term)

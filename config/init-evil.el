@@ -233,13 +233,11 @@
                               (interactive )
                               (save-buffer )
                               (multi-term-goto-last-term )
-                              (evil-check-close-local-mode )
                               ))
 
 (evil-ex-define-cmd  "q"  '(lambda ()
                              (interactive )
                               (multi-term-goto-last-term )
-                             (evil-check-close-local-mode )
                              ))
 
 (set-evil-normal-state-key (kbd "g C-]")
