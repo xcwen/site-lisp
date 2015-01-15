@@ -15,6 +15,8 @@ xcwenn@qq.com
 
 * 使用 `EVIL` 模拟 `VIM`  ,使得emacs的编辑和vim 保持95%以上的一致性
 
+* 使用 `multi-term` 实现多终端模拟器， 基本上不用系统自带的终端模拟器
+
 * 借鉴`deepin emcas` 配置文件的文档结构
 
 * 基于  `package.el`  管理所有的包
@@ -39,7 +41,25 @@ cp ~/site-lisp/other_script/site-start.el ~/.emacs
 alias vi="emacsclient -n"
 ```
 
+### multi-term
+屏蔽的大部分的emacs 本身的快捷键
+可在term 中使用vim 
 
+可用快捷键:
+```
+"M-x"    M-x 
+"M-1"    最大化 
+"C-^"    打开当前文件列表
+"C-6"    发"\C-^"   # C-^  在vim 中有用 ，使用  C-6 代替
+"C-S-t"  新建终端 
+"C-S-h"  上个终端
+"C-S-l"  下个终端
+"C-S-c"  发C-c 
+"C-c"    复制 
+"M-w"    复制 
+"C-v"    黏贴
+"C-y"    黏贴
+```
 
 ###php 补全 
 安装phpctags 
@@ -59,6 +79,7 @@ mkdir .tags
 
 emacs php-mode 快捷键 
 ```
+    tab       : -> 补全 
     C-tab     : 补全
     C-]       : 跳转到定义
     C-t       : 跳转返回
@@ -71,7 +92,7 @@ emacs php-mode 快捷键
 
 ###c++ 编码需要
 ``` bash
-apt-get install  fcitx  clang cmake g++  libclang-dev libssl-dev libcurses-ocaml-dev  cscope
+apt-get install fcitx clang cmake g++ libclang-dev libssl-dev libcurses-ocaml-dev cscope
 ```
 
 查看 rtags 说明: https://github.com/Andersbakken/rtags
