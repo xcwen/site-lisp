@@ -32,11 +32,18 @@
 
 (provide 'auto-complete-php)
 
+
 ;;load sys-data
 (require 'auto-complete-php-sys-data)
 
 (require 'auto-complete)
 (require 'popup)
+
+(defcustom ac-php-executable
+  (executable-find "phpctags")
+  "*Location of clang executable"
+  :group 'auto-complete
+  :type 'file)
 
 
 (defvar ac-php-location-stack-index 0)
@@ -359,8 +366,11 @@
   "DOCSTRING"
   (interactive)
   (let ((tags-dir (ac-php-get-tags-dir) ) tags-dir-len file-list  obj-tags-dir file-name obj-file-name cur-obj-list src-time   obj-item cmd  el-data)  
+
 	(message "remake %s" tags-dir )
-	(when tags-dir 
+    (if (not ac-php-executable ) (message "no find cmd:  phpctags,  put it in /usr/bin/  and restart emacs "   ) )
+    (if (not tags-dir) (message "no find .tags dir in path list :%s " (file-name-directory (buffer-file-name)  )   ) )
+	(when (and tags-dir  ac-php-executable )
       (setq tags-dir-len (length tags-dir) )
       (setq obj-tags-dir (concat tags-dir ".tags/tags_dir_" (getenv "USER") "/" ))
       (if (not (file-directory-p obj-tags-dir ))
@@ -383,9 +393,12 @@
         (when (or (not obj-item) (< (nth 1 obj-item) src-time ) )
           ;;gen tags file
           (message "rebuild %s" file-name )
-          (shell-command-to-string (concat "phpctags -f " obj-file-name " "  file-name  ))
+          (let (cmd-output   )
+            (setq cmd-output (shell-command-to-string (concat ac-php-executable  " -f " obj-file-name " "  file-name  )) )
+            
+            (when (> (length cmd-output) 3) (princ (concat "phpctags ERROR:" cmd-output )))
+            )
           ;;gen el data file
-          
           ))
 	;;加入参数
       (let ((temp-list cur-obj-list) tags-lines )

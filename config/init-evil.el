@@ -165,7 +165,7 @@
 
 (setq evil-default-cursor  '("white" box) )
 (set-evil-all-state-key  (kbd "<tab>")  'yas-expand-for-vim )
-("\M-h"  'backward-kill-word-without-_)
+(set-evil-all-state-key "\M-h"  'backward-kill-word-without-_)
 
 (set-evil-all-state-key (kbd "C-c") 'copy-region-or-whole-line ) 
 (set-evil-all-state-key (kbd "C-v") 'evil-paste-after ) 
@@ -242,6 +242,7 @@
                              (interactive )
                               (multi-term-goto-last-term )
                              ))
+
 
 (set-evil-normal-state-key (kbd "g C-]")
                            '(lambda()(interactive)
