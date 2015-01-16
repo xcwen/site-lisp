@@ -23,7 +23,6 @@
 (global-set-key (kbd "C-S-h") 'region-indent-sub)
 (global-set-key (kbd "C-S-l") 'region-indent-add)
 (global-set-key (kbd "C-?")   'replace-regexp)
-(global-set-key "\M-;"        'qiang-comment-dwim-line)
 (global-set-key (kbd "C-^")   'do-switch-buffer )
 
 
