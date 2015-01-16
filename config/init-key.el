@@ -33,7 +33,7 @@
 (global-set-key (kbd "C-x C-z") 'ignore)
 (global-set-key (kbd "<f4>")    'package-list-packages)   
 (global-set-key (kbd "<f8>")    'switch-file-term)   
-(global-set-key (kbd "<f7>")    'search-proto-info )   
+(global-set-key (kbd "<f7>")    'open-term-file )   
 (global-set-key (kbd "<f10>") nil )   
 
 

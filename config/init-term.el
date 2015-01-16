@@ -7,6 +7,7 @@
 localhost:~/site-lisp/config$"
   )
 
+
 (add-hook
  'term-mode-hook
  '(lambda()
@@ -34,7 +35,30 @@ localhost:~/site-lisp/config$"
 	(add-to-list 'term-bind-key-alist '( "C-y". term-paste ))
 	))
 
-
+(defun open-term-file  ()
+  ""
+  (interactive)
+  (let (opt-file )
+    (if (and  mark-active
+              (not  (= (region-beginning) (region-end) ))
+              )
+        (setq opt-file (buffer-substring-no-properties (region-beginning) (region-end)) )
+      (save-excursion
+        (previous-line )
+        (setq opt-file  (car  (split-string
+                         (buffer-substring-no-properties (line-beginning-position) (line-end-position ))
+                         "[ \t]+" )  ))
+        )
+      )
+    (if (file-exists-p  opt-file)
+        (progn
+          (message "find file name=[%s]" opt-file )
+          (switch-to-buffer (find-file-noselect opt-file ))
+          )
+      (message "no find file name=[%s]" opt-file )
+        )
+    
+    ))
 (custom-set-faces
  '(term-color-blue ((t (:background "blue" :foreground "steel blue"))))
  '(term-color-green ((t (:background "green3" :foreground "lime green"))))
