@@ -134,7 +134,24 @@
 
 
 ;; 等号对齐
-(define-key evil-visual-state-map (kbd "=")  'align) 
+(define-key evil-visual-state-map (kbd "=")
+  '(lambda( beg end  )
+     (interactive "r")
+
+     ;;"多行注释处理"
+     (if (and mark-active
+              (string-match "\n"
+                            (buffer-substring-no-properties (region-beginning)(region-end))))
+         (progn 
+           (mark-region-ex)
+           (setq beg (region-beginning) )
+           (setq end (region-end) )
+           ))
+     (align beg end)
+     )) 
+
+
+
 (define-key evil-normal-state-map (kbd "g=") 'indent-buffer) 
 
 (defun indent-buffer ()
