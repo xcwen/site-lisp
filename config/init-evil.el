@@ -168,7 +168,7 @@
 (set-evil-all-state-key "\M-h"  'backward-kill-word-without-_)
 
 (set-evil-all-state-key (kbd "C-c") 'copy-region-or-whole-line ) 
-(set-evil-all-state-key (kbd "C-v") 'evil-paste-after ) 
+(set-evil-all-state-key (kbd "C-v") 'yank ) 
 
 (set-evil-all-state-key ( kbd "C-}") 'find-tag-next-ex)
 (set-evil-all-state-key "\C-x\C-o"  'other-window )
