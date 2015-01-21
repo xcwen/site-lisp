@@ -198,7 +198,7 @@
 (set-evil-normal-state-key "D"  'kill-region-or-whole-line )
 
 (define-key evil-visual-state-map (kbd ",d") 'show-dict )
-                                        ;(require    'compilation-mode)
+
 (define-key evil-normal-state-map "gf" '(lambda()
                                           (interactive )
                                           (let ((cur-word (current-word )))
