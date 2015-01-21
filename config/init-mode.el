@@ -80,20 +80,22 @@
 
 (add-hook 'js2-mode-hook '(lambda ( )
 							(modify-syntax-entry ?_ "w" js2-mode-syntax-table) ;将 _ 加入 单词中
-							 ) )
+                            (require 'js2-align)
+                            (js2-align-setup)
+                            ) )
 (add-hook 'sql-mode-hook '(lambda ( )
 							(modify-syntax-entry ?_ "w" sql-mode-syntax-table) ;将 _ 加入 单词中
-							 ) )
+                            ) )
 
 
 (add-hook 'go-mode-hook '(lambda ( )
 						   (require 'go-autocomplete)
-							 ) )
+                           ) )
 
 (add-hook 'org-agenda-mode-hook '(lambda ( )
 								   (org-defkey org-agenda-mode-map "j"        'org-agenda-next-line)
 								   (org-defkey org-agenda-mode-map "k"        'org-agenda-previous-line)
-							 ) )
+                                   ) )
 
 
 
