@@ -289,8 +289,12 @@
  'emacs-lisp-mode-hook
  '(lambda()
     (interactive)
+    (require 'elisp-stack)
     ( define-key evil-normal-state-local-map  (kbd "C-]") 'find-function)
     ( define-key evil-insert-state-local-map  (kbd "C-]") 'find-function )
+    ( define-key evil-insert-state-local-map  (kbd "C-t") 'el-stack-location-stack-back )
+    ( define-key evil-normal-state-local-map  (kbd "C-t") 'el-stack-location-stack-back )
+
     ))
 
 (defun set-rtags-bind-key ()

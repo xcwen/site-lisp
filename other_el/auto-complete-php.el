@@ -23,7 +23,7 @@
 
 ;; 参考 auto-complete-clang (补全), rtags (跳转堆栈 ac-php-location-stack-index )
 
-;;; Commentary:
+;;; Commentary: 
 ;;
 ;; Auto Completion source for php. Most of codes are taken from
 
