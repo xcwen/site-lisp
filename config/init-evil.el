@@ -313,7 +313,7 @@
   ( define-key evil-normal-state-local-map  (kbd ",h") 'rtags-display-summary)
   )
 
-;; C C++ tags 调整
+;; C C++ tags 调整 
 (add-hook 'c++-mode-hook 'set-rtags-bind-key)
 (add-hook 'c-mode-hook 'set-rtags-bind-key)
 
