@@ -1,14 +1,14 @@
 ;;; package+.el --- Extensions for the package library.
-;; Version: 20140504.325
+;; Version: 20141124.1756
 
-;; Copyright (C) 2013  Ryan Davis
+;; Copyright (C) Ryan Davis
 
 ;; Author: Ryan Davis <ryand-ruby@zenspider.com>
 ;; Keywords: extensions, tools
 ;; Package-Requires: ()
 ;; URL: TBA
 ;; Doc URL: TBA
-;; Compatibility: GNU Emacs: 23.x?, 24.x
+;; Compatibility: GNU Emacs: 24.3?, 24.4
 
 ;;; The MIT License:
 
@@ -76,24 +76,29 @@
 
 (require 'package)
 
-(unless (fboundp 'package-desc-vers)
-  ;; TODO? several of my installed packages, like melpa, require this on 24.4
-  (defsubst package-desc-vers (desc)
+(unless (fboundp 'package-desc-version)
+  ;; provide compatibilty back to 24.3--hopefully.
+  (defsubst package-desc-version (desc)
     "Extract version from a package description vector."
     (aref desc 0)))
 
 (unless (fboundp 'package-cleanup)
   (require 'cl)
 
+  (defun package-details-for (name)
+    (let ((v (cdr (assoc name (append package-alist package-archive-contents)))))
+      (and v (if (consp v)
+                 (car v)                ; emacs 24+
+               v))))                    ; emacs 23
+
   (defun package-version-for (name)
     "Returns the installed version for a package with a given NAME."
-    (package-desc-vers (cdr (assoc name package-alist))))
+    (package-desc-version (package-details-for name)))
 
   (defun package-delete-by-name (name)
     "Deletes a package by NAME"
     (message "Removing %s" name)
-    (package-delete (symbol-name name)
-                    (package-version-join (package-version-for name))))
+    (package-delete (package-details-for name)))
 
   (defun package-maybe-install (name)
     "Installs a package by NAME, but only if it isn't already installed."
@@ -105,7 +110,7 @@
     "Returns the dependency list for PKG or nil if none or the PKG doesn't exist."
     (unless package-archive-contents
       (package-refresh-contents))
-    (let ((v (cdr (assoc pkg package-archive-contents))))
+    (let ((v (package-details-for pkg)))
       (and v (package-desc-reqs v))))
 
   (defun package-transitive-closure (pkgs)
