@@ -86,28 +86,19 @@
 ;;; Code:
 
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "/usr/share/deepin-emacs/site-lisp/extensions/auto-complete/dict")
 (ac-config-default)
-(setq ac-use-quick-help nil)
+;;显示文档
+(setq ac-use-quick-help t)
+(setq ac-quick-help-delay 0.5)
+(setq ac-auto-start nil)
 
-(setq-default
- ac-sources
- '(
-   ac-source-imenu
-   ac-source-words-in-same-mode-buffers
-   ac-source-files-in-current-dir
-   ac-source-filename
-   ))
-
-
+(global-auto-complete-mode t)  
 
 
 ;;(require 'auto-complete-etags)
 ;;--clang
 (require 'auto-complete-clang)
 (setq ac-clang-auto-save t)  
-(setq ac-auto-start nil)
-(setq ac-quick-help-delay 0.5)
 (define-key ac-completing-map "\t" 'ac-complete)
 
 
@@ -116,21 +107,23 @@
 			 (split-string (shell-command-to-string "g++ -E -x c++ - -v < /dev/null 2>&1  | grep \"^ [^ ]*$\"  "))))
 
 
+
+;; rtags 
+(require 'rtags)
+(require 'rtags-ac)
+(setq rtags-rc-log-enabled t)
+(setq rtags-completions-enabled t)
+
+
 (setq-default ac-sources '( ac-source-dictionary ac-source-words-in-same-mode-buffers))  
 (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)  
 (add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)  
 (add-hook 'css-mode-hook 'ac-css-mode-setup)  
-(add-hook 'auto-complete-mode-hook 'ac-common-setup)  
 
 ;;设置c,c++默认的补全方式 clang
 (add-hook 'c-mode-hook '(lambda() (setq ac-sources  '(ac-source-clang ) ) ))
 (add-hook 'c++-mode-hook '(lambda() (setq ac-sources  '(ac-source-clang ) ) ))
 (add-hook 'php-mode-hook '(lambda() (setq ac-sources  '(ac-source-php ) ) ))
-
-(global-auto-complete-mode t)  
-
-;(setq ac-clang-prefix-header "~/.emacs.d/stdafx.pch")
-
 
 
 (provide 'init-auto-complete)

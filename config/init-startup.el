@@ -6,7 +6,6 @@
 (blink-cursor-mode -1)                       ;指针不闪动
 (global-font-lock-mode t)                    ;语法高亮
 (transient-mark-mode 1)                      ;标记高亮
-;;(column-number-mode t)                       ;显示列号
 (show-paren-mode t)                          ;显示括号匹配
 (setq-default comment-style 'indent)         ;设定自动缩进的注释风格
 (setq ring-bell-function 'ignore)            ;关闭烦人的出错时的提示声
@@ -42,17 +41,16 @@
       scroll-conservatively 10000
       auto-window-vscroll nil)
 
-(setq isearch-allow-scroll t)           ;isearch搜索时是可以滚动屏幕的
+(setq isearch-allow-scroll t) ;isearch搜索时是可以滚动屏幕的
+(mouse-avoidance-mode 'jump)  ;光标靠近鼠标时让鼠标自动走开
+(scroll-bar-mode 0)           ;去掉滚动条  
+
 (my-maximized)
-(scroll-bar-mode 0);去掉滚动条  
 
 (require 'ido)
 (ido-mode t)
+(setq ido-enable-flex-matching t)
 
-(require 'rtags)
-(require 'rtags-ac)
-(setq rtags-rc-log-enabled t)
-(setq rtags-completions-enabled t)
 
 (custom-set-variables
  '(case-fold-search nil)
@@ -69,7 +67,7 @@
  )
 
 
-
+;;使用ubuntu 字体
 (custom-set-faces
  '(default ((t (:family "XHei Mono.Ubuntu" :foundry "unknown" :slant normal :weight normal :height 173 :width normal)))))
  
@@ -78,7 +76,6 @@
 (server-force-delete)
 (server-start)
 
-(mouse-avoidance-mode 'jump)	       ; 光标靠近鼠标时让鼠标自动走开
 
 ;;-----------------------------------------------------
 
@@ -90,16 +87,15 @@
 ;;最近文件列表
 (require 'recentf)
 (recentf-mode t)
-(setq ido-enable-flex-matching t)
 
 ;;hd
 (setq header-user-name "jim")
 (setq header-user-email "jim@taomee.com")
 
-(mouse-avoidance-mode 'jump)	       ; 光标靠近鼠标时让鼠标自动走开
 (setq frame-title-format  '("file: %f "  ))
 
 
+;;关闭js2-mode 语法检测,速度不行 ,  需要时:",m"
 (custom-set-variables
  '(js2-idle-timer-delay 1000000))
 
@@ -109,9 +105,6 @@
 (require 'xcscope)
 (setq cscope-do-not-update-database t)
 
-
-;; smex set key
-(global-set-key (kbd "M-x") 'smex)
 
 
 
