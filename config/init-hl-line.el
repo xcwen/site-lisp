@@ -10,6 +10,7 @@
                'c++-mode-hook
                'js2-mode-hook
                'sh-mode-hook
+               'markdown-mode-hook
 			   'php-mode-hook
 			   'web-mode-hook
 			   'cc-mode-hook

@@ -2,7 +2,6 @@
 (setq inhibit-startup-screen t)              ;关闭起动时闪屏
 (setq inhibit-splash-screen t)               ;关闭起动时闪屏
 (setq initial-scratch-message nil)           ;禁止在草稿缓存里面显示处始化信息
-;;(unmark-all-buffers)                         ;取出所有buffer的标记
 (fset 'yes-or-no-p 'y-or-n-p)                ;以 y/n代表 yes/no
 (blink-cursor-mode -1)                       ;指针不闪动
 (global-font-lock-mode t)                    ;语法高亮
@@ -35,14 +34,7 @@
 (setq print-escape-newlines t)               ;显示字符窗中的换行符为 \n
 (setq minibuffer-message-timeout 1)          ;显示消息超时的时间
 (setq require-final-newline nil)             ;不自动添加换行符到末尾, 有些情况会出现错误
-;;(tabbar-mode t)                              ;多标签模式
-;;(which-function-mode t)                      ;在状态条上显示当前光标在哪个函数体内部
 (auto-compression-mode 1)                    ;打开压缩文件时自动解压缩
-;;(delete 'win:mode-string global-mode-string) ;在 `global-mode-string' 中去掉窗口数字
-(setq uniquify-separator "/")                ;分隔符
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets) ;反方向的显示重复的Buffer名字
-(setq uniquify-after-kill-buffer-p t)                          ;删除重复名字的Buffer后重命名
-;;(miniedit-install)                                             ;在 minibuffer, 按C-M-e编辑minibuffer
 (setq ediff-window-setup-function (quote ediff-setup-windows-plain)) ;比较窗口设置在同一个frame里
 (setq split-width-threshold nil)                                     ;分屏的时候使用上下分屏
 (setq one-key-popup-window nil)                                      ;禁止自动弹出窗口
@@ -51,10 +43,6 @@
       auto-window-vscroll nil)
 
 (setq isearch-allow-scroll t)           ;isearch搜索时是可以滚动屏幕的
-;;(autoload 'auto-install "init-auto-install")
-;;(autoload 'auto-install-from-emacswiki "init-auto-install")
-;;(autoload 'irfc "init-irfc")
-;;(autoload 'doc-view-mode "init-doc-view")
 (my-maximized)
 (scroll-bar-mode 0);去掉滚动条  
 
@@ -73,6 +61,12 @@
  '(show-paren-mode t)
  '(menu-bar-mode nil)
  '(tool-bar-mode nil))
+
+(custom-theme-set-faces
+ 'tsdh-dark
+ '(region ((t (:background "gray30"))))
+ '(hl-line ((t (:background "gray25"))))
+ )
 
 
 
