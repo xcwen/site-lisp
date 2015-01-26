@@ -87,7 +87,9 @@ emacs php-mode 快捷键
     ,s        : 在项目中查找 引用, 出现的地方
     ,r        : 重新生成tags
 ```
+补全案例：
 
+![补全案例gif][https://raw.githubusercontent.com/xcwen/site-lisp/master/other_script/ac-php.gif]
 
 
 ###c++ 编码需要
