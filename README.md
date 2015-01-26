@@ -89,7 +89,7 @@ emacs php-mode 快捷键
 ```
 补全案例：
 
-![补全案例gif][https://raw.githubusercontent.com/xcwen/site-lisp/master/other_script/ac-php.gif]
+![补全案例gif](https://raw.githubusercontent.com/xcwen/site-lisp/master/other_script/ac-php.gif)
 
 
 ###c++ 编码需要
