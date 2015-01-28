@@ -572,9 +572,9 @@ Replaces default behaviour of comment-dwim, when it inserts comment at the end o
     (while (not (or (file-exists-p  (concat build-dir  "build/self.cxx_flags.conf" ) ) (string= build-dir "/") ))
 	  (setq build-dir  ( file-name-directory (directory-file-name  build-dir ) ) )
 	  )
-	(if (string= build-dir "/") nil 
+	(append ac-clang-flags-g++-base  (if (string= build-dir "/") nil 
 	  (split-string (get-string-from-file (concat build-dir  "build/self.cxx_flags.conf" )  ))
-	)
+	))
   ))
 
 

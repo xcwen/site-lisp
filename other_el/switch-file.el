@@ -5,7 +5,7 @@
 ;; Author:	Vinicius Jose Latorre <viniciusjl@ig.com.br>
 ;; Maintainer:	Vinicius Jose Latorre <viniciusjl@ig.com.br>
 ;; Keywords:	convenience
-;; Time-stamp:	<2011/10/23 12:11:46 vinicius>
+;; Time-stamp:	<2015-01-26 16:42:47 jim>
 ;; Version:	0.3
 ;; X-URL:	http://www.emacswiki.org/cgi-bin/wiki/ViniciusJoseLatorre
 
@@ -151,7 +151,7 @@ Each path must end with '/'."
 ;;;###autoload
 (defcustom switch-major-mode-alist
   '((c-mode   ("c" ".c") ("h" ".h"))
-    (c++-mode ("c\\|cc\\|C\\|cpp" ".cc" ".C" ".cpp" ".c")
+    (c++-mode ("c\\|cc\\|C\\|cpp\\|cxx" ".cc" ".C" ".cpp" ".cxx" ".c")
 	      ("h\\|hh\\|H\\|hpp" ".hh" ".H" ".hpp" ".h")))
   "*Specify a major mode alist.
 
