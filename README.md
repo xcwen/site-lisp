@@ -65,7 +65,7 @@ alias vi="emacsclient -n"
 安装phpctags 
 ```
 cd ~
-git clone https://github.com/vim-php/phpctags.git
+git clone https://github.com/xcwen/phpctags.git
 cd ~/phpctags/ && make 
 sudo cp phpctags /usr/bin/ 
 ```
