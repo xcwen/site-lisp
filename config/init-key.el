@@ -12,8 +12,17 @@
 ;;查找时,使用trim-string,去掉前后空格
 (define-key isearch-mode-map (kbd "C-y")  '(lambda()(interactive)
 											   (isearch-yank-string (trim-string (current-kill 0) ))))
+
+(define-key isearch-mode-map (kbd "C-v")  '(lambda()(interactive)
+											   (isearch-yank-string (trim-string (current-kill 0) ))))
+
+
 (define-key  minibuffer-inactive-mode-map (kbd "C-y")  '(lambda()(interactive)
 											   (insert (trim-string (current-kill 0) ))))
+
+(define-key  minibuffer-inactive-mode-map (kbd "C-v")  '(lambda()(interactive)
+											   (insert (trim-string (current-kill 0) ))))
+
 
 
 
