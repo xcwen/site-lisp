@@ -133,7 +133,6 @@
   s)
 
 (defun ac-php-document (item)
-  (message "===%s" item )
   (if (stringp item)
       (let (s)
         (setq s (get-text-property 0 'ac-php-help item))
