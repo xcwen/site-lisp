@@ -336,9 +336,9 @@
                                   ""))
 
 
-             (when (string-match "^\t\\(\\(class\\)\\|\\(interface\\)\\):\\(\\w+\\)\taccess:\\(.*\\)" other-data)
-               (setq class-name (match-string 4  other-data  ))
-               (setq access (match-string 5  other-data  ))
+             (when (string-match "^\t\\(class\\|interface\\):\\(\\w+\\)\taccess:\\(.*\\)" other-data)
+               (setq class-name (match-string 2  other-data  ))
+               (setq access (match-string 3  other-data  ))
                )
              ;;add class info 
              (when (not (assoc class-name class-list ))
