@@ -7,6 +7,9 @@
 localhost:~/site-lisp/config$"
   )
 
+;;term 行数
+(setq term-buffer-maximum-size 512 )
+
 
 (add-hook
  'term-mode-hook

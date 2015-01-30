@@ -44,6 +44,15 @@
   "*Location of clang executable"
   :group 'auto-complete
   :type 'file)
+(defcustom ac-php-cscope 
+  (executable-find "cscope")
+  "*Location of cscope executable"
+  :group 'auto-complete
+  :type 'file)
+
+
+
+      
 
 
 (defvar ac-php-location-stack-index 0)
@@ -313,11 +322,11 @@
            (cond
             ((string= tag-type "f") (push   (list  tag-type  tag-name (ac-php-gen-el-func tag-name doc)  file-pos  ) function-list  ))
             ((string= tag-type "d") (push   (list  tag-type  tag-name tag-name  file-pos  ) function-list  ))
-            ((string= tag-type "c") ;;class
+            ((or (string= tag-type "c") (string= tag-type "i"))  ;;class or  interface
              (push   (list  tag-type  tag-name (concat tag-name  "()" ) file-pos  ) function-list  )
              (setq other-data  (match-string 6  line-data ) )
              ;; add class-inherits
-             (when (string-match "^\tinherits:\\(\\w+\\)" other-data)
+             (when (string-match "^\tinherits:\\(\\w+\\)\\(,.*\\)*" other-data)
                (push  (list  tag-name   (match-string 1  other-data  )) inherit-list)))
             ((or (string= tag-type "p")  (string= tag-type "m") ) ;;class function member
              (setq other-data  (match-string 6  line-data ) )
@@ -327,9 +336,9 @@
                                   ""))
 
 
-             (when (string-match "^\tclass:\\(\\w+\\)\taccess:\\(.*\\)" other-data)
-               (setq class-name (match-string 1  other-data  ))
-               (setq access (match-string 2  other-data  ))
+             (when (string-match "^\t\\(\\(class\\)\\|\\(interface\\)\\):\\(\\w+\\)\taccess:\\(.*\\)" other-data)
+               (setq class-name (match-string 4  other-data  ))
+               (setq access (match-string 5  other-data  ))
                )
              ;;add class info 
              (when (not (assoc class-name class-list ))
@@ -413,9 +422,10 @@
       (setq tags-lines  (split-string (shell-command-to-string  cmd ) "\n"   ))
       (ac-php-save-data  (ac-php-get-tags-file ) (ac-php-gen-data  tags-lines tags-dir-len)  )
       ;;  TODO do cscope  
-      (message "rebuild cscope  data file " )
-      (setq tags-lines  (split-string (shell-command-to-string  cmd ) "\n"   ))
-      (shell-command-to-string  (concat " cd " tags-dir ".tags &&  find  ../ -name \"[A-Za-z0-9_]*.php\" ! -path \"../.tags/*\"  > cscope.files &&  cscope -bkq -i cscope.files  ") )
+      (when ac-php-cscope
+        (message "rebuild cscope  data file " )
+        (setq tags-lines  (split-string (shell-command-to-string  cmd ) "\n"   ))
+        (shell-command-to-string  (concat " cd " tags-dir ".tags &&  find  ../ -name \"[A-Za-z0-9_]*.php\" ! -path \"../.tags/*\"  > cscope.files &&  cscope -bkq -i cscope.files  ") ) )
       (message "build end.")
       )))
 
