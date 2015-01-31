@@ -100,7 +100,7 @@ apt-get install fcitx clang cmake g++ libclang-dev libssl-dev libcurses-ocaml-de
 ```
 
 查看 rtags 说明: https://github.com/Andersbakken/rtags
-安装 rtags: 地址:
+安装 rtags: 
 
 ``` bash
 cd ~/ &&  git clone https://github.com/Andersbakken/rtags/
