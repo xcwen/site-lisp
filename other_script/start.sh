@@ -1,7 +1,7 @@
 #!/bin/bash
 #cd ~/bin/xptray/ && ./xptray.py &
 #virtualbox --startvm xp  &
-#fcitx
+fcitx
 rm ~/.emacs.d/.emacs.desktop.lock
 emacs& 
 firefox&

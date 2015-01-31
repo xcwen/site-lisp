@@ -62,6 +62,7 @@ alias vi="emacsclient -n"
 ```
 
 ###php 补全 
+
 安装phpctags 
 ```
 cd ~
@@ -91,6 +92,7 @@ emacs php-mode 快捷键
 
 ![补全案例gif](https://raw.githubusercontent.com/xcwen/site-lisp/master/other_script/ac-php.gif)
 
+更多的请参考  [ac-php](https://github.com/xcwen/ac-php)
 
 ###c++ 编码需要
 ``` bash
