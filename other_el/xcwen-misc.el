@@ -440,10 +440,8 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
         (if (string-match "\n"
                           (buffer-substring-no-properties (region-beginning)(region-end)))
             (progn
-              (if (string= opt-type "copy" ) (point-to-register 0))
               (setq tmp-mark-pos  (get-mark-pos-ex))
               (funcall do-region-func (car tmp-mark-pos) (cadr tmp-mark-pos)  )
-              (if (string= opt-type "copy" ) (jump-to-register 0))
               ) ;-----------
           (funcall do-region-func (region-beginning) (region-end) ))
       (progn
