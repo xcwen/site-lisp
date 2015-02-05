@@ -327,6 +327,11 @@
              ( define-key evil-normal-state-local-map  (kbd "C-]") 'jedi:jump-to-definition)
              ( define-key evil-normal-state-local-map  (kbd "C-t") 'jedi:jump-back)
              ))
+(add-hook 'go-mode-hook
+          '(lambda ()
+             ( define-key evil-normal-state-local-map  (kbd "C-]") 'godef-jump )
+             ))
+
 
 (add-hook 'php-mode-hook
           '(lambda ()

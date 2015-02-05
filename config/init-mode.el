@@ -90,13 +90,14 @@
 
 (add-hook 'go-mode-hook '(lambda ( )
 						   (require 'go-autocomplete)
-                           ) )
+                           (add-hook 'before-save-hook 'gofmt-before-save)
+                           (setq godef-command   (executable-find "godef") )
+                           ))
 
 (add-hook 'org-agenda-mode-hook '(lambda ( )
 								   (org-defkey org-agenda-mode-map "j"        'org-agenda-next-line)
 								   (org-defkey org-agenda-mode-map "k"        'org-agenda-previous-line)
                                    ) )
-
 
 
 
