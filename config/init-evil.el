@@ -285,17 +285,20 @@
 ;;(evil-leader/set-key-for-mode 'emacs-lisp-mode "b" 'byte-compile-file)
 
 
+;; emacs-lisp-mode
+(defadvice find-function (before jim-find-funtion  activate compile)
+  (interactive (find-function-read))
+  (ring-insert find-tag-marker-ring (point-marker))
+  )
+
 (add-hook
  'emacs-lisp-mode-hook
  '(lambda()
     (interactive)
-    (require 'elisp-stack)
     ( define-key evil-normal-state-local-map  (kbd "C-]") 'find-function)
     ( define-key evil-insert-state-local-map  (kbd "C-]") 'find-function )
-    ( define-key evil-insert-state-local-map  (kbd "C-t") 'el-stack-location-stack-back )
-    ( define-key evil-normal-state-local-map  (kbd "C-t") 'el-stack-location-stack-back )
-
     ))
+;; ================================
 
 (defun set-rtags-bind-key ()
   "DOCSTRING"
