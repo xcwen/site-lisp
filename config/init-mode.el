@@ -92,6 +92,7 @@
 						   (require 'go-autocomplete)
                            (add-hook 'before-save-hook 'gofmt-before-save)
                            (setq godef-command   (executable-find "godef") )
+                           (setenv "GOPATH" (concat (getenv "HOME" ) "/goprojects" ))
                            ))
 
 (add-hook 'org-agenda-mode-hook '(lambda ( )
