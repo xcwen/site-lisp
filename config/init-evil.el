@@ -397,7 +397,11 @@
  'package-menu-mode-hook
  '(lambda()
     (interactive)
-    ( define-key evil-normal-state-local-map (kbd "E") 'package-menu-execute ) ))
+    ( define-key evil-normal-state-local-map (kbd "E") '(lambda()(interactive)
+                                                          (package-menu-mark-upgrades)
+                                                          (package-menu-execute )
+                                                          ))
+    ))
 
 
 (add-hook
