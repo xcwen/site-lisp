@@ -182,10 +182,6 @@
       )
     ret-str ))
 
-(defun ac-php-test ()
-    "DOCSTRING"
-  (interactive)
-  (message "find str:%s" ( ac-php-get-cur-word ) ) )
 
 (defun ac-php-get-cur-class-name ()
   "DOCSTRING"
@@ -608,7 +604,6 @@
                     (line-end-position )))
     (setq cur-word  (ac-php-get-cur-word ))
     (setq key-str-list (ac-php-get-class-at-point ))
-    (message "cur-word-list : %s " cur-word )
 
     (setq  tags-data  (ac-php-get-tags-data )  )
     (if  key-str-list  
