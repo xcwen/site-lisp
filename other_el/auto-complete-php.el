@@ -44,6 +44,7 @@
   "*Location of clang executable"
   :group 'auto-complete
   :type 'file)
+
 (defcustom ac-php-cscope 
   (executable-find "cscope")
   "*Location of cscope executable"
@@ -55,6 +56,7 @@
 
 
 
+(defvar ac-php-word-re-str "[0-9a-zA-Z_\\]+" )
 (defvar ac-php-location-stack-index 0)
 (defvar ac-php-location-stack nil)
 
@@ -157,15 +159,59 @@
   "Face for the php selected candidate."
   :group 'auto-complete)
 
+(defun ac-php-check-not-in-string-or-comment (pos)
+  "ac-php-check-in-string-or-comment"
+  (if  (nth 8 (syntax-ppss pos))  nil  t )
+  ) 
+(defun ac-php-get-syntax-backward ( re-str  pos  )
+  "DOCSTRING"
+  (let (line-txt ret-str find-pos need-find-flag )  
+    (setq need-find-flag t )
+    (save-excursion
+      (while  need-find-flag
+        (if (re-search-backward  re-str  0 t 1)
+            (progn
+              (when (ac-php-check-not-in-string-or-comment (point)) 
+                (setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+                (when (string-match   re-str    line-txt)
+                  (setq  ret-str  (match-string pos line-txt))
+                  (setq need-find-flag nil))))
+          (setq need-find-flag nil)
+          )
+        )
+      )
+    ret-str ))
+
+(defun ac-php-test ()
+    "DOCSTRING"
+  (interactive)
+  (message "find str:%s" ( ac-php-get-cur-word ) ) )
+
 (defun ac-php-get-cur-class-name ()
   "DOCSTRING"
-  (let (line-txt cur-class-name )  
-    (save-excursion
-      (when (re-search-backward "^[ \t]*\\(abstract[ \t]+\\)*class[ \t]+" 0 t 1)
-        (setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
-        (if (string-match   "class[ \t]+\\(\\w+\\)"   line-txt)
-            (setq  cur-class-name  (match-string  1 line-txt)))))
-    cur-class-name ))
+  ( ac-php-get-syntax-backward "^[ \t]*\\(abstract[ \t]+\\)*class[ \t]+\\(\\w+\\)" 2 ))
+(defun ac-php-clean-namespace-name (namespace-name)
+    (if (and namespace-name  ( string=  (substring-no-properties  namespace-name 0 1  ) "\\" ) )
+        ( substring-no-properties namespace-name 1 )
+      namespace-name))
+
+(defun ac-php-get-cur-full-class-name ()
+  "DOCSTRING"
+  (let (class-name namespace-name )
+    (setq class-name (ac-php-get-cur-class-name) )
+    (setq namespace-name (ac-php-clean-namespace-name  (ac-php-get-cur-namespace-name)) )
+
+    (if class-name
+        (concat namespace-name  (if namespace-name "\\" "" )  class-name )
+      nil
+        )))
+
+(defun ac-php-get-cur-namespace-name ()
+  "DOCSTRING"
+  ( ac-php-get-syntax-backward  (concat "^[ \t]*namespace[ \t]+\\(" ac-php-word-re-str "\\)")  1  ))
+
+
+
 (defun ac-php-get-class-at-point( )
   (let (line-txt    key-list   tmp-key-list frist-class-name  frist-key  ret-str )
     (setq line-txt (buffer-substring-no-properties
@@ -174,35 +220,37 @@
     
     (setq line-txt (replace-regexp-in-string "\\<return\\>\\|\\<echo\\>" "" line-txt  ))
     (setq line-txt (replace-regexp-in-string ".*[=(,.]" "" line-txt  ))
-    (setq line-txt (replace-regexp-in-string "^[^a-zA-Z]*" "" line-txt  ))
-    (setq line-txt (replace-regexp-in-string "[\t \\$]" "" line-txt  ))
+    (setq line-txt (replace-regexp-in-string "^[^a-zA-Z\\\\]*" "" line-txt  ))
+    (setq line-txt (replace-regexp-in-string "[\t $]" "" line-txt  ))
     (when (not (string=  line-txt "")  )
       ;;检查 :: 
       (if (and (string-match  "::"  line-txt ) (not (string-match  "\\/\\*"  line-txt ) ))
           (progn 
             (setq key-list (split-string line-txt "::" ))
             (setq frist-key (nth 0 key-list))
+            (setq frist-key (ac-php-clean-namespace-name frist-key) )
             (setq frist-class-name  frist-key  )
             (when (string= frist-key "parent" ) 
-              (setq frist-class-name (concat (ac-php-get-cur-class-name) ".__parent__" ) ))
+              (setq frist-class-name (concat (ac-php-get-cur-full-class-name) ".__parent__" ) ))
             (when (string= frist-key "self" ) 
-              (setq frist-class-name (concat (ac-php-get-cur-class-name) ) )))
+              (setq frist-class-name (concat (ac-php-get-cur-full-class-name) ) )))
 
 
         (progn
           (setq key-list (split-string line-txt "->" ))
           (setq frist-key (nth 0 key-list))
+          (setq frist-key (ac-php-clean-namespace-name frist-key) )
 
           (save-excursion
             (re-search-backward (concat  frist-key"::" ) 0 t 1) 
             (setq key-line-txt (buffer-substring-no-properties
                                 (line-beginning-position)
                                 (line-end-position )))
-            (if (string-match ( concat  frist-key "::\\(\\w+\\)" ) key-line-txt)
-                (setq  frist-class-name  (match-string  1 key-line-txt))))
+            (if (string-match ( concat  frist-key (concat "::\\(" ac-php-word-re-str "\\)" )) key-line-txt)
+                (setq  frist-class-name  (ac-php-clean-namespace-name (match-string  1 key-line-txt)))))
 
           (when (and(not frist-class-name) (or (string= frist-key "this")  ) ) 
-            (setq frist-class-name (ac-php-get-cur-class-name)  ))
+            (setq frist-class-name (ac-php-get-cur-full-class-name)  ))
           )))
 
     
@@ -303,7 +351,6 @@
     results 
     ))
 
-
 (defun ac-php-gen-data ( tags-lines project-dir-len )
   "gen-el-data"
   (let ( class-list function-list inherit-list (file-start-pos project-dir-len ) (count 0 ) )
@@ -331,20 +378,26 @@
            ((string= tag-type "f") (push   (list  tag-type  tag-name (ac-php-gen-el-func tag-name doc)  file-pos  ) function-list  ))
            ((string= tag-type "d") (push   (list  tag-type  tag-name tag-name  file-pos  ) function-list  ))
            ((or (string= tag-type "c") (string= tag-type "i"))  ;;class or  interface
-            (push   (list  tag-type  tag-name (concat tag-name  "()" ) file-pos  ) function-list  )
+
             (setq other-data  (match-string 6  line-data ) )
+            (when (string-match (concat ".*\tnamespace:\\(" ac-php-word-re-str "\\)\\(,.*\\)*") other-data)
+              (setq  tag-name   (concat (match-string 1  other-data ) "\\" tag-name) )
+              )
+
+            (push   (list  tag-type  tag-name (concat tag-name  "()" ) file-pos  ) function-list  )
             ;; add class-inherits
-            (when (string-match "^\tinherits:\\(\\w+\\)\\(,.*\\)*" other-data)
+            (when (string-match  (concat  ".*\tinherits:\\(" ac-php-word-re-str "\\)\\(,.*\\)*" ) other-data)
               (push  (list  tag-name   (match-string 1  other-data  )) inherit-list)))
+
            ((or (string= tag-type "p")  (string= tag-type "m") ) ;;class function member
             (setq other-data  (match-string 6  line-data ) )
             ;;get  return type
-            (setq return-type  (if (string-match ".*::[ \t]*\\(\\w+\\).*" doc)
-                                   (match-string 1  doc  )
+            (setq return-type  (if (string-match (concat ".*::[ \t]*\\("ac-php-word-re-str "\\).*")  doc)
+                                   (ac-php-clean-namespace-name (match-string 1  doc  ) )
                                  ""))
 
 
-            (when (string-match "^\t\\(class\\|interface\\):\\(\\w+\\)\taccess:\\(\\w+\\)" other-data)
+            (when (string-match (concat "^\t\\(class\\|interface\\):\\(" ac-php-word-re-str "\\)\taccess:\\(\\w+\\)") other-data)
               (setq class-name (match-string 2  other-data  ))
               (setq access (match-string 3  other-data  ))
               )
@@ -553,8 +606,10 @@
     (setq line-txt (buffer-substring-no-properties
                     (line-beginning-position)
                     (line-end-position )))
-    (setq cur-word  (current-word))
+    (setq cur-word  (ac-php-get-cur-word ))
     (setq key-str-list (ac-php-get-class-at-point ))
+    (message "cur-word-list : %s " cur-word )
+
     (setq  tags-data  (ac-php-get-tags-data )  )
     (if  key-str-list  
         (progn
@@ -610,7 +665,7 @@
 (defun ac-php-gen-def ()
   "DOCSTRING"
   (interactive)
-  (let (line-txt (cur-word  (current-word) ) )
+  (let (line-txt (cur-word  (ac-php-get-cur-word ) ) )
     (setq line-txt (buffer-substring-no-properties
                     (line-beginning-position)
                     (line-end-position )))
@@ -650,6 +705,16 @@
         (ac-php-candidate-class tags-data key-str-list  )
       (ac-php-candidate-other tags-data))
     ))
+(defun ac-php-get-cur-word ( )
+  (let (start-pos cur-word)
+	(save-excursion
+	  (skip-chars-backward "a-z0-9A-Z_\\\\")
+	  (setq start-pos (point))
+	  (skip-chars-forward "a-z0-9A-Z_\\\\")
+      (buffer-substring-no-properties start-pos (point))
+	  )
+    )) 
+
 (defun ac-php-show-tip	(&optional prefix)
   (interactive "P")
   ;;检查是类还是 符号 
@@ -657,7 +722,7 @@
     (setq line-txt (buffer-substring-no-properties
                     (line-beginning-position)
                     (line-end-position )))
-    (setq cur-word  (current-word))
+    (setq cur-word  (ac-php-get-cur-word ))
 
     (setq  tags-data  (ac-php-get-tags-data )  )
     (setq key-str-list (ac-php-get-class-at-point ))

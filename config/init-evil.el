@@ -93,6 +93,13 @@
 ;;编译
 
 (evil-leader/set-key-for-mode 'js2-mode "m"  'js2-mode-display-warnings-and-errors)
+(evil-leader/set-key-for-mode 'go-mode "m"
+  '(lambda()(interactive)
+     (let ( cmd )
+       (compile "go build")
+       )))
+
+
 (evil-leader/set-key-for-mode 'php-mode "m" '(lambda()
 
                                                (interactive)
