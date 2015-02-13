@@ -706,7 +706,7 @@
 	  (skip-chars-backward "a-z0-9A-Z_\\\\")
 	  (setq start-pos (point))
 	  (skip-chars-forward "a-z0-9A-Z_\\\\")
-      (buffer-substring-no-properties start-pos (point))
+      (ac-php-clean-namespace-name (buffer-substring-no-properties start-pos (point)))
 	  )
     )) 
 
