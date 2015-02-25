@@ -70,7 +70,6 @@ alias vi="emacsclient -n"
 cd /project/to/path # 项目根目录
 mkdir .tags
 ```
-
 emacs php-mode 快捷键 
 ```
     tab       : -> 补全 
