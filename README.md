@@ -63,7 +63,6 @@ alias vi="emacsclient -n"
 
 ###php 补全 
 
-
 指定项目所在的根目录,在项目根目录上生成.tags目录
 
 ``` bash
