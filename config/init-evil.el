@@ -196,7 +196,6 @@
 
 (set-evil-all-state-key ( kbd "C-}") 'find-tag-next-ex)
 (set-evil-all-state-key "\C-x\C-o"  'other-window )
-(set-evil-all-state-key (kbd "C-x C-k")  'kill-this-buffer )
 
 (set-evil-all-state-key  (kbd "C-r") 'redo)
 

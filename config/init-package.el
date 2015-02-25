@@ -1,9 +1,17 @@
 
-(require 'package+)
-;;(add-to-list 'package-archives
-;;			 '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(require 'package)
+
+
 (setq package-archives
 			 '(("melpa" . "http://melpa.milkbox.net/packages/")) )
+
+(package-initialize)
+(unless (package-installed-p 'package+ )
+  (package-refresh-contents)
+  (package-install 'package+ )
+ )
+
+(require 'package+)
 
 (package-manifest 'magit
 				  'package+
@@ -24,6 +32,7 @@
 				  'rtags
 				  'auto-complete
 				  'auto-complete-clang
+				  'ac-php
 				  'jedi
 				  'session
 				  'xcscope
