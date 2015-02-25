@@ -346,7 +346,7 @@
 (add-hook 'php-mode-hook
           '(lambda ()
              (flymake-stop-all-syntax-checks)
-             (require 'auto-complete-php)
+             (require 'ac-php)
 
              ( define-key evil-normal-state-local-map  (kbd "C-]") 'ac-php-find-symbol-at-point)
              ( define-key evil-normal-state-local-map  (kbd "C-}") 'ac-php-location-stack-forward)

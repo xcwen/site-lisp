@@ -1,5 +1,7 @@
-(require 'xcwen-misc)
+
 (require 'init-package)
+
+(require 'xcwen-misc)
 (require 'init-term)
 
 (require 'init-hl-line)
