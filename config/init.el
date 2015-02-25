@@ -1,23 +1,37 @@
 
 (require 'init-package)
+(setq g-test-ac-php  nil)
+(when g-test-ac-php  
+  (add-hook 'php-mode-hook '(lambda ()
+                              (auto-complete-mode t)
+                              (require 'ac-php)
+                              (setq ac-sources  '(ac-source-php ) )
+							  (yas-global-mode 1)
 
-(require 'xcwen-misc)
-(require 'init-term)
+                              (define-key php-mode-map  (kbd "C-]") 'ac-php-find-symbol-at-point)   ;goto define
+                              (define-key php-mode-map  (kbd "C-t") 'ac-php-location-stack-back   ) ;go back
+                              ))
+  )
 
-(require 'init-hl-line)
-(require 'init-mode)
-(require 'init-comment)
-(require 'init-indent)
+(unless  g-test-ac-php 
+  (require 'xcwen-misc)
+  (require 'init-term)
 
-(require 'init-jedi)
-(require 'init-auto-complete)
-(require 'init-yasnippet)
+  (require 'init-hl-line)
+  (require 'init-mode)
+  (require 'init-comment)
+  (require 'init-indent)
 
-(require 'init-startup)
-(require 'init-org)
-(require 'init-session)
-(require 'init-evil)
-;;
-(require 'init-key)
+  (require 'init-jedi)
+  (require 'init-auto-complete)
+  (require 'init-yasnippet)
+
+  (require 'init-startup)
+  (require 'init-org)
+  (require 'init-session)
+  (require 'init-evil)
+  ;;
+  (require 'init-key)
+  )
 
 (provide 'init)

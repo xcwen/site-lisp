@@ -63,13 +63,6 @@ alias vi="emacsclient -n"
 
 ###php 补全 
 
-安装phpctags 
-```
-cd ~
-git clone https://github.com/xcwen/phpctags.git
-cd ~/phpctags/ && make 
-sudo cp phpctags /usr/bin/ 
-```
 
 指定项目所在的根目录,在项目根目录上生成.tags目录
 
