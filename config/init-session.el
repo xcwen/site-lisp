@@ -31,7 +31,4 @@
  version-control t) ; 多次备份
 (setq auto-save-default nil);;不生成#F#文件 .
 
-
-
-
 (provide 'init-session)

@@ -10,7 +10,6 @@ xcwenn@qq.com
 `deepin2014`
 
 
-
 ## 说明 
 
 * 使用 `EVIL` 模拟 `VIM`  ,使得emacs的编辑和vim 保持95%以上的一致性

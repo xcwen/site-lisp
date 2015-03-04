@@ -348,23 +348,12 @@
              (require 'ac-php)
 
              ( define-key evil-normal-state-local-map  (kbd "C-]") 'ac-php-find-symbol-at-point)
-             ( define-key evil-normal-state-local-map  (kbd "C-}") 'ac-php-location-stack-forward)
              ( define-key evil-normal-state-local-map  (kbd "C-t") 'ac-php-location-stack-back   )
              ( define-key evil-normal-state-local-map  (kbd ",r") 'ac-php-remake-tags )
-
-             ( define-key evil-normal-state-local-map  (kbd ",s") 'php-cscope-find-egrep-pattern )
+             ( define-key evil-normal-state-local-map  (kbd ",s") 'ac-php-cscope-find-egrep-pattern )
 
              ))
 
-(defun php-cscope-find-egrep-pattern (symbol)
-  "Run egrep over the cscope database."
-  (interactive (list
-                (let (cscope-no-mouse-prompts)
-                  (cscope-prompt-for-symbol "Find this egrep pattern " nil t t))
-                ))
-  (setq cscope-initial-directory  (concat (ac-php-get-tags-dir) ".tags" )  )
-  (cscope-find-egrep-pattern symbol)
-  )
 
 
 
