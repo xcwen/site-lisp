@@ -14,12 +14,13 @@
 (require 'package+)
 
 (package-manifest 'magit
-				  'package+
 				  'smex
 				  'evil
 				  'evil-surround
 				  'evil-leader 
 				  'evil-numbers
+                  'ac-html-bootstrap 
+                  'ac-html-csswatcher
 				  'web-mode
 				  'js2-mode
 				  'go-mode

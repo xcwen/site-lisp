@@ -69,9 +69,11 @@
 							 (modify-syntax-entry ?= "." nxml-mode-syntax-table) 
 							 (modify-syntax-entry ?_ "w" nxml-mode-syntax-table) ;将 _ 加入 单词中
 							 ) )
+
 (add-hook 'web-mode-hook '(lambda ( )
 							 (modify-syntax-entry ?+ "." web-mode-syntax-table) 
-							 ) )
+                             (modify-syntax-entry ?- "w" web-mode-syntax-table) ;将 _ 加入 单词中
+							 ))
 
 
 (add-hook 'python-mode-hook '(lambda ( )

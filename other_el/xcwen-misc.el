@@ -759,6 +759,11 @@ If FORWARD is nil, search backward, otherwise forward."
     (evil-search obj-str t t)))
 
 
+(defun my-align-comments (beginning end)
+  "Align comments within marked region."
+  (interactive "*r")
+  (let (indent-tabs-mode align-to-tab-stop)
+    (align-regexp beginning end  "//"  )))
 
 (provide 'xcwen-misc)
 
