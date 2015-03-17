@@ -4,6 +4,26 @@
 (setq yas-snippet-dirs   (list   "~/site-lisp/config/my-yas" )  )
 (yas-global-mode 1)
 
+
+
+(require 'popup)
+(defun yas-popup-isearch-prompt (prompt choices &optional display-fn)
+  (when (featurep 'popup)
+    (popup-menu*
+     (mapcar
+      (lambda (choice)
+        (popup-make-item
+         (or (and display-fn (funcall display-fn choice))
+             choice)
+         :value choice))
+      choices)
+     :prompt prompt
+     ;; start isearch mode immediately
+     :isearch t
+     )))
+
+(setq yas-prompt-functions '(yas-popup-isearch-prompt yas-ido-prompt yas-no-prompt))
+
 ;; Disable yasnippet mode on some mode.
 (dolist (hook (list
                'term-mode-hook
@@ -33,5 +53,6 @@
 
 
 (provide 'init-yasnippet)
+
 
 ;;; init-yasnippet.el ends here

@@ -57,6 +57,7 @@
 							(modify-syntax-entry ?_ "w" term-mode-syntax-table) ;将 _ 加入 单词中
 							(modify-syntax-entry ?. "w" term-mode-syntax-table) ;将 _ 加入 单词中
 							(modify-syntax-entry ?- "w" term-mode-syntax-table) ;将 _ 加入 单词中
+							(modify-syntax-entry ?~ "w" term-mode-syntax-table) ;将 _ 加入 单词中
 							(modify-syntax-entry ?/ "w" term-mode-syntax-table) ;将 _ 加入 单词中
 							 ) )
 (add-hook 'erlang-mode-hook '(lambda ( )
@@ -88,6 +89,11 @@
 (add-hook 'sql-mode-hook '(lambda ( )
 							(modify-syntax-entry ?_ "w" sql-mode-syntax-table) ;将 _ 加入 单词中
                             ) )
+
+(add-hook 'emacs-lisp-mode-hook '(lambda ( )
+							(modify-syntax-entry ?- "w" emacs-lisp-mode-syntax-table) ;将 _ 加入 单词中
+                            ) )
+
 
 
 (add-hook 'go-mode-hook '(lambda ( )
