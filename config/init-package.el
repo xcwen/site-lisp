@@ -15,6 +15,7 @@
 
 (package-manifest 'magit
 				  'smex
+				  'package+
 				  'evil
 				  'evil-surround
 				  'evil-leader 
