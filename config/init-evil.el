@@ -341,6 +341,35 @@
              ( define-key evil-normal-state-local-map  (kbd "C-]") 'godef-jump )
              ))
 
+(defun my-web-mode-jump ( )
+    "DOCSTRING"
+  (interactive)
+  (let (parent cur-point  start-1 end-1 start-2 end-2   jump-pos )
+    (setq cur-point (point)  )
+    (setq parent (web-mode-element-boundaries (point)))
+    (when parent 
+      (setq start-1  (car (car parent)  )) 
+      (setq end-1  (cdr  ( car parent)  )) 
+      (setq start-2  (car (cdr parent)  )) 
+      (setq end-2  (cdr  ( cdr parent)  )) 
+
+      (unless (= start-1 start-2)
+        (if  (and (>=  cur-point   start-1 )
+                  (<=  cur-point   end-1 ))
+            (setq jump-pos  (+  start-2 2 ) )
+          (setq jump-pos  (1+  start-1 )))) 
+      (goto-char jump-pos)
+      )
+    ))
+
+(add-hook 'web-mode-hook
+          '(lambda ()
+             ( define-key evil-normal-state-local-map  (kbd "%") 'my-web-mode-jump )
+             ;;(setq web-mode-enable-current-element-highlight t )
+             ))
+
+
+
 
 (add-hook 'php-mode-hook
           '(lambda ()
