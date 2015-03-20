@@ -205,17 +205,28 @@
 
 (define-key evil-visual-state-map (kbd ",d") 'show-dict )
 
-(define-key evil-normal-state-map "gf" '(lambda()
-                                          (interactive )
-                                          (let ((cur-word (current-word )))
-                                            (if (and (string= major-mode "php-mode")
-                                                     (string-match  "_model$" cur-word ) )
-                                                (find-file (concat  "../model/" cur-word ".class.php"  )  )
-
-                                              (find-file-at-point)))))
+(define-key evil-normal-state-map "gf" 'my-goto-file )
 
 
+(defun my-goto-file ()
+    "DOCSTRING"
+  (interactive)
+  (let (line-txt  line-info filename  line deal-flag)
+    (setq line-txt (buffer-substring-no-properties
+                    (line-beginning-position)
+                    (line-end-position )))
 
+    (setq line-info  (split-string  line-txt ":" ) )
+    (when (=  (length  line-info ) 2)
+      (setq filename  (nth 0 line-info) )
+      (setq line (string-to-number  (nth 1 line-info)) )
+      (when (file-exists-p  filename  )
+        (find-file filename)
+        (goto-char (point-min))
+        (forward-line (1-  line ))
+        (setq deal-flag t )))
+
+    (unless deal-flag (find-file-at-point))))
 
 
 
@@ -357,15 +368,15 @@
         (if  (and (>=  cur-point   start-1 )
                   (<=  cur-point   end-1 ))
             (setq jump-pos  (+  start-2 2 ) )
-          (setq jump-pos  (1+  start-1 )))) 
-      (goto-char jump-pos)
-      )
-    ))
+          (setq jump-pos  (1+  start-1 )))
+
+        (goto-char jump-pos)) 
+      )))
 
 (add-hook 'web-mode-hook
           '(lambda ()
              ( define-key evil-normal-state-local-map  (kbd "%") 'my-web-mode-jump )
-             ;;(setq web-mode-enable-current-element-highlight t )
+             ( define-key evil-visual-state-local-map  (kbd "%") 'my-web-mode-jump )
              ))
 
 
