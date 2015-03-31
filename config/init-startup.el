@@ -1,4 +1,6 @@
 
+
+(setq debug-on-error t )  ;;开启调试 error
 (setq inhibit-startup-screen t)              ;关闭起动时闪屏
 (setq inhibit-splash-screen t)               ;关闭起动时闪屏
 (setq initial-scratch-message nil)           ;禁止在草稿缓存里面显示处始化信息

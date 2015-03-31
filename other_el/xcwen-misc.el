@@ -719,8 +719,8 @@ object satisfying `yas--field-p' to restrict the expansion to."
 		   ((and (string= major-mode "go-mode")  (eq ?\. c))
 			( auto-complete  '(ac-source-go )))
 
-
-
+		   ((and (string= major-mode "java-mode")  (eq ?\. c))
+			( auto-complete  ))
 		   ((and (string= major-mode "python-mode")  (eq ?\. c))
 			( jedi:complete :expand nil ))
 

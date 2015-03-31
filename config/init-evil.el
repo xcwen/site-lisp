@@ -319,19 +319,20 @@
 
 (defun set-rtags-bind-key ()
   "DOCSTRING"
-  ( define-key evil-normal-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
-  ( define-key evil-insert-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
+  (when (or  (string= major-mode "c++-mode")  (string= major-mode "c-mode"))
+    ( define-key evil-normal-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
+    ( define-key evil-insert-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
 
-  ( define-key evil-normal-state-local-map  (kbd "C-t") 'rtags-location-stack-back )
-  ( define-key evil-insert-state-local-map  (kbd "C-t") 'rtags-location-stack-back )
+    ( define-key evil-normal-state-local-map  (kbd "C-t") 'rtags-location-stack-back )
+    ( define-key evil-insert-state-local-map  (kbd "C-t") 'rtags-location-stack-back )
 
-  ( define-key evil-normal-state-local-map  (kbd "C-S-t") 'rtags-location-stack-forward)
-  ( define-key evil-insert-state-local-map  (kbd "C-S-t") 'rtags-location-stack-forward)
+    ( define-key evil-normal-state-local-map  (kbd "C-S-t") 'rtags-location-stack-forward)
+    ( define-key evil-insert-state-local-map  (kbd "C-S-t") 'rtags-location-stack-forward)
 
-  ( define-key evil-normal-state-local-map  (kbd ",s") 'rtags-find-all-references-at-point)
-  ( define-key evil-normal-state-local-map  (kbd ",r") 'rtags-reparse-file)
-  ( define-key evil-normal-state-local-map  (kbd ",h") 'rtags-display-summary)
-  )
+    ( define-key evil-normal-state-local-map  (kbd ",s") 'rtags-find-all-references-at-point)
+    ( define-key evil-normal-state-local-map  (kbd ",r") 'rtags-reparse-file)
+    ( define-key evil-normal-state-local-map  (kbd ",h") 'rtags-display-summary)
+    ))
 
 ;; C C++ tags 调整 
 (add-hook 'c++-mode-hook 'set-rtags-bind-key)
