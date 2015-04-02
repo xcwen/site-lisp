@@ -33,7 +33,7 @@
 
            
            (setq txt (format "%s:%d\n%s\n" (buffer-file-name) (line-number-at-pos ) line-msg  ) )
-           (message txt)
+           (message "%s" txt)
            (kill-new txt  )
            ))
 
