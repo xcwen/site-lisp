@@ -11,7 +11,7 @@ goldendict &
 
 setxkbmap -option terminate:ctrl_alt_bksp 
 
-/opt/cxoffice/bin/wine --bottle "腾讯通RTX客户端_2010" --check --wait-children --start "C:/users/Public/Desktop/腾讯通RTX.lnk"  &
+#/opt/cxoffice/bin/wine --bottle "腾讯通RTX客户端_2010" --check --wait-children --start "C:/users/Public/Desktop/腾讯通RTX.lnk"  &
 #VBoxManage setextradata global GUI/Customizations noMenuBar,noStatusBar
 #halt: shutduwn -h now
 #--------------- 设置 xp 自动登录 -------------

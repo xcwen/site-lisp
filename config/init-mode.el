@@ -60,6 +60,13 @@
 							(modify-syntax-entry ?~ "w" term-mode-syntax-table) ;将 _ 加入 单词中
 							(modify-syntax-entry ?/ "w" term-mode-syntax-table) ;将 _ 加入 单词中
 							 ) )
+(add-hook 'sh-mode-hook '(lambda ( )
+							(modify-syntax-entry ?_ "w" sh-mode-syntax-table) ;将 _ 加入 单词中
+							(modify-syntax-entry ?. "w" sh-mode-syntax-table) ;将 _ 加入 单词中
+							(modify-syntax-entry ?- "w" sh-mode-syntax-table) ;将 _ 加入 单词中
+							(modify-syntax-entry ?~ "w" sh-mode-syntax-table) ;将 _ 加入 单词中
+							 ) )
+	
 (add-hook 'erlang-mode-hook '(lambda ( )
 							(modify-syntax-entry ?_ "w" erlang-mode-syntax-table) ;将 _ 加入 单词中
 							 ))

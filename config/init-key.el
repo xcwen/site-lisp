@@ -35,8 +35,6 @@
 (global-set-key (kbd "C-?")   'replace-regexp)
 (global-set-key (kbd "C-^")   'do-switch-buffer )
 
-(global-set-key (kbd "C-x C-k")  'kill-this-buffer )
-
 
 (define-key global-map (kbd "M-l") 'wcy-mark-some-thing-at-point)
 

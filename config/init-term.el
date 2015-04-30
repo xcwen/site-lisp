@@ -7,6 +7,7 @@
 localhost:~/site-lisp/config$"
   )
 
+
 ;;term 行数
 (setq term-buffer-maximum-size 512 )
 
@@ -16,11 +17,14 @@ localhost:~/site-lisp/config$"
  '(lambda()
 	(yas-minor-mode -1 )
 
+
+
 	(setq term-unbind-key-list  '("C-x"))
 	(setq term-bind-key-alist nil)
 
 	(add-to-list 'term-bind-key-alist '("M-x" . smex ))
 	(add-to-list 'term-bind-key-alist '("M-1" .  delete-other-windows ))
+	(add-to-list 'term-bind-key-alist '("M-2" .   (lambda() (interactive) (evil-check-close-local-mode) )))
 	(add-to-list 'term-bind-key-alist '("C-^" . do-switch-buffer ))
 	;;(add-to-list 'term-bind-key-alist '("C-6" . do-switch-buffer ))
 
@@ -79,6 +83,7 @@ localhost:~/site-lisp/config$"
         (setq find-flag t)
         (return )
         ))
+
     (unless find-flag
       (multi-term  ))
 
@@ -111,6 +116,7 @@ localhost:~/site-lisp/config$"
       (evil-buffer nil )
     (multi-term-goto-last-term)
     ))
+
 
 
 (provide 'init-term)
