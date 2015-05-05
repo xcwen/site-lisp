@@ -106,7 +106,7 @@
 (add-hook 'go-mode-hook '(lambda ( )
 						   (require 'go-autocomplete)
                            (add-hook 'before-save-hook 'gofmt-before-save)
-                           (setq godef-command   (executable-find "godef") )
+                           (setq godef-command   (executable-find "~/bin/godef") )
                            (setenv "GOPATH" (concat (getenv "HOME" ) "/goprojects" ))
                            ))
 
