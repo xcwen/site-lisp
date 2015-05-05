@@ -24,16 +24,15 @@ localhost:~/site-lisp/config$"
 
 	(add-to-list 'term-bind-key-alist '("M-x" . smex ))
 	(add-to-list 'term-bind-key-alist '("M-1" .  delete-other-windows ))
-	(add-to-list 'term-bind-key-alist '("M-2" .   (lambda() (interactive) (evil-check-close-local-mode) )))
 	(add-to-list 'term-bind-key-alist '("C-^" . do-switch-buffer ))
 	;;(add-to-list 'term-bind-key-alist '("C-6" . do-switch-buffer ))
 
     ;; C-6 -> C-^ 
 	(add-to-list 'term-bind-key-alist '( "C-6". (lambda() (interactive)  (term-send-raw-string "\C-^" ) ) ))
 
-	(add-to-list 'term-bind-key-alist '( "C-S-t". (lambda() (interactive) (multi-term) (evil-check-close-local-mode )  ) ))
-	(add-to-list 'term-bind-key-alist '( "C-S-h". (lambda() (interactive) (multi-term-prev 1 ) (evil-check-close-local-mode )  ) ))
-	(add-to-list 'term-bind-key-alist '( "C-S-l". (lambda() (interactive) ( multi-term-next 1 ) (evil-check-close-local-mode )  ) ))
+	(add-to-list 'term-bind-key-alist '( "C-S-t". (lambda() (interactive) (multi-term)  ) ))
+	(add-to-list 'term-bind-key-alist '( "C-S-h". (lambda() (interactive) (multi-term-prev 1 )   ) ))
+	(add-to-list 'term-bind-key-alist '( "C-S-l". (lambda() (interactive) ( multi-term-next 1 )   ) ))
 	(add-to-list 'term-bind-key-alist '( "C-S-c".   term-interrupt-subjob  ))
 
 	(add-to-list 'term-bind-key-alist '( "C-c".  copy-region-or-whole-line  ))

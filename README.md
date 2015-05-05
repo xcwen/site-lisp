@@ -118,3 +118,9 @@ or:
 apt-get install python-virtualenv
 ```
 
+### go 补全jedi 需要
+```
+apt-get install golang gocode  
+```
+
+

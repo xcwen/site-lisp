@@ -41,7 +41,7 @@
   "q" '(lambda ()
          (interactive )
          (multi-term-prev 0 )
-         (evil-check-close-local-mode )
+         ;;(evil-check-close-local-mode )
          )
 
   "a" 'switch-file-opt
@@ -130,7 +130,7 @@
   "DOCSTRING"
   (interactive)
   (ido-switch-buffer )
-  (evil-check-close-local-mode)
+  ;;(evil-check-close-local-mode)
   )
 (defun evil-check-close-local-mode ()
   (when (string= major-mode  "term-mode")
