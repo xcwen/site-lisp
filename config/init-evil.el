@@ -447,6 +447,11 @@
     (define-key compilation-mode-map  (kbd  ",o")   'other-window)
     ))
 
+;;切换buffer 时，调整 term-mode no in evil  
+(add-hook 'buffer-list-update-hook '(lambda()
+                                        (evil-check-close-local-mode )
+                                      ))
+
 
 
 (evil-mode 1)

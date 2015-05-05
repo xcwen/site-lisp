@@ -40,7 +40,7 @@
 
 (global-set-key (kbd "RET")     'newline-and-indent)
 (global-set-key (kbd "C-x C-z") 'ignore)
-(global-set-key (kbd "C-x C-k") '(lambda()(interactive) (ido-kill-buffer )  ) )
+(global-set-key (kbd "C-x C-k") '(lambda()(interactive) (message "1111") (ido-kill-buffer ) (message "1111")   ) )
 (global-set-key (kbd "<f4>")    'package-list-packages)   
 (global-set-key (kbd "<f8>")    'switch-file-term)   
 (global-set-key (kbd "<f7>")    'open-term-file )   
