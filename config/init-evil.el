@@ -331,7 +331,6 @@
 
     ( define-key evil-normal-state-local-map  (kbd ",s") 'rtags-find-all-references-at-point)
     ( define-key evil-normal-state-local-map  (kbd ",r") 'rtags-reparse-file)
-    ( define-key evil-normal-state-local-map  (kbd ",h") 'rtags-display-summary)
     ))
 
 ;; C C++ tags 调整 

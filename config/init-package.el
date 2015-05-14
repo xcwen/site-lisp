@@ -15,6 +15,7 @@
 
 (package-manifest 'magit
 				  'smex
+                  'htmlize
 				  'package+
 				  'evil
 				  'evil-surround
