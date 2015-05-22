@@ -4,6 +4,7 @@
 
 
 
+(require 's)
 (require 'evil)
 (require 'evil-numbers)
 (require 'evil-leader)
@@ -25,14 +26,34 @@
   "d" 'show-dict
   "y" '(lambda ()
          (interactive )
-         (let ( line-msg  txt )
+         (let ( line-msg  txt file-name other-file-name )
            (setq line-msg (buffer-substring-no-properties
                            (line-beginning-position)
                            (line-end-position )))
+           (setq file-name (buffer-file-name) )
            
 
-           
-           (setq txt (format "%s:%d\n%s\n" (buffer-file-name) (line-number-at-pos ) line-msg  ) )
+           ;; /home/jim/telepresence-read-only/doubango-read-only/tinySIP/src/tsip_message.c:243
+           ;; /home/jim/doubango-read-only/tinySIP/src/tsip_message.c:243
+           ;; 	tsk_size_t index = 0;
+           (cond
+            ((s-match  "telepresence-read-only"    file-name   )
+             (progn
+               (setq other-file-name (s-replace "telepresence-read-only/" "" file-name ))
+               (setq txt (format "%s:%d\n%s:%d\n%s\n"
+                                 file-name  (line-number-at-pos )
+                                 other-file-name  (line-number-at-pos )
+                                 line-msg  ) )))
+            ((s-match  "jim/doubango-read-only"   file-name   )
+             (progn
+               (setq other-file-name (s-replace "/jim/" "/jim/telepresence-read-only/"  file-name ))
+               (setq txt (format "%s:%d\n%s:%d\n%s\n"
+                                 file-name  (line-number-at-pos )
+                                 other-file-name  (line-number-at-pos )
+                                 line-msg  ) )))
+
+             (t
+              (setq txt (format "%s:%d\n%s\n" file-name  (line-number-at-pos ) line-msg  ) )))
            (message "%s" txt)
            (kill-new txt  )
            ))
@@ -351,6 +372,12 @@
           '(lambda ()
              ( define-key evil-normal-state-local-map  (kbd "C-]") 'godef-jump )
              ))
+(add-hook 'java-mode-hook
+          '(lambda ()
+             ( define-key evil-normal-state-local-map  (kbd "C-]") 'eclim-java-find-declaration )
+             ( define-key evil-normal-state-local-map  (kbd ",s") 'eclim-java-find-references )
+             ))
+
 
 (defun my-web-mode-jump ( )
     "DOCSTRING"

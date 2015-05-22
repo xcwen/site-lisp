@@ -15,12 +15,14 @@
 
 (package-manifest 'magit
 				  'smex
+				  's
                   'htmlize
 				  'package+
 				  'evil
 				  'evil-surround
 				  'evil-leader 
 				  'evil-numbers
+				  'emacs-eclim
                   'ac-html-bootstrap 
                   'ac-html-csswatcher
 				  'web-mode

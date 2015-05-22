@@ -28,6 +28,7 @@
 
 (global-set-key (kbd "M-w")   'copy-region-or-whole-line)
 (global-set-key (kbd "C-SPC") nil)
+(global-set-key (kbd "C-\\") nil)
 
 (global-set-key (kbd "C-h")   'delete-backward-char)
 (global-set-key (kbd "C-S-h") 'region-indent-sub)
