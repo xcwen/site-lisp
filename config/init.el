@@ -26,6 +26,10 @@
 (unless  g-test-ac-php 
 
   (require 'init-package)
+  ;;function for  string and file
+  (require 's)
+  (require 'f)
+
   (require 'xcwen-misc)
   (require 'init-term)
 

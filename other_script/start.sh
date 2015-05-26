@@ -1,12 +1,12 @@
 #!/bin/bash
 #cd ~/bin/xptray/ && ./xptray.py &
 #virtualbox --startvm xp  &
-fcitx
-rm ~/.emacs.d/.emacs.desktop.lock
+#fcitx
+#rm ~/.emacs.d/.emacs.desktop.lock
 emacs& 
 firefox&
 #gnome-terminal --maximize &
-~/work/sshmount.sh &
+#~/work/sshmount.sh &
 goldendict &
 
 setxkbmap -option terminate:ctrl_alt_bksp 

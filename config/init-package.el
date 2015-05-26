@@ -16,6 +16,7 @@
 (package-manifest 'magit
 				  'smex
 				  's
+				  'f
                   'htmlize
 				  'package+
 				  'evil
