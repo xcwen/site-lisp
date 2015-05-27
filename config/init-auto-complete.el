@@ -127,7 +127,10 @@
 							(add-to-list 'web-mode-ac-sources-alist
 										 '("html" . (ac-source-html-attribute-value
 													  ac-source-html-tag
-													  ac-source-html-attribute)))
+													  ac-source-html-attribute)
+                                           )
+                                         '("php" . (ac-source-php))
+                                         )
 							))  
 
 (setq-default ac-sources '( ac-source-dictionary ac-source-words-in-same-mode-buffers))  

@@ -25,6 +25,7 @@
 				  'evil-numbers
 				  'emacs-eclim
                   'ac-html-bootstrap 
+                  'ac-html
                   'ac-html-csswatcher
 				  'web-mode
 				  'js2-mode

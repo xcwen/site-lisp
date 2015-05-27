@@ -694,6 +694,9 @@ object satisfying `yas--field-p' to restrict the expansion to."
                                             (third templates-and-pos))
 	  (progn
 		(message "do indent-for-tab-command  %s" major-mode )
+        (when ( string= major-mode "web-mode")
+          (message  "xx:%s"(web-mode-language-at-pos)  )
+          )
 		(let ((c (char-before)))
 		  (cond
 		   ((and (string= major-mode "c++-mode") (or (eq ?\. c)
@@ -705,7 +708,11 @@ object satisfying `yas--field-p' to restrict the expansion to."
 						 (eq ?: (char-before (1- (point)))))))
 			(my-ac-mode-complete  ))
 
-		   ((and (string= major-mode "php-mode") (or 
+		   ((and (or
+                  (string= major-mode "php-mode")
+                  (and (string= major-mode "web-mode")
+                       (string=   (web-mode-language-at-pos)  "php"  ))) 
+                 (or 
 					;; ->
 					(and (eq ?> c)
 						 (eq ?- (char-before (1- (point)))))
@@ -713,6 +720,7 @@ object satisfying `yas--field-p' to restrict the expansion to."
 					(and (eq ?: c)
 						 (eq ?: (char-before (1- (point)))))))
 
+            (message "do ac-source-php")
 			(auto-complete '(ac-source-php)  ))
 
 
