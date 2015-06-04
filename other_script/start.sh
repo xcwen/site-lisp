@@ -2,7 +2,7 @@
 #cd ~/bin/xptray/ && ./xptray.py &
 #virtualbox --startvm xp  &
 #fcitx
-#rm ~/.emacs.d/.emacs.desktop.lock
+rm ~/.emacs.d/.emacs.desktop.lock
 emacs& 
 firefox&
 #gnome-terminal --maximize &

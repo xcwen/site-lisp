@@ -416,6 +416,7 @@
 
              ( define-key evil-normal-state-local-map  (kbd "C-]") 'ac-php-find-symbol-at-point)
              ( define-key evil-normal-state-local-map  (kbd "C-t") 'ac-php-location-stack-back   )
+             ( define-key evil-normal-state-local-map  (kbd "C-}") 'ac-php-location-stack-forward  )
              ( define-key evil-normal-state-local-map  (kbd ",r") 'ac-php-remake-tags )
              ( define-key evil-normal-state-local-map  (kbd ",s") 'ac-php-cscope-find-egrep-pattern )
 

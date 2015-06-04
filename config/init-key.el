@@ -31,8 +31,8 @@
 (global-set-key (kbd "C-\\") nil)
 
 (global-set-key (kbd "C-h")   'delete-backward-char)
-(global-set-key (kbd "C-S-h") 'region-indent-sub)
-(global-set-key (kbd "C-S-l") 'region-indent-add)
+(global-set-key (kbd "C-S-h") 'multi-term-prev)
+(global-set-key (kbd "C-S-l") 'multi-term-next)
 (global-set-key (kbd "C-?")   'replace-regexp)
 (global-set-key (kbd "C-^")   'do-switch-buffer )
 
