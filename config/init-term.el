@@ -77,7 +77,7 @@ localhost:~/site-lisp/config$"
     (setq opt-file-name (buffer-file-name)   )
 
     (dolist  ( opt-buffer (buffer-list) )
-      (when (term-check-proc opt-buffer )
+      (when (string= "term-mode" (with-current-buffer opt-buffer major-mode) )
         (switch-to-buffer opt-buffer) 
         (setq find-flag t)
         (return )
