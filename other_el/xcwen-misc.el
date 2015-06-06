@@ -121,6 +121,19 @@ The test for presence of the car of ELT-CONS is done with `equal'."
   )
 
 
+
+(defun set-evil-normal-state-key-on-mode ( mode-map key func )
+  (evil-define-key 'normal  mode-map  key  func )
+  )
+
+(defun set-evil-normal-or-insert-state-key-on-mode ( mode-map key func )
+  (evil-define-key 'normal  mode-map  key  func )
+  (evil-define-key 'insert mode-map  key  func )
+  )
+
+
+
+
 (defun trim-string (string)
   "Remove white spaces in beginning and ending of STRING.
 White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."

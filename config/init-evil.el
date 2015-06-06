@@ -17,7 +17,6 @@
   "t" 'set-tags-config-for-cur-file
   "l" 'revert-buffer
   "f" 'gen-function-as-kill
-  "r" 'remake-tags
   "u" 'upper-or-lower-whole-word
   "w" 'save-buffer
   "o" 'other-window
@@ -341,19 +340,15 @@
 (defun set-rtags-bind-key ()
   "DOCSTRING"
   (when (or  (string= major-mode "c++-mode")  (string= major-mode "c-mode"))
-    ( define-key evil-normal-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
-    ( define-key evil-insert-state-local-map  (kbd "C-]") 'rtags-find-symbol-at-point)
-
-    ( define-key evil-normal-state-local-map  (kbd "C-t") 'rtags-location-stack-back )
-    ( define-key evil-insert-state-local-map  (kbd "C-t") 'rtags-location-stack-back )
-
-    ( define-key evil-normal-state-local-map  (kbd "C-S-t") 'rtags-location-stack-forward)
-    ( define-key evil-insert-state-local-map  (kbd "C-S-t") 'rtags-location-stack-forward)
-
-    ( define-key evil-normal-state-local-map  (kbd ",s") 'rtags-find-all-references-at-point)
-    ( define-key evil-normal-state-local-map  (kbd ",r") 'rtags-reparse-file)
-    ))
-
+    (let (mode-map)
+      (setq mode-map (if (string= major-mode "c++-mode") c++-mode-map  c-mode-map )  )
+      (set-evil-normal-or-insert-state-key-on-mode mode-map  )
+      (set-evil-normal-or-insert-state-key-on-mode mode-map  (kbd "C-]") 'rtags-find-symbol-at-point)
+      (set-evil-normal-or-insert-state-key-on-mode mode-map  (kbd "C-t") 'rtags-location-stack-back )
+      (set-evil-normal-or-insert-state-key-on-mode mode-map  (kbd "C-S-t") 'rtags-location-stack-forward)
+      (set-evil-normal-state-key-on-mode mode-map  (kbd ",s") 'rtags-find-all-references-at-point)
+      (set-evil-normal-state-key-on-mode mode-map  (kbd ",r") 'rtags-reparse-file)
+      ))) 
 ;; C C++ tags 调整 
 (add-hook 'c++-mode-hook 'set-rtags-bind-key)
 (add-hook 'c-mode-hook 'set-rtags-bind-key)
@@ -413,13 +408,12 @@
           '(lambda ()
              (flymake-stop-all-syntax-checks)
              (require 'ac-php)
-
-             ( define-key evil-normal-state-local-map  (kbd "C-]") 'ac-php-find-symbol-at-point)
-             ( define-key evil-normal-state-local-map  (kbd "C-t") 'ac-php-location-stack-back   )
-             ( define-key evil-normal-state-local-map  (kbd "C-}") 'ac-php-location-stack-forward  )
-             ( define-key evil-normal-state-local-map  (kbd ",r") 'ac-php-remake-tags )
-             ( define-key evil-normal-state-local-map  (kbd ",s") 'ac-php-cscope-find-egrep-pattern )
-
+             ;;(setq ac-php-cscope nil)
+             (set-evil-normal-or-insert-state-key-on-mode  php-mode-map  (kbd "C-]") 'ac-php-find-symbol-at-point)
+             (set-evil-normal-or-insert-state-key-on-mode  php-mode-map  (kbd "C-t") 'ac-php-location-stack-back   )
+             (set-evil-normal-or-insert-state-key-on-mode  php-mode-map  (kbd "C-}") 'ac-php-location-stack-forward  )
+             (set-evil-normal-or-insert-state-key-on-mode  php-mode-map  (kbd ",r") 'ac-php-remake-tags )
+             (set-evil-normal-or-insert-state-key-on-mode  php-mode-map  (kbd ",s") 'ac-php-cscope-find-egrep-pattern )
              ))
 
 

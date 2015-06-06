@@ -71,7 +71,7 @@
 
 ;;使用ubuntu 字体
 (custom-set-faces
- '(default ((t (:family "XHei Mono.Ubuntu" :foundry "unknown" :slant normal :weight normal :height 173 :width normal)))))
+ '(default ((t (:family "XHei Mono.Ubuntu" :foundry "unknown" :slant normal :weight normal :height 183 :width normal)))))
  
 
 
