@@ -76,12 +76,49 @@ localhost:~/site-lisp/config$"
   (let (find-flag opt-file-name find-path-str init-cmd  line-txt)
     (setq opt-file-name (buffer-file-name)   )
 
+    ;;go to file location dir 
+    (if (and  opt-file-name  (file-exists-p opt-file-name ) )
+        (setq file-path-str (file-name-directory opt-file-name ) )
+      (setq file-path-str (concat  (getenv "HOME") "/" )))
+
     (dolist  ( opt-buffer (buffer-list) )
-      (when (string= "term-mode" (with-current-buffer opt-buffer major-mode) )
-        (switch-to-buffer opt-buffer) 
-        (setq find-flag t)
-        (return )
-        ))
+      (let (check-free-term)
+        (with-current-buffer opt-buffer
+          (setq check-free-term
+                (and
+                 ;;term-mode
+                 (string= "term-mode" major-mode) 
+                 ;;本地，处于命令行完成状态
+                 (string-match term-local-cmd-start-line-regex-str (buffer-substring-no-properties (line-beginning-position) (line-end-position )))
+                 ;;同一个目录
+                 (string= file-path-str default-directory )
+                     )))
+      
+        (when check-free-term 
+          (switch-to-buffer opt-buffer) 
+          (setq find-flag t)
+          (return )
+        )))
+
+    (unless  find-flag 
+      (dolist  ( opt-buffer (buffer-list) )
+        (let (check-free-term)
+          (with-current-buffer opt-buffer
+            (setq check-free-term
+                  (and
+                   ;;term-mode
+                   (string= "term-mode" major-mode) 
+                   ;;本地，处于命令行完成状态
+                   (string-match term-local-cmd-start-line-regex-str (buffer-substring-no-properties (line-beginning-position) (line-end-position )))
+                   
+                   )))
+          
+          (when check-free-term 
+            (switch-to-buffer opt-buffer) 
+            (setq find-flag t)
+            (return )
+            ))))
+
 
     (unless find-flag
       (multi-term  ))
@@ -89,10 +126,6 @@ localhost:~/site-lisp/config$"
     (evil-local-mode 0)
     (undo-tree-mode -1 )
 
-    ;;go to file location dir 
-    (if (and  opt-file-name  (file-exists-p opt-file-name ) )
-        (setq file-path-str (file-name-directory opt-file-name ) )
-      (setq file-path-str (concat  (getenv "HOME") "/" )))
 
     (setq line-txt (buffer-substring-no-properties
                     (line-beginning-position)
