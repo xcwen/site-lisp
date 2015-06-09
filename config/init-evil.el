@@ -66,7 +66,37 @@
 
   "a" 'switch-file-opt
   )
+(defun php-goto-html-in-handle ()
+    "DOCSTRING"
+  (interactive)
+  (let (line-txt opt-file opt-dir )
+    (save-excursion
+      (goto-char (point-min))
+      (when (search-forward "APP_PATH" nil t  )
+        (setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+        (if (string-match   "APP_PATH[ \t]*\\.[ \t]*'\\(.*\\)'[ \t]*;"   line-txt)
+            (setq opt-dir  (concat "../" (match-string  1 line-txt)  ) )
+          )
+        ))
 
+
+    (if opt-dir 
+        (save-excursion
+          (let (file-name-begin file-name-end )
+
+            (skip-chars-backward "a-zA-Z0-9._/"   ) 
+            (setq file-name-begin (point))
+
+            (skip-chars-forward "a-zA-Z0-9._/"   ) 
+
+            (setq file-name-end (point))
+
+            (setq opt-file (concat opt-dir "/"  (buffer-substring-no-properties file-name-begin file-name-end )) )
+
+            )))
+
+    opt-file
+    ))
 ;; (switch-cc-to-h ))))
 (defun switch-file-opt ()
   "DOCSTRING"
@@ -231,7 +261,7 @@
 (defun my-goto-file ()
     "DOCSTRING"
   (interactive)
-  (let (line-txt  line-info filename  line deal-flag)
+  (let (line-txt  line-info filename  line deal-flag handle-html-file)
     (setq line-txt (buffer-substring-no-properties
                     (line-beginning-position)
                     (line-end-position )))
@@ -245,6 +275,12 @@
         (goto-char (point-min))
         (forward-line (1-  line ))
         (setq deal-flag t )))
+
+    ;; $this->tpl->display('audition.html');
+    (setq handle-html-file (php-goto-html-in-handle) )
+    (when (file-exists-p  handle-html-file  )
+      (find-file handle-html-file )
+      (setq deal-flag t ))
 
     (unless deal-flag (find-file-at-point))))
 
