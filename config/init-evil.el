@@ -412,8 +412,8 @@
              (set-evil-normal-or-insert-state-key-on-mode  php-mode-map  (kbd "C-]") 'ac-php-find-symbol-at-point)
              (set-evil-normal-or-insert-state-key-on-mode  php-mode-map  (kbd "C-t") 'ac-php-location-stack-back   )
              (set-evil-normal-or-insert-state-key-on-mode  php-mode-map  (kbd "C-}") 'ac-php-location-stack-forward  )
-             (set-evil-normal-or-insert-state-key-on-mode  php-mode-map  (kbd ",r") 'ac-php-remake-tags )
-             (set-evil-normal-or-insert-state-key-on-mode  php-mode-map  (kbd ",s") 'ac-php-cscope-find-egrep-pattern )
+             (set-evil-normal-state-key-on-mode  php-mode-map  (kbd ",r") 'ac-php-remake-tags )
+             (set-evil-normal-state-key-on-mode  php-mode-map  (kbd ",s") 'ac-php-cscope-find-egrep-pattern )
              ))
 
 
