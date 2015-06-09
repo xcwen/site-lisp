@@ -342,7 +342,6 @@
   (when (or  (string= major-mode "c++-mode")  (string= major-mode "c-mode"))
     (let (mode-map)
       (setq mode-map (if (string= major-mode "c++-mode") c++-mode-map  c-mode-map )  )
-      (set-evil-normal-or-insert-state-key-on-mode mode-map  )
       (set-evil-normal-or-insert-state-key-on-mode mode-map  (kbd "C-]") 'rtags-find-symbol-at-point)
       (set-evil-normal-or-insert-state-key-on-mode mode-map  (kbd "C-t") 'rtags-location-stack-back )
       (set-evil-normal-or-insert-state-key-on-mode mode-map  (kbd "C-S-t") 'rtags-location-stack-forward)
