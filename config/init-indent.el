@@ -25,7 +25,6 @@
 (dolist (hook (list                     ;设置用空格替代TAB的模式
                'emacs-lisp-mode-hook
                'lisp-mode-hook
-               'lisp-interaction-mode-hook
                'c-mode-hook
                'c++-mode-hook
                'js2-mode-hook

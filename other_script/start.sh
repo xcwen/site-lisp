@@ -6,7 +6,9 @@ rm ~/.emacs.d/.emacs.desktop.lock
 emacs& 
 firefox&
 #gnome-terminal --maximize &
-#~/work/sshmount.sh &
+if [ "X"$(/sbin/ifconfig  | grep 192.168.1.255 | wc -l)  ==   "X1" ] ; then
+    ~/work/sshmount.sh &
+fi
 goldendict &
 
 setxkbmap -option terminate:ctrl_alt_bksp 

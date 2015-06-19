@@ -66,12 +66,33 @@
 
   "a" 'switch-file-opt
   )
-(defun php-goto-html-in-handle ()
+(defun js-get-file-at-point ()
+  (interactive)
+  (let( cur-path  pos-info)
+        (save-excursion
+          (let (file-name-begin file-name-end file-name  )
+
+            (skip-chars-backward "a-zA-Z0-9._/"   ) 
+            (setq file-name-begin (point))
+
+            (skip-chars-forward "a-zA-Z0-9._/"   ) 
+
+            (setq file-name-end (point))
+            (setq cur-path (buffer-substring-no-properties file-name-begin file-name-end )) 
+            (setq file-name ( concat  (nth 1  (s-split "/" cur-path  )) ".class.php" ) )
+            (setq pos-info ( concat "/function.*" (nth 2  (s-split "/" cur-path  )) ) )
+            (setq cur-path (concat (nth 0  (s-split "/webroot/" (buffer-file-name)) ) "/handler/" file-name )
+
+            )))
+        (list cur-path pos-info)
+    ))
+(defun php-get-html-in-handle ()
     "DOCSTRING"
   (interactive)
   (let (line-txt opt-file opt-dir )
     (save-excursion
       (goto-char (point-min))
+
       (when (search-forward "APP_PATH" nil t  )
         (setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
         (if (string-match   "APP_PATH[ \t]*\\.[ \t]*'\\(.*\\)'[ \t]*;"   line-txt)
@@ -95,7 +116,7 @@
 
             )))
 
-    opt-file
+    (list opt-file  nil )
     ))
 ;; (switch-cc-to-h ))))
 (defun switch-file-opt ()
@@ -261,7 +282,7 @@
 (defun my-goto-file ()
     "DOCSTRING"
   (interactive)
-  (let (line-txt  line-info filename  line deal-flag handle-html-file)
+  (let (line-txt  line-info filename  line deal-flag file-info)
     (setq line-txt (buffer-substring-no-properties
                     (line-beginning-position)
                     (line-end-position )))
@@ -276,10 +297,24 @@
         (forward-line (1-  line ))
         (setq deal-flag t )))
 
-    ;; $this->tpl->display('audition.html');
-    (setq handle-html-file (php-goto-html-in-handle) )
-    (when (file-exists-p  handle-html-file  )
-      (find-file handle-html-file )
+     ;;$this->tpl->display('audition.html')
+     (when (string= "php-mode" major-mode)
+       (setq file-info (php-get-html-in-handle) ))
+     (when (string= "js2-mode" major-mode)
+       (setq file-info (js-get-file-at-point) ))
+
+
+
+    (when  (file-exists-p  (nth 0 file-info)  )
+      (find-file  (nth 0 file-info)  )
+      ;;pos info
+      (let ((pos-info (nth 1 file-info)) )
+        (when pos-info  
+          (when (string=(substring-no-properties pos-info 0 1 )  "/")
+            (goto-char (point-min))
+            (re-search-forward  (substring-no-properties pos-info 1 ) )
+            )
+        ))
       (setq deal-flag t ))
 
     (unless deal-flag (find-file-at-point))))
