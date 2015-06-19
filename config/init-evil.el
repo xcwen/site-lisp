@@ -305,7 +305,7 @@
 
 
 
-    (when  (file-exists-p  (nth 0 file-info)  )
+    (when  ( and (nth 0 file-info) (file-exists-p  (nth 0 file-info)  ) )
       (find-file  (nth 0 file-info)  )
       ;;pos info
       (let ((pos-info (nth 1 file-info)) )
