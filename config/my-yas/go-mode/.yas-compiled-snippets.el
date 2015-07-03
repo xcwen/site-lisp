@@ -17,4 +17,4 @@
                        ("test" "func Test${1:Feature}(t *testing.T) {\n	$0\n}\n" "test {}" nil nil nil nil nil nil)))
 
 
-;;; Do not edit! File generated at Fri Jun 19 16:51:29 2015
+;;; Do not edit! File generated at Thu Jun 25 09:55:25 2015

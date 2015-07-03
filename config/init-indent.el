@@ -44,5 +44,4 @@
 			 ))
 
 (provide 'init-indent)
-
 ;;; init-indent.el ends here

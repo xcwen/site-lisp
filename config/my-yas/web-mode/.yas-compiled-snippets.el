@@ -29,6 +29,7 @@
                        ("modal" "<div class=\"modal fade\" \n     id=\"$1\" \n     tabindex=\"-1\" \n     role=\"dialog\" \n     aria-labelledby=\"$2\" \n     aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <button type=\"button\" \n		class=\"close\" \n		data-dismiss=\"modal\" \n		aria-hidden=\"true\">&times;</button>\n        <h4 class=\"modal-title\" id=\"$2\">$3</h4>\n      </div>\n      <div class=\"modal-body\">\n        $0\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" \n                class=\"btn btn-default\" \n                data-dismiss=\"modal\">${5:Close}</button>\n        <button type=\"button\" \n		class=\"btn btn-primary\">${6:Save}</button>\n      </div>\n    </div>\n  </div>\n</div>" "modal" nil
                         ("twitter-bootstrap")
                         nil nil "direct-keybinding" nil)
+                       ("on " "$(\"$1\").on (\"${2:click}\",function( ){\n$0\n}); \n" "on " nil nil nil nil nil nil)
                        ("panel" "<div class=\"panel $1\">\n  <div class=\"panel-heading\">$2</div>\n  <div class=\"panel-body\">\n    $0\n  </div>\n</div>" "panel" nil
                         ("twitter-bootstrap")
                         nil nil nil nil)
@@ -38,9 +39,10 @@
                        ("table" "<table   class=\"table table-bordered table-striped\"   >" "table" nil
                         ("twitter-bootstrap")
                         nil nil nil nil)
+                       ("tdopt" "<td class=\"remove-for-not-xs\" ></td>\n\n<td class=\"remove-for-xs\" >操作</td>\n\n<include: file=\"../al_common/td_xs_opt.html\" />\n\n<td class=\"remove-for-xs\" >\n    <div   data-userid=\"[$var.userid]\" data-stu_nick=\"[$var.nick]\">\n        <a href=\"javascript:;\" class=\"btn  fa fa-info td-info\"></a>\n        <a href=\"javascript:;\" class=\"btn fa fa-user opt-user \"></a>\n    </div>\n</td>\n" "tdopt" nil nil nil nil nil nil)
                        ("xdtd" "<include: file=\"../al_common/td_xs_opt.html\" />" "xdtd" nil
                         ("twitter-bootstrap")
                         nil nil nil nil)))
 
 
-;;; Do not edit! File generated at Fri Jun 19 16:51:29 2015
+;;; Do not edit! File generated at Thu Jun 25 09:55:25 2015

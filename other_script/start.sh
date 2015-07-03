@@ -6,7 +6,7 @@ rm ~/.emacs.d/.emacs.desktop.lock
 emacs& 
 firefox&
 #gnome-terminal --maximize &
-if [ "X"$(/sbin/ifconfig  | grep 192.168.1.255 | wc -l)  ==   "X1" ] ; then
+if [ "X"$(/sbin/ifconfig  | grep eth0 | wc -l)  ==   "X1" ] ; then
     ~/work/sshmount.sh &
 fi
 goldendict &

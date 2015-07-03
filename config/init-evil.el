@@ -57,7 +57,6 @@
            (kill-new txt  )
            ))
 
-  "s" 'cscope-find-egrep-pattern
   "q" '(lambda ()
          (interactive )
          (multi-term-prev 0 )
@@ -440,7 +439,8 @@
 (add-hook 'java-mode-hook
           '(lambda ()
              ( define-key evil-normal-state-local-map  (kbd "C-]") 'eclim-java-find-declaration )
-             ( define-key evil-normal-state-local-map  (kbd ",s") 'eclim-java-find-references )
+
+             (set-evil-normal-state-key-on-mode  java-mode-map (kbd ",s")  'eclim-java-find-references  )
              ))
 
 
