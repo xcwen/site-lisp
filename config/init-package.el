@@ -19,6 +19,7 @@
 				  'f
                   'htmlize
 				  'package+
+                  'auto-package-update
 				  'evil
 				  'evil-surround
 				  'evil-leader 
@@ -47,6 +48,8 @@
 				  'php-mode
 				  '2048-game
 				  )
+
+(require 'auto-package-update)
 
 (provide 'init-package)
 
