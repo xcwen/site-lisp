@@ -20,7 +20,7 @@ xcwenn@qq.com
 
 * 基于  `package.el`  管理所有的包
 
-* 基于 phpctags + 自己开发的 auto-complete-php.el 实现的 php 补全，跳转 
+* 基于 phpctags +  [ac-php](https://github.com/xcwen/ac-php)  实现的 php 补全，跳转 
 
 * 使用  `rtags` + `clang` 作 `c++` 代码补全
 
