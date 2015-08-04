@@ -104,11 +104,11 @@
 
 (setq ac-clang-flags  
 	  (mapcar (lambda (item)(concat "-I" item))  
-			 (split-string (shell-command-to-string "g++ -E -x c++ - -v < /dev/null 2>&1  | grep \"^ [^ ]*$\"  "))))
+			 (split-string (shell-command-to-string " g++ -E -x c++ - -v < /dev/null 2>&1  | grep \"^ [^ ]*$\"  "))))
 
 (setq ac-clang-flags-g++-base
 	  (mapcar (lambda (item)(concat "-I" item))  
-			 (split-string (shell-command-to-string "g++ -E -x c++ - -v < /dev/null 2>&1  | grep \"^ [^ ]*$\"  "))))
+			 (split-string (shell-command-to-string " g++ -E -x c++ - -v < /dev/null 2>&1  | grep \"^ [^ ]*$\"  "))))
 
 
 

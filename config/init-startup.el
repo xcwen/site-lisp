@@ -18,6 +18,7 @@
 (setq x-select-enable-clipboard t)           ;支持emacs和外部程序的粘贴
 (setq x-stretch-cursor t)                    ;光标在 TAB 字符上会显示为一个大方块
 (setq auto-revert-mode 1)                    ;自动更新buffer
+(global-auto-revert-mode 1)
 (setq max-lisp-eval-depth 40000)             ;lisp最大执行深度
 (setq max-specpdl-size 10000)                ;最大容量
 (setq kill-ring-max 1024)                    ;用一个很大的 kill ring. 这样防止我不小心删掉重要的东西
