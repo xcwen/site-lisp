@@ -114,10 +114,14 @@
 
 
 ;; rtags 
+
+;;fix
+(provide  'tramp)
 (require 'rtags)
 (require 'rtags-ac)
 (setq rtags-rc-log-enabled t)
 (setq rtags-completions-enabled t)
+
 
 
 ;;web-mode ac-html 

@@ -21,7 +21,7 @@
   "w" 'save-buffer
   "o" 'other-window
   "c" 'find-cmd-def
-  "p" 'proto-show-msg
+  "p" 'ac-php-reformat
   "d" 'show-dict
   "y" '(lambda ()
          (interactive )
@@ -65,6 +65,73 @@
 
   "a" 'switch-file-opt
   )
+
+(defun ac-php-reformat-args ( args-str)
+  (if (string= (s-trim args-str ) "void" )
+      ""
+    (s-replace-all '(("["."" )  ("]"."" )) args-str  )))
+
+(defun ac-php-reformat ()
+  "DOCSTRING"
+  (interactive)
+  (let (line-txt (txt "") m-data )
+    (setq line-txt (buffer-substring-no-properties
+                    (line-beginning-position)
+                    (line-end-position )))
+    (cond
+     ((not (s-matches-p ".*(.*).*" line-txt) )
+      ;;const integer CALL_TOSTRING = 1 ;
+      (setq m-data (s-match "^[\t ]*\\(\\w+\\)[ \t]+\\(\\w+\\)[ \t]+\\(.*\\)$" line-txt) )
+      (setq txt (format"\t/** @var %s */\n\t %s  %s" (nth 2 m-data ) (nth 1 m-data) (nth 3 m-data)) ) 
+      )
+     (t
+      (let ( function-items function-args return-type  (items-str "" ) (end-str "{}") function-name)
+
+        (setq m-data (s-match "^\\([^(]*\\)(\\(.*\\))[ \t]*$" line-txt) )
+        (setq function-items (s-split " " (s-trim  (nth 1 m-data))))
+        (setq function-args (ac-php-reformat-args (nth 2 m-data)))
+        
+        
+        (dolist (item function-items )
+          (if (or (string= item  "public")
+                  (string= item  "static")
+                  (string= item  "protected")
+                  (string= item  "readonly")
+                  (string= item  "final")
+                  (string= item  "abstract"))
+              
+              (progn 
+                (when (string= item  "abstract" ) (setq end-str ";"))
+                (when (not (string= item "readonly"  ) )
+                  (setq items-str  (concat items-str  item  " " )))
+                )
+
+            (if return-type
+                (setq function-name item )
+              (progn 
+                (if (string= "__construct" item)
+                    (progn
+                      (setq function-name item )
+                      (setq return-type "void")
+                      )
+                  (setq return-type item)
+                  )
+                )
+              ))
+          )
+        (setq txt (format "\t/** @return %s */\n\t%s function %s(%s)%s " return-type items-str function-name function-args end-str ))
+        )
+
+
+      )) 
+
+    (beginning-of-line)
+    (kill-line)
+    (insert txt )
+    (next-line)
+
+    ))
+
 (defun js-get-file-at-point ()
   (interactive)
   (let( cur-path  pos-info)
@@ -163,6 +230,7 @@
 ;;编译
 
 (evil-leader/set-key-for-mode 'js2-mode "m"  'js2-mode-display-warnings-and-errors)
+(evil-leader/set-key-for-mode 'emacs-lisp-mode  "m"  'byte-compile-file )
 (evil-leader/set-key-for-mode 'go-mode "m"
   '(lambda()(interactive)
      (let ( cmd )
