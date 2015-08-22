@@ -179,11 +179,18 @@
 
             (skip-chars-forward "a-zA-Z0-9._/"   ) 
 
+
             (setq file-name-end (point))
             (setq cur-path (buffer-substring-no-properties file-name-begin file-name-end )) 
-            (setq cur-path (concat (nth 0  (s-split "/template/" (buffer-file-name)) ) "/webroot/" cur-path )
 
-            )))
+            (if (s-match "\.js"  cur-path )
+                (setq cur-path (concat (nth 0  (s-split "/template/" (buffer-file-name)) ) "/webroot/" cur-path ))
+              (progn 
+                (setq file-name ( concat  (nth 1  (s-split "/" cur-path  )) ".class.php" ) )
+                (setq pos-info ( concat "/function.*" (nth 2  (s-split "/" cur-path  )) ) )
+                (setq cur-path (concat (nth 0  (s-split "/template/" (buffer-file-name)) ) "/handler/" file-name )))
+            )
+            ))
         (list cur-path pos-info)
     ))
 
