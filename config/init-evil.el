@@ -67,14 +67,26 @@
   )
 
 (defun ac-php-reformat-args ( args-str)
-  (if (string= (s-trim args-str ) "void" )
-      ""
-    (s-replace-all '(("["."" )  ("]"."" )) args-str  )))
+  (let ((args-arr (s-split "\\[" (s-replace "$..." "$__args__" args-str) )) match-arr )
+    (setq args-str (car args-arr ) )
+    (dolist (item (cdr args-arr) )
+      (setq args-str (concat  args-str  (if (s-match "="  item  )
+          item
+        (setq match-arr (s-match "\\(.*\\)\\(\\$[a-zA-Z_0-9]+\\)\\(.*\\)"  item ) )
+        (concat (nth 1  match-arr)  (nth 2  match-arr) "=NULL " (nth 3 match-arr) )
+          )))
+      
+        )
+    
+    (if (string= (s-trim args-str ) "void" )
+        ""
+      (s-replace-all '(("["."" )  ("]"."" )) args-str  ))) 
+  )
 
 (defun ac-php-reformat ()
   "DOCSTRING"
   (interactive)
-  (let (line-txt (txt "") m-data )
+  (let (line-txt (txt nil) m-data )
     (setq line-txt (buffer-substring-no-properties
                     (line-beginning-position)
                     (line-end-position )))
@@ -82,8 +94,10 @@
      ((not (s-matches-p ".*(.*).*" line-txt) )
       ;;const integer CALL_TOSTRING = 1 ;
       (setq m-data (s-match "^[\t ]*\\(\\w+\\)[ \t]+\\(\\w+\\)[ \t]+\\(.*\\)$" line-txt) )
-      (setq txt (format"\t/** @var %s */\n\t %s  %s" (nth 2 m-data ) (nth 1 m-data) (nth 3 m-data)) ) 
-      )
+      (when m-data 
+        (setq txt (format"\t/** @var %s */\n\t %s  %s"
+                         (nth 2 m-data ) (nth 1 m-data) (nth 3 m-data)) )))
+
      (t
       (let ( function-items function-args return-type  (items-str "" ) (end-str "{}") function-name)
 
@@ -97,6 +111,7 @@
                   (string= item  "static")
                   (string= item  "protected")
                   (string= item  "readonly")
+                  (string= item  "private")
                   (string= item  "final")
                   (string= item  "abstract"))
               
@@ -125,10 +140,11 @@
 
       )) 
 
-    (beginning-of-line)
-    (kill-line)
-    (insert txt )
-    (next-line)
+    (when txt 
+      (beginning-of-line)
+      (kill-line)
+      (insert txt )
+      (next-line))
 
     ))
 
@@ -152,6 +168,25 @@
             )))
         (list cur-path pos-info)
     ))
+(defun web-get-file-at-point ()
+  (interactive)
+  (let( cur-path  pos-info)
+        (save-excursion
+          (let (file-name-begin file-name-end file-name  )
+
+            (skip-chars-backward "a-zA-Z0-9._/"   ) 
+            (setq file-name-begin (point))
+
+            (skip-chars-forward "a-zA-Z0-9._/"   ) 
+
+            (setq file-name-end (point))
+            (setq cur-path (buffer-substring-no-properties file-name-begin file-name-end )) 
+            (setq cur-path (concat (nth 0  (s-split "/template/" (buffer-file-name)) ) "/webroot/" cur-path )
+
+            )))
+        (list cur-path pos-info)
+    ))
+
 (defun php-get-html-in-handle ()
     "DOCSTRING"
   (interactive)
@@ -369,6 +404,10 @@
        (setq file-info (php-get-html-in-handle) ))
      (when (string= "js2-mode" major-mode)
        (setq file-info (js-get-file-at-point) ))
+
+     (when (string= "web-mode" major-mode)
+       (setq file-info (web-get-file-at-point) ))
+
 
 
 
