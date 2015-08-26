@@ -48,6 +48,9 @@
 (mouse-avoidance-mode 'jump)  ;光标靠近鼠标时让鼠标自动走开
 (scroll-bar-mode 0)           ;去掉滚动条  
 
+(setq ac-php-use-cscope-flag  nil)
+(setq vc-handled-backends nil) 
+
 (my-maximized)
 
 (require 'ido)

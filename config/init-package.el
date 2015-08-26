@@ -13,7 +13,8 @@
 
 (require 'package+)
 
-(package-manifest 'magit
+(package-manifest
+ ;;'magit
 				  'smex
 				  's
 				  'f
