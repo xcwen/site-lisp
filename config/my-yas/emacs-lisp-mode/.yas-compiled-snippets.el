@@ -2,7 +2,7 @@
 ;;; Snippet definitions:
 ;;;
 (yas-define-snippets 'emacs-lisp-mode
-                     '(("d" "(defun $1 ()\n  \"DOCSTRING\"\n  (interactive)\n  (let (var1)\n    (setq var1 some)\n    $0\n  ))" "defun" nil nil nil nil nil nil)))
+                     '(("d" "(defun $1 ()\n  \"DOCSTRING\"\n  (interactive)\n  (let (var1)\n    (setq var1 some)\n    $0\n  ))" "defun" nil nil nil "/home/jim/site-lisp/config/my-yas/emacs-lisp-mode/d" nil nil)))
 
 
-;;; Do not edit! File generated at Thu Jun 25 09:55:25 2015
+;;; Do not edit! File generated at Fri Sep 18 10:42:48 2015

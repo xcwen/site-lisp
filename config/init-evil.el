@@ -19,6 +19,7 @@
   "f" 'gen-function-as-kill
   "u" 'upper-or-lower-whole-word
   "w" 'save-buffer
+  "j" 'my-join-line
   "o" 'other-window
   "c" 'find-cmd-def
   "p" 'ac-php-reformat
@@ -65,6 +66,18 @@
 
   "a" 'switch-file-opt
   )
+
+(defun my-join-line ()
+    "DOCSTRING"
+  (interactive)
+  (let (var1 pos-start post-end buf)
+    (setq tmp (get-mark-pos-ex  ))
+    (setq pos-start  (nth 0 tmp) )
+    (setq pos-end  (nth 1 tmp) )
+    (setq buf (buffer-substring-no-properties  pos-start pos-end )  )
+    (setq buf (s-replace  "\n" "" buf ) )
+    (kill-new buf )
+    ))
 
 (defun ac-php-reformat-args ( args-str)
   (let ((args-arr (s-split "\\[" (s-replace "$..." "$__args__" args-str) )) match-arr )
@@ -263,9 +276,19 @@
 
 ;;(evil-leader/set-key-for-mode 'emacs-lisp-mode "b" 'byte-compile-file)
 
+
+(defun php-gen-proto ()
+    "DOCSTRING"
+  (interactive)
+  (let (var1)
+    (kill-new (concat "http://api.weiyi.com/" (f-base   (f-base (buffer-file-name) ) ) "/"  (current-word)  ) )
+    
+    )) 
 ;;显示信息
 (evil-leader/set-key-for-mode 'php-mode "i"  'ac-php-show-tip)
 (evil-leader/set-key-for-mode 'php-mode "f"  'ac-php-gen-def)
+(evil-leader/set-key-for-mode 'php-mode "F"  'php-gen-proto)
+
 
 (evil-leader/set-key-for-mode 'emacs-lisp-mode "e"  'eval-last-sexp)
 

@@ -2,7 +2,7 @@
 ;;; Snippet definitions:
 ;;;
 (yas-define-snippets 'org-mode
-                     '(("src" "#+BEGIN_SRC   $1\n$0\n#+END_SRC  \n\n" "include \"\"" nil nil nil nil nil nil)))
+                     '(("src" "#+BEGIN_SRC   $1\n$0\n#+END_SRC  \n\n" "include \"\"" nil nil nil "/home/jim/site-lisp/config/my-yas/org-mode/src" nil nil)))
 
 
-;;; Do not edit! File generated at Thu Jun 25 09:55:25 2015
+;;; Do not edit! File generated at Fri Sep 18 10:42:48 2015

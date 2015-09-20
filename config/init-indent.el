@@ -11,6 +11,7 @@
 		c-hanging-comment-ender-p nil
 		indent-tabs-mode nil)
 
+
   ;; { 的配对 单独处理
   (make-local-variable 'skeleton-pair-alist)
   (setq skeleton-pair-alist  '((?{ \n > _ \n ?} >)))
@@ -20,15 +21,15 @@
 
 ;;minibuffer-inactive-mode 不使用
 
-(defvar my-electic-pair-modes '(minibuffer-inactive-mode))
+(defvar my-electic-pair-modes '(minibuffer-inactive-mode  fundamental-mode))
 
 (defun my-inhibit-electric-pair-mode (char)
-  (not (member major-mode my-electic-pair-modes)))
-
+  (member major-mode my-electic-pair-modes))
 (setq electric-pair-inhibit-predicate #'my-inhibit-electric-pair-mode)
 
 ;;正常符号配对
 (electric-pair-mode 1)
+
 
 
 (dolist (hook (list                     ;设置用空格替代TAB的模式
@@ -46,9 +47,7 @@
 
 (add-hook 'python-mode-hook
 		  '(lambda()
-
 			 (setq tab-width 4  indent-tabs-mode nil)
-			 ;;正常符号配对
 			 ))
 
 
