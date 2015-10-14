@@ -86,9 +86,10 @@
 ;;-----------------------------------------------------
 
 ;; 与其他程序之间复制粘贴
-(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
-(setq x-select-enable-clipboard t)
-(setq interprogram-paste-function 'x-cut-buffer-or-selection-value) 
+(when (check-in-linux)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+  (setq x-select-enable-clipboard t)
+  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
 ;;---------------------------------------------------------------------------
 ;;最近文件列表
 (require 'recentf)

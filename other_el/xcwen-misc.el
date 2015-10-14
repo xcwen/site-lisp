@@ -23,6 +23,9 @@
 ;; 
 
 ;;; Code:
+(defun check-in-linux ()
+  (string= system-type "gnu/linux" )
+    )
 (defun sudo-save ()
   (interactive)
   (if (not buffer-file-name)
@@ -220,12 +223,15 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
 (defun fcitx-inactivate-input-method()
   "fcitx 关闭输入法"
   (interactive)
-  (call-process  "fcitx-remote" nil 0 nil  "-c"))
+  (when (check-in-linux)
+    (call-process  "fcitx-remote" nil 0 nil  "-c") )
+  )
 
 (defun fcitx-activate-input-method()
   "fcitx 开启输入法"
   (interactive)
-  (call-process  "fcitx-remote" nil 0 nil  "-o"))
+  (when (check-in-linux)
+    (call-process  "fcitx-remote" nil 0 nil  "-o")))
 
 
 (defun proto-show-msg ()
@@ -277,19 +283,21 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
 ;;全屏
 (defun my-fullscreen ()
   (interactive)
-  (x-send-client-message
-   nil 0 nil "_NET_WM_STATE" 32
-   '(2 "_NET_WM_STATE_FULLSCREEN" 0))
+  (when (check-in-linux)
+    (x-send-client-message
+     nil 0 nil "_NET_WM_STATE" 32
+     '(2 "_NET_WM_STATE_FULLSCREEN" 0)) )
   )
 ;;最化大
 (defun my-maximized ()
   (interactive)
-  (x-send-client-message
-   nil 0 nil "_NET_WM_STATE" 32
-   '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
-  (x-send-client-message
-   nil 0 nil "_NET_WM_STATE" 32
-   '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
+  (when (check-in-linux ) 
+    (x-send-client-message
+     nil 0 nil "_NET_WM_STATE" 32
+     '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
+    (x-send-client-message
+     nil 0 nil "_NET_WM_STATE" 32
+     '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0)) )
   )
 ;;(progn (skip-syntax-backward "w_") (point))
 

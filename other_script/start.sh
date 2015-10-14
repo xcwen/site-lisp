@@ -1,7 +1,9 @@
 #!/bin/bash
+
+xmodmap -e "keycode 94 = grave asciitilde " 
 #cd ~/bin/xptray/ && ./xptray.py &
 #virtualbox --startvm xp  &
-#fcitx
+fcitx
 rm ~/.emacs.d/.emacs.desktop.lock
 emacs& 
 firefox&
@@ -12,6 +14,7 @@ fi
 goldendict &
 
 setxkbmap -option terminate:ctrl_alt_bksp 
+
 
 #/opt/cxoffice/bin/wine --bottle "腾讯通RTX客户端_2010" --check --wait-children --start "C:/users/Public/Desktop/腾讯通RTX.lnk"  &
 #VBoxManage setextradata global GUI/Customizations noMenuBar,noStatusBar
