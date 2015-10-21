@@ -362,6 +362,13 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
       (kill-new func-msg))))
 
 
+(defun xcwen-beautify-json ()
+  (interactive)
+  (let ((b (if mark-active (min (point) (mark)) (point-min)))
+        (e (if mark-active (max (point) (mark)) (point-max))))
+    (shell-command-on-region b e
+"python -c 'import sys,json; data=json.loads(sys.stdin.read()); print json.dumps(data,sort_keys=True,indent=4).decode(\"unicode_escape\").encode(\"utf8\",\"replace\")'"
+      (current-buffer) t)))
 
 ;;删除当前单词
 (defun kill-whole-word (&optional arg)

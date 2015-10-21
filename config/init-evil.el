@@ -8,9 +8,58 @@
 (require 'evil)
 (require 'evil-numbers)
 (require 'evil-leader)
+;; evil-surround
+(require 'evil-surround)
+(global-evil-surround-mode 1)
+(setq-default evil-surround-pairs-alist '((?\( . ("(" . ")"))
+                                          (?\[ . ("[" . "]"))
+                                          (?\{ . ("{" . "}"))
 
+                                          (?\) . ("( " . " )"))
+                                          (?\] . ("[ " . " ]"))
+                                          (?\} . ("{ " . " }"))
+                                          (?>  . ("< " . " >"))
+
+                                          (?# . ("#{" . "}"))
+                                          (?p . ("(" . ")"))
+                                          (?b . ("[" . "]"))
+                                          (?B . ("{" . "}"))
+                                          (?< . ("<" . ">"))
+                                          (?t . evil-surround-read-tag)))
+
+(defun cofi/surround-add-pair (trigger begin-or-fun &optional end)
+  "Add a surround pair.
+If `end' is nil `begin-or-fun' will be treated as a fun."
+  (push (cons (if (stringp trigger)
+                  (string-to-char trigger)
+                trigger)
+              (if end
+                  (cons begin-or-fun end)
+                begin-or-fun))
+        evil-surround-pairs-alist))
+
+(add-hook  'emacs-lisp-mode-hook (lambda ()
+                                   (cofi/surround-add-pair "`" "`"  "'"))
+           )
+;; (add-to-hooks (lambda ()
+;;                 (cofi/surround-add-pair "~" "``"  "``"))
+;;               '(markdown-mode-hook rst-mode-hook python-mode-hook))
+;; (add-hook 'LaTeX-mode-hook (lambda ()
+;;                              (cofi/surround-add-pair "~" "\\texttt{" "}")
+;;                              (cofi/surround-add-pair "=" "\\verb=" "=")
+;;                              (cofi/surround-add-pair "/" "\\emph{" "}")
+;;                              (cofi/surround-add-pair "*" "\\textbf{" "}")
+;;                              (cofi/surround-add-pair "P" "\\(" "\\)")))
+;; (add-to-hooks (lambda ()
+;;                 (cofi/surround-add-pair "c" ":class:`" "`")
+;;                 (cofi/surround-add-pair "f" ":func:`" "`")
+;;                 (cofi/surround-add-pair "m" ":meth:`" "`")
+;;                 (cofi/surround-add-pair "a" ":attr:`" "`")
+;;                 (cofi/surround-add-pair "e" ":exc:`" "`"))
+;;               '(rst-mode-hook python-mode-hook)))
+
+;;;=====================
 (global-evil-leader-mode)
-
 ;;normal-state
 (evil-leader/set-key
   "k" 'kill-other-buffers
