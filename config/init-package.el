@@ -20,6 +20,7 @@
 				  'f
                   'htmlize
 				  'package+
+                  'showkey
                   'auto-package-update
 				  'evil
 				  'evil-surround

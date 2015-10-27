@@ -362,6 +362,13 @@ White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
       (kill-new func-msg))))
 
 
+(defun xcwen-beautify-xml ()
+    (interactive)
+    (save-excursion
+        (shell-command-on-region (point-min) (point-max) "xmllint --format -" (buffer-name) t)
+        (nxml-mode)
+        (indent-region begin end)))
+
 (defun xcwen-beautify-json ()
   (interactive)
   (let ((b (if mark-active (min (point) (mark)) (point-min)))
