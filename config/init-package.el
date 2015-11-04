@@ -3,7 +3,7 @@
 
 
 (setq package-archives
-			 '(("melpa" . "http://melpa.milkbox.net/packages/")) )
+			 '(("melpa" . "https://melpa.org/packages/")) )
 
 (package-initialize)
 (unless (package-installed-p 'package+ )
