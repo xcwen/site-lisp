@@ -379,12 +379,6 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 (custom-set-variables
  '(evil-symbol-word-search  t))
 
-(defun do-switch-buffer ()
-  "DOCSTRING"
-  (interactive)
-  (ido-switch-buffer )
-  ;;(evil-check-close-local-mode)
-  )
 (defun evil-check-close-local-mode ()
   (when (string= major-mode  "term-mode")
     (evil-local-mode 0)
@@ -452,7 +446,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 
 (set-evil-all-state-key  (kbd "C-r") 'redo)
 
-(set-evil-normal-state-key "\C-^"  'do-switch-buffer)
+(set-evil-normal-state-key "\C-^"  'my-recentf-open )
 (set-evil-normal-state-key "Y"  'copy-region-or-whole-line )
 (set-evil-normal-state-key "D"  'kill-region-or-whole-line )
 

@@ -34,7 +34,7 @@
 (global-set-key (kbd "C-S-h") 'multi-term-prev)
 (global-set-key (kbd "C-S-l") 'multi-term-next)
 (global-set-key (kbd "C-?")   'replace-regexp)
-(global-set-key (kbd "C-^")   'do-switch-buffer )
+(global-set-key (kbd "C-^")   'my-recentf-open)
 
 
 (define-key global-map (kbd "M-l") 'wcy-mark-some-thing-at-point)
