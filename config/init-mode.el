@@ -115,6 +115,12 @@
 								   (org-defkey org-agenda-mode-map "k"        'org-agenda-previous-line)
                                    ) )
 
+(add-hook 'find-file-hook  '(lambda()
+                              (message "%s:%s" (buffer-name) major-mode  )
+                              (when (string= "js2-mode" major-mode )
+                                (message "========tdo js2-mode")
+                                (js2-mode-display-warnings-and-errors)
+                                )))
 
 ;; ;;java 
 ;; (require 'ajc-java-complete-config)

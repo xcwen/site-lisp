@@ -24,7 +24,7 @@ localhost:~/site-lisp/config$"
 
 	(add-to-list 'term-bind-key-alist '("M-x" . smex ))
 	(add-to-list 'term-bind-key-alist '("M-1" .  delete-other-windows ))
-	(add-to-list 'term-bind-key-alist '("C-^" . my-recentf-open ))
+	(add-to-list 'term-bind-key-alist '("C-^" . ido-switch-buffer))
 
     ;; C-6 -> C-^ 
 	(add-to-list 'term-bind-key-alist '( "C-6". (lambda() (interactive)  (term-send-raw-string "\C-^" ) ) ))

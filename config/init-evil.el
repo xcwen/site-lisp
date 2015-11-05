@@ -446,7 +446,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 
 (set-evil-all-state-key  (kbd "C-r") 'redo)
 
-(set-evil-normal-state-key "\C-^"  'my-recentf-open )
+(set-evil-normal-state-key "\C-^"  'ido-switch-buffer )
 (set-evil-normal-state-key "Y"  'copy-region-or-whole-line )
 (set-evil-normal-state-key "D"  'kill-region-or-whole-line )
 
