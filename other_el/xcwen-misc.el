@@ -767,6 +767,10 @@ object satisfying `yas--field-p' to restrict the expansion to."
 			( auto-complete  ))
 		   ((and (string= major-mode "python-mode")  (eq ?\. c))
 			( jedi:complete :expand nil ))
+		   ((and (string= major-mode "erlang-mode")  (eq ?\: c))
+			( auto-complete  ))
+
+
 
 		   ( t (indent-for-tab-command ))))
 		
