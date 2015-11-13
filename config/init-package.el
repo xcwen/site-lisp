@@ -22,11 +22,13 @@
 				  'package+
                   'showkey
                   'auto-package-update
+                  'edts
 				  'evil
 				  'evil-surround
 				  'evil-leader 
 				  'evil-numbers
 				  'emacs-eclim
+                  'cmake-mode
                   'ac-html-bootstrap 
                   'ac-html
                   'ac-html-csswatcher
@@ -50,7 +52,6 @@
 				  'php-mode
 				  '2048-game
 				  )
-
 (require 'auto-package-update)
 
 (provide 'init-package)

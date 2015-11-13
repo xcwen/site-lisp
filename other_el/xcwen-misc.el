@@ -734,7 +734,8 @@ object satisfying `yas--field-p' to restrict the expansion to."
           )
 		(let ((c (char-before)))
 		  (cond
-		   ((and (string= major-mode "c++-mode") (or (eq ?\. c)
+		   ((and (or  (string= major-mode "c-mode") (string= major-mode "c++-mode"))
+                (or (eq ?\. c)
 					;; ->
 					(and (eq ?> c)
 						 (eq ?- (char-before (1- (point)))))

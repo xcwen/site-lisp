@@ -586,6 +586,23 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
     ( define-key evil-normal-state-local-map  (kbd "C-]") 'find-function)
     ( define-key evil-insert-state-local-map  (kbd "C-]") 'find-function )
     ))
+
+;; erlang-mode
+(defadvice edts-find-source-under-point (before  jim-edts-find-source-under-point activate compile)
+  (interactive)
+  (ring-insert find-tag-marker-ring (point-marker))
+  )
+
+
+(add-hook
+ 'erlang-mode-hook
+ '(lambda()
+    (interactive)
+    ( define-key evil-normal-state-local-map  (kbd "C-]") 'edts-find-source-under-point)
+    ( define-key evil-insert-state-local-map  (kbd "C-]") 'edts-find-source-under-point )
+    ))
+
+
 ;; ================================
 
 (defun set-rtags-bind-key ()

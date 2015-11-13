@@ -116,11 +116,14 @@
                                    ) )
 
 (add-hook 'find-file-hook  '(lambda()
-                              (message "%s:%s" (buffer-name) major-mode  )
                               (when (string= "js2-mode" major-mode )
-                                (message "========tdo js2-mode")
                                 (js2-mode-display-warnings-and-errors)
                                 )))
+(add-hook 'after-init-hook 'my-after-init-hook-erlang)
+(defun my-after-init-hook-erlang ()
+  (require 'edts-start)
+  (edts-complete-setup )
+  )
 
 ;; ;;java 
 ;; (require 'ajc-java-complete-config)

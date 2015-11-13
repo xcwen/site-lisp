@@ -146,6 +146,10 @@
 (add-hook 'c-mode-hook '(lambda() (setq ac-sources  '(ac-source-clang ) ) ))
 (add-hook 'c++-mode-hook '(lambda() (setq ac-sources  '(ac-source-clang ) ) ))
 (add-hook 'php-mode-hook '(lambda() (setq ac-sources  '(ac-source-php ) ) ))
+(add-hook 'erlang-mode-hook '(lambda() (auto-complete-mode 1)
+                               (setq ac-sources edts-complete-sources )
+                               (edts-mode 1)
+                               ))
 
 
 (provide 'init-auto-complete)
