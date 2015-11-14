@@ -346,6 +346,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 
 (evil-leader/set-key-for-mode 'js2-mode "m"  'js2-mode-display-warnings-and-errors)
 (evil-leader/set-key-for-mode 'emacs-lisp-mode  "m"  'byte-compile-file )
+(evil-leader/set-key-for-mode 'erlang-mode  "m"  'edts-code-compile-and-display)
 (evil-leader/set-key-for-mode 'go-mode "m"
   '(lambda()(interactive)
      (let ( cmd )

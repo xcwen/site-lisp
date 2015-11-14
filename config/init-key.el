@@ -56,7 +56,7 @@
 
 (global-set-key "\M-1" 'delete-other-windows)
 
-(define-key global-map [f5] 'ido-switch-buffer) 
+(define-key global-map [f5] 'my-recentf-open) 
 
 ;; smex set key
 (global-set-key (kbd "M-x") 'smex)
