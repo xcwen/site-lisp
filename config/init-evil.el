@@ -580,6 +580,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
   (ring-insert find-tag-marker-ring (point-marker))
   )
 
+
 (add-hook
  'emacs-lisp-mode-hook
  '(lambda()
@@ -641,6 +642,19 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 
              (set-evil-normal-state-key-on-mode  java-mode-map (kbd ",s")  'eclim-java-find-references  )
              ))
+
+;; js2-mode 
+(defadvice  tern-find-definition(before jim-tern-find-definition activate compile)
+  (interactive)
+  (ring-insert find-tag-marker-ring (point-marker))
+  )
+
+(add-hook 'js2-mode-hook
+          '(lambda ()
+             ( define-key evil-normal-state-local-map  (kbd "C-]") 'tern-find-definition )
+
+             ))
+
 
 
 (defun my-web-mode-jump ( )
