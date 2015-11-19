@@ -22,6 +22,7 @@
 				  'package+
                   'showkey
                   'auto-package-update
+;;                  'tern-auto-complete
                   'edts
 				  'evil
 				  'evil-surround

@@ -338,6 +338,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 (evil-leader/set-key-for-mode 'php-mode "f"  'ac-php-gen-def)
 (evil-leader/set-key-for-mode 'php-mode "F"  'php-gen-proto)
 
+(evil-leader/set-key-for-mode 'js2-mode "i"  'tern-get-docs)
 
 (evil-leader/set-key-for-mode 'emacs-lisp-mode "e"  'eval-last-sexp)
 (evil-leader/set-key-for-mode 'lisp-mode "e"  'eval-last-sexp)

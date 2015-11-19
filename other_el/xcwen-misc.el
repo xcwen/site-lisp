@@ -769,6 +769,9 @@ object satisfying `yas--field-p' to restrict the expansion to."
 			( jedi:complete :expand nil ))
 		   ((and (string= major-mode "erlang-mode")  (eq ?\: c))
 			( auto-complete  ))
+		   ((and (string= major-mode "js2-mode")  (eq ?\. c))
+			( auto-complete  ))
+
 
 
 

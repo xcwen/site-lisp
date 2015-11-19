@@ -151,6 +151,11 @@
                                (edts-mode 1)
                                ))
 
+(add-hook 'js2-mode-hook '(lambda() 
+                            (setq ac-sources  '(ac-source-tern-completion ) ) 
+                               ))
+
+
 
 (provide 'init-auto-complete)
 
