@@ -52,6 +52,7 @@
 				  'go-autocomplete
 				  'php-mode
 				  '2048-game
+				  'json-mode
 				  )
 (require 'auto-package-update)
 
