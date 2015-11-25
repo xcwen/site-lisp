@@ -3,7 +3,7 @@
 ;;;
 (yas-define-snippets 'c++-mode
                      '(("vec" "std::vector<${1:Class}> ${2:var}${3:(${4:10}, $1($5))};" "vector" nil nil nil "/home/jim/site-lisp/config/my-yas/c++-mode/vector" nil nil)
-                       ("using" "using namespace ${std};\n$0" "using namespace ... " nil nil nil "/home/jim/site-lisp/config/my-yas/c++-mode/using" nil nil)
+                       ("using" "using namespace ${std};\n$0" "using namespace ..." nil nil nil "/home/jim/site-lisp/config/my-yas/c++-mode/using" nil nil)
                        ("tryw" "try {\n    `(or yas/selected-text (car kill-ring))`\n} catch ${1:Exception} {\n\n}\n" "tryw" nil nil nil "/home/jim/site-lisp/config/my-yas/c++-mode/tryw" nil nil)
                        ("try" "try {\n    $0\n} catch (${1:type}) {\n\n}\n" "try" nil nil nil "/home/jim/site-lisp/config/my-yas/c++-mode/try" nil nil)
                        ("throw" "throw ${1:MyError}($0);" "throw" nil nil nil "/home/jim/site-lisp/config/my-yas/c++-mode/throw" nil nil)
@@ -68,4 +68,4 @@
                        ("ass" "assert($0);" "assert" nil nil nil "/home/jim/site-lisp/config/my-yas/c++-mode/assert" nil nil)))
 
 
-;;; Do not edit! File generated at Fri Sep 18 10:42:48 2015
+;;; Do not edit! File generated at Wed Nov 25 09:52:42 2015

@@ -3,7 +3,7 @@
 ;;;
 (yas-define-snippets 'python-mode
                      '(("while" "while ${condition}:\n    $0" "while ... : ..." nil nil nil "/home/jim/site-lisp/config/my-yas/python-mode/while" nil nil)
-                       ("utf8 " "\n -*- coding: utf-8 -*-\n" "utf8 " nil nil nil "/home/jim/site-lisp/config/my-yas/python-mode/utf8" nil nil)
+                       ("utf8" "\n -*- coding: utf-8 -*-\n" "utf8" nil nil nil "/home/jim/site-lisp/config/my-yas/python-mode/utf8" nil nil)
                        ("propsg" "def _set_${1:foo}(self, value):\n    self._$1 = value\n\ndef _get_$1(self):\n    return self._$1\n\n$1 = property(_get_$1, _set_$1)\n\n$0" "_get_foo ... _set_foo ... foo=property(...)" nil nil nil "/home/jim/site-lisp/config/my-yas/python-mode/propsg" nil nil)
                        ("propg" "def _get_${1:foo} (self):\n    return self._$1\n\n$1 = property(_get_$1)\n\n$0" "_get_foo ... foo=property(...)" nil nil nil "/home/jim/site-lisp/config/my-yas/python-mode/propg" nil nil)
                        ("prop" "def ${1:foo}():\n   doc = \"\"\"${2:Doc string}\"\"\"\n   def fget(self):\n       return self._$1\n   def fset(self, value):\n       self._$1 = value\n   def fdel(self):\n       del self._$1\n   return locals()\n$1 = property(**$1())\n\n$0" "prop" nil nil nil "/home/jim/site-lisp/config/my-yas/python-mode/prop" nil nil)
@@ -15,4 +15,4 @@
                        ("__" "__${init}__" "__...__" nil nil nil "/home/jim/site-lisp/config/my-yas/python-mode/__" nil nil)))
 
 
-;;; Do not edit! File generated at Fri Sep 18 10:42:48 2015
+;;; Do not edit! File generated at Wed Nov 25 09:52:42 2015

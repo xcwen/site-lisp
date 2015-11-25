@@ -53,6 +53,8 @@
 				  'php-mode
 				  '2048-game
 				  'json-mode
+                  'company
+                  'powerline-evil
 				  )
 (require 'auto-package-update)
 

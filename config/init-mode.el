@@ -1,4 +1,6 @@
 ;;; --- 绑定扩展名到特定的模式
+(require 'powerline)
+(powerline-center-evil-theme)
 (dolist (elt-cons '(
                     ("\\.markdown" . markdown-mode)
                     ("\\.md" . markdown-mode)
