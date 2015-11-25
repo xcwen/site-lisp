@@ -1,6 +1,18 @@
 ;;; --- 绑定扩展名到特定的模式
 (require 'powerline)
 (powerline-center-evil-theme)
+(require 'diminish)
+;;(eval-after-load "filladapt" '(diminish 'filladapt-mode))
+;;(eval-after-load "auto-complete" '(diminish 'auto-complete-mode "AC"))
+
+(eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
+(eval-after-load "eproject" '(diminish 'eproject-mode))
+(eval-after-load "autorevert" '(diminish 'auto-revert-mode))
+(eval-after-load "abbrev" '(diminish 'abbrev-mode  ))
+;(eval-after-load "auto-complete" '(diminish 'auto-complete-mode "ⓐ " ))
+;(eval-after-load "yasnippet" '(diminish 'yas-minor-mode "ⓨ " ))
+
+
 (dolist (elt-cons '(
                     ("\\.markdown" . markdown-mode)
                     ("\\.md" . markdown-mode)

@@ -55,6 +55,7 @@
 				  'json-mode
                   'company
                   'powerline-evil
+                  'diminish
 				  )
 (require 'auto-package-update)
 
