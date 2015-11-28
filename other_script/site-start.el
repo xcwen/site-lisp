@@ -7,7 +7,9 @@
 	(setq load-path (append  load-path old-path ) )
 	))
 (add-subdirs-to-load-path "~/site-lisp/")
-(add-subdirs-to-load-path "~/tern/emacs/")
+
+(when (file-exists-p "~/tern/emacs/" )
+  (add-subdirs-to-load-path "~/tern/emacs/"))
 
 (require 'init)
 
