@@ -10,7 +10,8 @@
 (eval-after-load "autorevert" '(diminish 'auto-revert-mode))
 (eval-after-load "abbrev" '(diminish 'abbrev-mode  ))
 ;(eval-after-load "auto-complete" '(diminish 'auto-complete-mode "ⓐ " ))
-;(eval-after-load "yasnippet" '(diminish 'yas-minor-mode "ⓨ " ))
+;;(eval-after-load "yasnippet" '(diminish 'yas-minor-mode "ⓨ " ))
+(eval-after-load "yasnippet" '(diminish 'yas-minor-mode "" ))
 
 
 (dolist (elt-cons '(
