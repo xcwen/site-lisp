@@ -118,9 +118,15 @@ or:
 apt-get install python-virtualenv
 ```
 
-### go 补全jedi 需要
+### go 补全 需要
 ```
 apt-get install golang gocode  
+```
+
+### js 补全 需要
+```
+cd ~ # go home dir
+git clone https://github.com/ternjs/tern
 ```
 
 
