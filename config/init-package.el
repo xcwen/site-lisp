@@ -22,6 +22,7 @@
 				  'package+
                   'showkey
                   'auto-package-update
+                  'yaml-mode
 ;;                  'tern-auto-complete
                   'edts
 				  'evil
@@ -51,11 +52,9 @@
 				  'xcscope
 				  'go-autocomplete
 				  'php-mode
-				  '2048-game
 				  'json-mode
                   'company
                   'powerline-evil
-                  'powerline
                   'diminish
 				  )
 (require 'auto-package-update)

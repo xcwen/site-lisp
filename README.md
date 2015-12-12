@@ -127,6 +127,8 @@ apt-get install golang gocode
 ```
 cd ~ # go home dir
 git clone https://github.com/ternjs/tern
+cd ~/tern 
+npm install
 ```
 
 

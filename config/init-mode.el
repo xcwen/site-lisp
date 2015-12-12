@@ -1,6 +1,8 @@
 ;;; --- 绑定扩展名到特定的模式
 (require 'powerline)
 (powerline-center-evil-theme)
+(powerline-reset)
+
 (require 'diminish)
 ;;(eval-after-load "filladapt" '(diminish 'filladapt-mode))
 ;;(eval-after-load "auto-complete" '(diminish 'auto-complete-mode "AC"))
