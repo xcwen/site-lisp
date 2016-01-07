@@ -631,8 +631,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 
 (add-hook 'python-mode-hook
           '(lambda ()
-             ( define-key evil-normal-state-local-map  (kbd "C-]") 'jedi:jump-to-definition)
-             ( define-key evil-normal-state-local-map  (kbd "C-t") 'jedi:jump-back)
+             ( define-key evil-normal-state-local-map  (kbd "C-]") 'elpy-goto-definition)
              ))
 (add-hook 'go-mode-hook
           '(lambda ()

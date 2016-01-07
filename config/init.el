@@ -1,4 +1,3 @@
-
 (setq g-test-ac-php  nil)
 (when g-test-ac-php  
   (setq package-archives
@@ -38,7 +37,7 @@
   (require 'init-comment)
   (require 'init-indent)
 
-  (require 'init-jedi)
+  ;;(require 'init-jedi)
   (require 'init-auto-complete)
   (require 'init-yasnippet)
 

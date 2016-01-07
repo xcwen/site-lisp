@@ -17,4 +17,4 @@
                        ("bench" "func Benchmark${1:Feature}(b *testing.B) {\n	$0\n}\n" "bench" nil nil nil "/home/jim/site-lisp/config/my-yas/go-mode/bench" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Nov 25 09:52:42 2015
+;;; Do not edit! File generated at Thu Jan  7 12:58:07 2016

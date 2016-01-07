@@ -10,4 +10,4 @@
                        ("fopen" "FILE  *${1:fp} = fopen( ${2:\"file\"}, \"${3:$$(yas/choose-value '(\"r\" \"w\" \"a\" \"r+\" \"w+\" \"a+\" ))}\" ) ;\n" "FILE *fp = fopen(..., ...);" nil nil nil "/home/jim/site-lisp/config/my-yas/c-mode/fopen" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Nov 25 09:52:42 2015
+;;; Do not edit! File generated at Thu Jan  7 12:58:07 2016

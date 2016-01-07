@@ -103,6 +103,7 @@
 
 (add-hook 'python-mode-hook '(lambda ( )
 							   (modify-syntax-entry ?_ "w" python-mode-syntax-table) ;将 _ 加入 单词中
+                               (elpy-enable)
 							 ) )
 
 (add-hook 'js2-mode-hook '(lambda ( )

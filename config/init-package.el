@@ -22,6 +22,7 @@
 				  'package+
                   'showkey
                   'auto-package-update
+                  'elpy
                   'yaml-mode
 ;;                  'tern-auto-complete
                   'edts

@@ -20,7 +20,10 @@
 
 
 ;;; Commentary:
-;; 
+
+;;   fix test
+(defun  tramp-tramp-file-p  ( file-name )
+ nil)
 
 ;;; Code:
 (defun check-in-linux ()
@@ -766,7 +769,7 @@ object satisfying `yas--field-p' to restrict the expansion to."
 		   ((and (string= major-mode "java-mode")  (eq ?\. c))
 			( auto-complete  ))
 		   ((and (string= major-mode "python-mode")  (eq ?\. c))
-			( jedi:complete :expand nil ))
+			(elpy-company-backend  `interactive ))
 		   ((and (string= major-mode "erlang-mode")  (eq ?\: c))
 			( auto-complete  ))
 		   ((and (string= major-mode "js2-mode")  (eq ?\. c))
