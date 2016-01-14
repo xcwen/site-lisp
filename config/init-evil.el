@@ -120,9 +120,8 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
     "DOCSTRING"
   (interactive)
   (let (var1 pos-start post-end buf)
-    (setq tmp (get-mark-pos-ex  ))
-    (setq pos-start  (nth 0 tmp) )
-    (setq pos-end  (nth 1 tmp) )
+    (setq pos-start (region-beginning)   )
+    (setq pos-end   (region-end) )
     (setq buf (buffer-substring-no-properties  pos-start pos-end )  )
     (setq buf (s-replace  "\n" "" buf ) )
     (kill-new buf )

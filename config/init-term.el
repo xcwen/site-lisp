@@ -33,6 +33,7 @@ localhost:~/site-lisp/config$"
 	(add-to-list 'term-bind-key-alist '( "C-S-h". (lambda() (interactive) (multi-term-prev 1 )   ) ))
 	(add-to-list 'term-bind-key-alist '( "C-S-l". (lambda() (interactive) ( multi-term-next 1 )   ) ))
 	(add-to-list 'term-bind-key-alist '( "C-S-w". my-join-line  ))
+	(add-to-list 'term-bind-key-alist '( "C-S-s". my-join-line  ))
 	(add-to-list 'term-bind-key-alist '( "C-S-c".   term-interrupt-subjob  ))
 
 	(add-to-list 'term-bind-key-alist '( "C-c".  copy-region-or-whole-line  ))

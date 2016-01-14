@@ -41,7 +41,7 @@
   (require 'init-auto-complete)
   (require 'init-yasnippet)
 
-  (require 'init-eclim)
+  ;;(require 'init-eclim)
 
   (require 'init-startup)
   (require 'init-org)
