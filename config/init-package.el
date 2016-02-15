@@ -46,6 +46,7 @@
 				  'yasnippet
 				  'rtags
 				  'auto-complete
+				  'fuzzy
 				  'auto-complete-clang
 				  'ac-php
 				  'jedi

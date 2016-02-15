@@ -45,11 +45,12 @@ qmark 7  http://www.linuxtoy.org/
 qmark 8  http://wx.qq.com
 qmark 9  http://mail.euchost.com
 qmark 0 http://cli.im/
+qmark d   http://dev.www.yb1v1.com/login/teacher?username=18621696950&password=123456
+qmark t   http://test.www.yb1v1.com/login/teacher?username=13761682492&password=123456
 
 
 qmark g  http://www.google.hk/
 qmark h  http://www.lupaworld.com/30388 
-qmark d  http://www.2ccc.com
 map ;  <Esc>go
 
 

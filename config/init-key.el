@@ -3,6 +3,7 @@
 
 (define-key ac-completing-map  (kbd  "C-p")   'ac-previous)
 (define-key ac-completing-map  (kbd  "C-n")   'ac-next)
+(define-key ac-completing-map "\C-s" 'ac-isearch)
 (define-key ac-completing-map [f1] nil)
 (define-key ac-mode-map  [(control tab )] 'auto-complete)
 (define-key ac-mode-map  [(backtab)] 'my-ac-mode-complete ) 
@@ -46,7 +47,6 @@
 (global-set-key (kbd "C-S-h") 'multi-term-prev)
 (global-set-key (kbd "C-S-l") 'multi-term-next)
 (global-set-key (kbd "C-?")   'replace-regexp)
-(global-set-key (kbd "C-^")   'my-recentf-open)
 
 
 (define-key global-map (kbd "M-l") 'wcy-mark-some-thing-at-point)
