@@ -124,19 +124,6 @@
 
 
 
-;;web-mode ac-html 
-(add-hook 'web-mode-hook '(lambda()
-                            (ac-html-enable)
-                            (ac-html-bootstrap+)
-							(add-to-list 'web-mode-ac-sources-alist
-										 '("html" . (ac-source-html-attribute-value
-													  ac-source-html-tag
-													  ac-source-html-attribute)
-                                           )
-                                         '("php" . (ac-source-php))
-                                         )
-							))  
-
 (setq-default ac-sources '( ac-source-dictionary ac-source-words-in-same-mode-buffers))  
 (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)  
 (add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)  

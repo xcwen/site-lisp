@@ -291,7 +291,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 (defun switch-file-opt ()
   "DOCSTRING"
   (interactive)
-  (let (  line-txt  opt-file  file-list obj-file check-file-name file-name file-name-fix )
+  (let (  line-txt  opt-file  file-list obj-file check-file-name file-name file-name-fix  (use-default t) pos-info )
     (save-excursion
       (goto-char (point-min))
       (when (search-forward "SWITCH-TO:" nil t  )
@@ -315,10 +315,71 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
                  )
                 (setq obj-file  (concat opt-file "/" check-file-name) ))))
       (setq obj-file opt-file))
+   ;;check for   php html js
+    (unless obj-file
+      (let ((path-name (buffer-file-name)) ctrl-name action-name tmp-arr )
+        (cond
+         ((string= major-mode  "php-mode")
+          (progn
+            (setq ctrl-name (f-base  (f-base path-name )) )
+            (save-excursion
+              (let (line-txt  ) 
+                (beginning-of-defun)
+                (setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+                (setq tmp-arr (s-match  ".*function[ \t]+\\([a-zA-Z0-9_]*\\)"  line-txt ) )
+                (when tmp-arr
+                  (setq action-name (nth 1 tmp-arr) )
+                  )))
+            (when (and (s-match "/handler/" path-name )  (not (string= action-name "__construct")) )
+              (setq  obj-file  (concat"../template/" ctrl-name  "/" action-name ".html" ) )
+              )
+            ))
+
+         ((string= major-mode  "web-mode" )
+          (setq tmp-arr (s-match  "/\\([a-zA-Z0-9_-]*\\)/\\([a-zA-Z0-9_-]*\\).html"  path-name ) )
+          (when tmp-arr
+            (setq  ctrl-name   (nth 1 tmp-arr) )
+            (setq  action-name   (nth 2 tmp-arr) ))
+          (when (s-match "/template/" path-name )  
+            (setq  obj-file  (concat"../../webroot/page_js/" ctrl-name  "/" action-name ".js" ) )
+            )
+          )
+         ((string= major-mode  "js2-mode" )
+          (setq tmp-arr (s-match  "page_js/\\([a-zA-Z0-9_-]*\\)/\\([a-zA-Z0-9_-]*\\).js"  path-name ) )
+          (when tmp-arr
+            (setq  ctrl-name   (nth 1 tmp-arr) )
+            (setq  action-name   (nth 2 tmp-arr) ))
+          (when (s-match "/webroot/page_js/" path-name )  
+            (setq  obj-file  (concat"../../../handler/" ctrl-name  ".class.php" ) )
+            (setq pos-info ( concat "/function.*" action-name  ) )
+
+            ))
+
+          )
+
+         ))
+
+      (when obj-file
+        (unless (f-exists? obj-file)
+          (message "no find %s" obj-file )
+          (setq use-default  nil)
+          (setq obj-file nil)
+          )
+        )
     
-    (if obj-file
-        (find-file obj-file)
-      (switch-cc-to-h))))
+      (if obj-file
+          (let()
+            (find-file obj-file)
+            (when pos-info  
+              (when (string=(substring-no-properties pos-info 0 1 )  "/")
+                (goto-char (point-min))
+                (re-search-forward  (substring-no-properties pos-info 1 ) )
+                (next-line)
+                )
+              ))
+
+        (when use-default (switch-cc-to-h))
+      )))
 
 (evil-leader/set-leader ",")
 
