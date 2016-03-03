@@ -755,6 +755,8 @@ object satisfying `yas--field-p' to restrict the expansion to."
 					;; ->
 					(and (eq ?> c)
 						 (eq ?- (char-before (1- (point)))))
+                    ;;\
+					(eq ?\\ c)
 					;; ::
 					(and (eq ?: c)
 						 (eq ?: (char-before (1- (point)))))))

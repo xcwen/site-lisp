@@ -30,7 +30,6 @@
                     ("\\.mm\\'" . objc-mode)
                     ("\\.m\\'" . objc-mode)
                     ("\\.tpro\\'" . c++-mode)
-                    ("\\.lua\\'" . lua-mode)
                     ("\\.php\\'" . php-mode)
                     ))
   (add-to-alist 'auto-mode-alist elt-cons))
@@ -51,6 +50,13 @@
 (add-hook 'c-mode-hook '(lambda ( )
 							(modify-syntax-entry ?_ "w" c-mode-syntax-table) ;将 _ 加入 单词中
 							 ) )
+(add-hook 'php-mode-hook '(lambda ( )
+                            (when (s-matches-p "\\.blade\\.php" (buffer-name))
+                              (web-mode )
+                              )
+							 ))
+
+
 
 (add-hook 'php-mode-hook '(lambda ( )
 							(modify-syntax-entry ?$ "." php-mode-syntax-table) 
@@ -58,6 +64,9 @@
                              (require 'php-align)
                              (php-align-setup)
 							 ))
+
+
+
 
 (add-hook 'org-mode-hook '(lambda ( )
 							 (modify-syntax-entry ?_ "w" org-mode-syntax-table) ;将 _ 加入 单词中

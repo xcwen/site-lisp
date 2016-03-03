@@ -41,7 +41,6 @@
               'sh-mode-hook
 			  'php-mode-hook
 			  'go-mode-hook
-			  'web-mode-hook
                ))
   (add-hook hook 'c-setting ))
 

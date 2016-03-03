@@ -320,6 +320,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
       (let ((path-name (buffer-file-name)) ctrl-name action-name tmp-arr )
         (cond
          ((string= major-mode  "php-mode")
+
           (progn
             (setq ctrl-name (f-base  (f-base path-name )) )
             (save-excursion
@@ -330,30 +331,32 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
                 (when tmp-arr
                   (setq action-name (nth 1 tmp-arr) )
                   )))
-            (when (and (s-match "/handler/" path-name )  (not (string= action-name "__construct")) )
-              (setq  obj-file  (concat"../template/" ctrl-name  "/" action-name ".html" ) )
+            (when (and (s-match "/Controllers/" path-name )  (not (string= action-name "__construct")) )
+              (setq  obj-file  (concat "../../../resources/views/" ctrl-name  "/" action-name ".blade.php" ) )
               )
             ))
 
          ((string= major-mode  "web-mode" )
-          (setq tmp-arr (s-match  "/\\([a-zA-Z0-9_-]*\\)/\\([a-zA-Z0-9_-]*\\).html"  path-name ) )
+          (setq tmp-arr (s-match  "/\\([a-zA-Z0-9_-]*\\)/\\([a-zA-Z0-9_-]*\\).blade.php"  path-name ) )
           (when tmp-arr
             (setq  ctrl-name   (nth 1 tmp-arr) )
             (setq  action-name   (nth 2 tmp-arr) ))
-          (when (s-match "/template/" path-name )  
-            (setq  obj-file  (concat"../../webroot/page_js/" ctrl-name  "/" action-name ".js" ) )
+          (when (s-match "/views/" path-name )  
+            (setq  obj-file  (concat"../../../public/page_js/" ctrl-name  "/" action-name ".js" ) )
             )
           )
+
          ((string= major-mode  "js2-mode" )
           (setq tmp-arr (s-match  "page_js/\\([a-zA-Z0-9_-]*\\)/\\([a-zA-Z0-9_-]*\\).js"  path-name ) )
           (when tmp-arr
             (setq  ctrl-name   (nth 1 tmp-arr) )
             (setq  action-name   (nth 2 tmp-arr) ))
-          (when (s-match "/webroot/page_js/" path-name )  
-            (setq  obj-file  (concat"../../../handler/" ctrl-name  ".class.php" ) )
-            (setq pos-info ( concat "/function.*" action-name  ) )
+          (when (s-match "/public/page_js/" path-name )  
+            (setq  obj-file  (concat"../../../app/Http/Controllers/" ctrl-name  ".php" ) )
+            (setq pos-info ( concat "/function.*" action-name "[ \t]*("  ) )
 
             ))
+
 
           )
 
@@ -396,7 +399,8 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 ;;显示信息
 (evil-leader/set-key-for-mode 'php-mode "i"  'ac-php-show-tip)
 (evil-leader/set-key-for-mode 'php-mode "f"  'ac-php-gen-def)
-(evil-leader/set-key-for-mode 'php-mode "F"  'php-gen-proto)
+
+
 
 (evil-leader/set-key-for-mode 'js2-mode "i"  'tern-get-docs)
 
@@ -424,6 +428,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
                                                (flymake-display-err-menu-for-current-line)
                                                (flymake-mode 0)
                                                ))
+
 (evil-leader/set-key-for-mode 'c++-mode "m"
   '(lambda()(interactive)
      (let ( cmd )
@@ -544,9 +549,6 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 
      (when (string= "web-mode" major-mode)
        (setq file-info (web-get-file-at-point) ))
-
-
-
 
     (when  ( and (nth 0 file-info) (file-exists-p  (nth 0 file-info)  ) )
       (find-file  (nth 0 file-info)  )
@@ -763,6 +765,8 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
              (set-evil-normal-state-key-on-mode  php-mode-map  (kbd ",R") 'ac-php-remake-tags-with-lib )
              (set-evil-normal-state-key-on-mode  php-mode-map  (kbd ",s") 'ac-php-cscope-find-egrep-pattern )
              ))
+
+
 
 
 
