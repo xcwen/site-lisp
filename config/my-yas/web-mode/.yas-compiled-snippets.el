@@ -45,4 +45,4 @@
                         nil "/home/jim/site-lisp/config/my-yas/web-mode/abutton.yasnippet" "direct-keybinding" nil)))
 
 
-;;; Do not edit! File generated at Thu Jan  7 12:58:07 2016
+;;; Do not edit! File generated at Sat Mar  5 13:35:36 2016

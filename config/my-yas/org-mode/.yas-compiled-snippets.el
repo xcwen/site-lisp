@@ -5,4 +5,4 @@
                      '(("src" "#+BEGIN_SRC   $1\n$0\n#+END_SRC  \n\n" "include \"\"" nil nil nil "/home/jim/site-lisp/config/my-yas/org-mode/src" nil nil)))
 
 
-;;; Do not edit! File generated at Thu Jan  7 12:58:07 2016
+;;; Do not edit! File generated at Sat Mar  5 13:35:36 2016
