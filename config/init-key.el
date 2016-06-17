@@ -7,6 +7,8 @@
 (define-key ac-completing-map [f1] nil)
 (define-key ac-mode-map  [(control tab )] 'auto-complete)
 (define-key ac-mode-map  [(backtab)] 'my-ac-mode-complete ) 
+(require 'company)
+(define-key company-mode-map  [(control tab )] 'company-complete )
 
 (defun ac-filename ()
     "DOCSTRING"

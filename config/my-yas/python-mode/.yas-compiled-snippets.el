@@ -15,4 +15,4 @@
                        ("__" "__${init}__" "__...__" nil nil nil "/home/jim/site-lisp/config/my-yas/python-mode/__" nil nil)))
 
 
-;;; Do not edit! File generated at Sat Mar  5 13:35:36 2016
+;;; Do not edit! File generated at Wed Mar 16 17:53:06 2016

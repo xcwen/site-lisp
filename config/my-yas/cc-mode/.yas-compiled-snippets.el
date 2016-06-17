@@ -8,4 +8,4 @@
                        ("hd" "/**\n * ============================================================\n * @file   `(file-name-nondirectory (buffer-file-name))`\n * @author `header-user-name` (`header-user-email`)\n * @date   `(format-time-string \"%Y-%m-%d %H:%M:%S\")`\n *\n * \n * @brief  $1\n * \n * ============================================================\n */\n$0\n\n" "header" nil nil nil "/home/jim/site-lisp/config/my-yas/cc-mode/hd" nil nil)))
 
 
-;;; Do not edit! File generated at Sat Mar  5 13:35:36 2016
+;;; Do not edit! File generated at Wed Mar 16 17:53:05 2016

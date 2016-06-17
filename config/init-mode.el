@@ -26,6 +26,7 @@
                     ("SConstruct". python-mode)
                     ("\\.asdf\\'" . lisp-mode)
                     ("\\.js\\'" . js2-mode)
+                    ("\\.jsx\\'" . js2-mode)
                     ("\\.h\\'" . c++-mode)
                     ("\\.mm\\'" . objc-mode)
                     ("\\.m\\'" . objc-mode)
@@ -120,10 +121,11 @@
 							(modify-syntax-entry ?_ "w" js2-mode-syntax-table) ;将 _ 加入 单词中
                             (require 'js2-align)
                             (js2-align-setup)
-                            (require 'tern)
-                            (tern-mode t)
-                            (require 'tern-auto-complete)
-                            (tern-ac-setup)
+                            ;;(require 'tern)
+                            ;;(tern-mode t)
+                            ;;(require 'tern-auto-complete)
+                            ;;(tern-ac-setup)
+                            (setup-tide-mode)
                             ))
 
 (add-hook 'sql-mode-hook '(lambda ( )
@@ -163,6 +165,29 @@
 ;; (add-hook 'java-mode-hook 'ajc-java-complete-mode)
 ;; (add-hook 'find-file-hook 'ajc-4-jsp-find-file-hook)
 
+;; typescript
+(defun setup-tide-mode ()
+  (require 'tide)
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  ;;(setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+;;(add-hook 'before-save-hook 'tide-format-before-save)
+
+;; format options
+;;(setq tide-format-options '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t :placeOpenBraceOnNewLineForFunctions nil))
+;; see https://github.com/Microsoft/TypeScript/blob/cc58e2d7eb144f0b2ff89e6a6685fb4deaa24fde/src/server/protocol.d.ts#L421-473 for the full list available options
+
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
 
 (provide 'init-mode)
 

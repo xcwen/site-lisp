@@ -5,7 +5,7 @@ xmodmap -e "keycode 94 = grave asciitilde "
 #virtualbox --startvm xp  &
 fcitx
 rm ~/.emacs.d/.emacs.desktop.lock
-emacs& 
+#emacs& 
 firefox&
 #gnome-terminal --maximize &
 if [ "X"$(/sbin/ifconfig  | grep eth0 | wc -l)  ==   "X1" ] ; then

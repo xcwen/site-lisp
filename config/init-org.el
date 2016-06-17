@@ -10,7 +10,9 @@
 			(define-key yas/keymap [tab] 'yas-next-field)))
 
 (add-hook 'org-mode-hook 
-		  (lambda () (setq truncate-lines nil)))
+		  (lambda ()
+            (setq truncate-lines nil)
+            ))
 
 
 (add-hook

@@ -3,7 +3,10 @@
 
 
 (setq package-archives
-			 '(("melpa" . "https://melpa.org/packages/")) )
+      '(
+        ("melpa" . "https://melpa.org/packages/")
+        ("gnu" . "http://elpa.gnu.org/packages/")
+      ))
 
 (package-initialize)
 (unless (package-installed-p 'package+ )
@@ -58,6 +61,10 @@
                   'company
                   'powerline-evil
                   'diminish
+                  'scss-mode
+                  'typescript-mode  
+                  'flycheck
+                  'tide
 				  )
 (require 'auto-package-update)
 

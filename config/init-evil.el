@@ -222,11 +222,11 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 
             (setq file-name-end (point))
             (setq cur-path (buffer-substring-no-properties file-name-begin file-name-end )) 
-            (setq file-name ( concat  (nth 1  (s-split "/" cur-path  )) ".class.php" ) )
+            (setq file-name ( concat  (nth 1  (s-split "/" cur-path  )) ".php" ) )
             (setq pos-info ( concat "/function.*" (nth 2  (s-split "/" cur-path  )) ) )
-            (setq cur-path (concat (nth 0  (s-split "/webroot/" (buffer-file-name)) ) "/handler/" file-name )
-
-            )))
+            (setq cur-path (concat (nth 0  (s-split "/public/" (buffer-file-name)) ) "/app/Http/Controllers/" file-name ))
+            (message "xxx %s" cur-path)
+            ))
         (list cur-path pos-info)
     ))
 (defun web-get-file-at-point ()
@@ -341,9 +341,16 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
           (when tmp-arr
             (setq  ctrl-name   (nth 1 tmp-arr) )
             (setq  action-name   (nth 2 tmp-arr) ))
+
           (when (s-match "/views/" path-name )  
-            (setq  obj-file  (concat"../../../public/page_js/" ctrl-name  "/" action-name ".js" ) )
+            (setq  obj-file  (concat"../../../public/page_ts/" ctrl-name  "/" action-name ".ts" ) )
+            
             )
+          (let (js-obj-file)
+          (when ( and (not (f-exists? obj-file )) (s-match "/views/" path-name )   )
+            (setq  js-obj-file  (concat"../../../public/page_js/" ctrl-name  "/" action-name ".js" ) )
+            (when (  f-exists? js-obj-file ) (setq obj-file js-obj-file)  )
+            ))
           )
 
          ((string= major-mode  "js2-mode" )
@@ -353,9 +360,20 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
             (setq  action-name   (nth 2 tmp-arr) ))
           (when (s-match "/public/page_js/" path-name )  
             (setq  obj-file  (concat"../../../app/Http/Controllers/" ctrl-name  ".php" ) )
-            (setq pos-info ( concat "/function.*" action-name "[ \t]*("  ) )
+            (setq pos-info ( concat "/function[ \t]+" action-name "[ \t]*("  ) )
 
             ))
+         ((string= major-mode  "typescript-mode" )
+          (setq tmp-arr (s-match  "page_ts/\\([a-zA-Z0-9_-]*\\)/\\([a-zA-Z0-9_-]*\\).ts"  path-name ) )
+          (when tmp-arr
+            (setq  ctrl-name   (nth 1 tmp-arr) )
+            (setq  action-name   (nth 2 tmp-arr) ))
+          (when (s-match "/public/page_ts/" path-name )  
+            (setq  obj-file  (concat"../../../app/Http/Controllers/" ctrl-name  ".php" ) )
+            (setq pos-info ( concat "/function[ \t]+" action-name "[ \t]*("  ) )
+
+            ))
+
 
 
           )
@@ -402,14 +420,24 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 
 
 
-(evil-leader/set-key-for-mode 'js2-mode "i"  'tern-get-docs)
 
 (evil-leader/set-key-for-mode 'emacs-lisp-mode "e"  'eval-last-sexp)
 (evil-leader/set-key-for-mode 'lisp-mode "e"  'eval-last-sexp)
 
+;;org
+(evil-leader/set-key-for-mode 'org-mode "t"  'org-todo)
+
 ;;编译
 
 (evil-leader/set-key-for-mode 'js2-mode "m"  'js2-mode-display-warnings-and-errors)
+(evil-leader/set-key-for-mode 'typescript-mode "m"
+  '(lambda()(interactive)
+     (let ( obj-file )
+       (setq obj-file  (s-replace ".ts" ".js" (s-replace "page_ts" "page_js" (buffer-file-name) ) ) )
+       (compile (concat "tsc  --out  " obj-file " "  (buffer-file-name) ) ) 
+       )))
+
+
 (evil-leader/set-key-for-mode 'json-mode  "m"  'json-mode-beautify)
 (evil-leader/set-key-for-mode 'emacs-lisp-mode  "m"  'byte-compile-file )
 (evil-leader/set-key-for-mode 'erlang-mode  "m"  'edts-code-compile-and-display)
@@ -699,6 +727,12 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
           '(lambda ()
              ( define-key evil-normal-state-local-map  (kbd "C-]") 'godef-jump )
              ))
+(add-hook 'typescript-mode-hook
+          '(lambda ()
+             ( define-key evil-normal-state-local-map  (kbd "C-]") 'tide-jump-to-definition )
+             ( define-key evil-normal-state-local-map  (kbd "C-t") 'tide-jump-back )
+             ))
+
 (add-hook 'java-mode-hook
           '(lambda ()
              ( define-key evil-normal-state-local-map  (kbd "C-]") 'eclim-java-find-declaration )
@@ -707,17 +741,17 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
              ))
 
 ;; js2-mode 
-(defadvice  tern-find-definition(before jim-tern-find-definition activate compile)
-  (interactive)
-  (ring-insert find-tag-marker-ring (point-marker))
-  )
+;; (defadvice  tern-find-definition(before jim-tern-find-definition activate compile)
+;;   (interactive)
+;;   (ring-insert find-tag-marker-ring (point-marker))
+;;   )
 
 (add-hook 'js2-mode-hook
           '(lambda ()
-             ( define-key evil-normal-state-local-map  (kbd "C-]") 'tern-find-definition )
-
+             ;;( define-key evil-normal-state-local-map  (kbd "C-]") 'tern-find-definition )
+             ( define-key evil-normal-state-local-map  (kbd "C-]") 'tide-jump-to-definition )
+             ( define-key evil-normal-state-local-map  (kbd "C-t") 'tide-jump-back )
              ))
-
 
 
 (defun my-web-mode-jump ( )

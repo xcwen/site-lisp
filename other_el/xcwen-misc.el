@@ -776,6 +776,9 @@ object satisfying `yas--field-p' to restrict the expansion to."
 			( auto-complete  ))
 		   ((and (string= major-mode "js2-mode")  (eq ?\. c))
 			( auto-complete  ))
+		   ((and (string= major-mode "typescript-mode")  (eq ?\. c))
+			( company-complete ))
+
 
 
 
