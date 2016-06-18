@@ -181,13 +181,19 @@
 (setq company-tooltip-align-annotations t)
 
 ;; formats the buffer before saving
-;;(add-hook 'before-save-hook 'tide-format-before-save)
+(add-hook 'after-save-hook 'ts2js)
 
 ;; format options
 ;;(setq tide-format-options '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t :placeOpenBraceOnNewLineForFunctions nil))
 ;; see https://github.com/Microsoft/TypeScript/blob/cc58e2d7eb144f0b2ff89e6a6685fb4deaa24fde/src/server/protocol.d.ts#L421-473 for the full list available options
 
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
+(add-hook 'typescript-mode-hook
+          '(lambda ( )
+             (setup-tide-mode)
+             (modify-syntax-entry ?_ "w" typescript-mode-syntax-table) ;将 _ 加入 单词中
+             (require 'ts-align)
+             (typescript-align-setup)
+          ))
 
 (provide 'init-mode)
 

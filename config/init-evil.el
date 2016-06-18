@@ -423,6 +423,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 
 (evil-leader/set-key-for-mode 'emacs-lisp-mode "e"  'eval-last-sexp)
 (evil-leader/set-key-for-mode 'lisp-mode "e"  'eval-last-sexp)
+(evil-leader/set-key-for-mode 'typescript-mode "e"  'flycheck-next-error)
 
 ;;org
 (evil-leader/set-key-for-mode 'org-mode "t"  'org-todo)
@@ -430,12 +431,32 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 ;;编译
 
 (evil-leader/set-key-for-mode 'js2-mode "m"  'js2-mode-display-warnings-and-errors)
-(evil-leader/set-key-for-mode 'typescript-mode "m"
-  '(lambda()(interactive)
-     (let ( obj-file )
-       (setq obj-file  (s-replace ".ts" ".js" (s-replace "page_ts" "page_js" (buffer-file-name) ) ) )
-       (compile (concat "tsc  --out  " obj-file " "  (buffer-file-name) ) ) 
-       )))
+(defun ts2js ()
+  "DOCSTRING"
+  (interactive)
+  (let ( obj-file  (obj-data ""))
+    (when ( and (string= major-mode "typescript-mode" )
+                (s-matches-p "/page_ts/" (buffer-file-name))
+                (not (s-matches-p "\.d\.ts$" (buffer-file-name) ))
+                             ) 
+      (setq obj-file  (s-replace ".ts" ".js" (s-replace "page_ts" "page_js" (buffer-file-name) ) ) )
+
+      (when (f-exists? obj-file  )
+        (setq obj-data ( f-read obj-file ) ))
+
+      (if (or (not (f-exists? obj-file  )) (s-matches-p "reference path" obj-data) )
+          (progn 
+            (when (f-exists? obj-file  )
+              (f-delete obj-file  ))
+
+            (if (s-matches-p "//TS_FLAG:true" (buffer-string) )
+                (compile (concat "tsc  --out  " obj-file " "  (buffer-file-name) ) ) 
+              (f-copy (buffer-file-name) obj-file  ))
+            (message "%s:生成完毕" obj-file  ))
+        (message "%s :不是 typescript 生成的文件, 请备份为其它文件." obj-file  ))
+      ))
+  )
+(evil-leader/set-key-for-mode 'typescript-mode "m" 'ts2js)
 
 
 (evil-leader/set-key-for-mode 'json-mode  "m"  'json-mode-beautify)

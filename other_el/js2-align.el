@@ -111,7 +111,8 @@
   (set (make-local-variable 'align-region-separate) js2-align-region-separate)
   (add-to-list 'align-open-comment-modes 'js2-mode)
   (add-to-list 'align-dq-string-modes 'js2-mode)
-  (add-to-list 'align-sq-string-modes 'js2-mode))
+  (add-to-list 'align-sq-string-modes 'js2-mode)
+  )
 
 ;; Provide:
 (provide 'js2-align)

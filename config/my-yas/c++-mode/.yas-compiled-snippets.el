@@ -68,4 +68,4 @@
                        ("ass" "assert($0);" "assert" nil nil nil "/home/jim/site-lisp/config/my-yas/c++-mode/assert" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Mar 16 17:53:05 2016
+;;; Do not edit! File generated at Sat Jun 18 16:07:15 2016
