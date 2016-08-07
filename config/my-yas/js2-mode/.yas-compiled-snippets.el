@@ -10,4 +10,4 @@
                        ("data" "$(\"$1\").data(\"${2}\"${3:,\"\"})$0\n" "data" nil nil nil "/home/jim/site-lisp/config/my-yas/js2-mode/data" nil nil)))
 
 
-;;; Do not edit! File generated at Sat Jun 18 16:07:15 2016
+;;; Do not edit! File generated at Sat Aug  6 16:46:23 2016

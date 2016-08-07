@@ -389,13 +389,24 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
         )
     
       (if obj-file
-          (let()
+          (let(line-txt (move-flag t ))
             (find-file obj-file)
             (when pos-info  
               (when (string=(substring-no-properties pos-info 0 1 )  "/")
-                (goto-char (point-min))
-                (re-search-forward  (substring-no-properties pos-info 1 ) )
-                (next-line)
+
+                (save-excursion
+                  ( evil-backward-section-begin)
+                     (setq line-txt (buffer-substring-no-properties
+                    (line-beginning-position)
+                    (line-end-position )))
+                     (when (s-matches-p (substring-no-properties pos-info 1 ) line-txt  ) ;;同一个区域
+                       (setq move-flag nil ))
+                      
+                  )
+                (when move-flag
+                  (goto-char (point-min))
+                  (re-search-forward  (substring-no-properties pos-info 1 ) )
+                  (next-line))
                 )
               ))
 
@@ -437,14 +448,20 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
   (let ( obj-file  (obj-data ""))
     (when ( and (string= major-mode "typescript-mode" )
                 (s-matches-p "/page_ts/" (buffer-file-name))
-                (not (s-matches-p "\.d\.ts$" (buffer-file-name) ))
+                (not (s-matches-p "\\.d\\.ts$" (buffer-file-name) ))
                              ) 
       (setq obj-file  (s-replace ".ts" ".js" (s-replace "page_ts" "page_js" (buffer-file-name) ) ) )
+      (when (not (f-exists?  (f-dirname obj-file) ) )
+        (f-mkdir (f-dirname obj-file) )
+        )
 
       (when (f-exists? obj-file  )
         (setq obj-data ( f-read obj-file ) ))
 
-      (if (or (not (f-exists? obj-file  )) (s-matches-p "reference path" obj-data) )
+      (if (or (not (f-exists? obj-file  )) (s-matches-p "reference path" obj-data)
+              (string= (s-trim  obj-data ) "" )
+              )
+
           (progn 
             (when (f-exists? obj-file  )
               (f-delete obj-file  ))
@@ -595,6 +612,11 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
        (setq file-info (php-get-html-in-handle) ))
      (when (string= "js2-mode" major-mode)
        (setq file-info (js-get-file-at-point) ))
+
+     (when (string= "typescript-mode" major-mode)
+       (setq file-info (js-get-file-at-point) ))
+
+
 
      (when (string= "web-mode" major-mode)
        (setq file-info (web-get-file-at-point) ))

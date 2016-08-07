@@ -1,1 +1,1 @@
-Utils::debug_to_html( $0 );
+\App\Helper\Utils::logger($0);

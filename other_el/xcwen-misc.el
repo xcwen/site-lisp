@@ -818,6 +818,13 @@ If FORWARD is nil, search backward, otherwise forward."
     (evil-search obj-str t t)))
 
 
+(defun yas-reset ()
+    "DOCSTRING"
+  (interactive)
+  (let ()
+    (yas-recompile-all)
+    (yas-reload-all)
+    ))
 (defun my-align-comments (beginning end)
   "Align comments within marked region."
   (interactive "*r")

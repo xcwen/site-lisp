@@ -52,6 +52,7 @@
 				  'fuzzy
 				  'auto-complete-clang
 				  'ac-php
+				  'company-php
 				  'jedi
 				  'session
 				  'xcscope
@@ -65,6 +66,7 @@
                   'typescript-mode  
                   'flycheck
                   'tide
+                  'phpcbf
 				  )
 (require 'auto-package-update)
 

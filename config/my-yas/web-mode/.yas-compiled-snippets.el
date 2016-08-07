@@ -5,6 +5,7 @@
                      '(("xdtd" "<include: file=\"../al_common/td_xs_opt.html\" />" "xdtd" nil
                         ("twitter-bootstrap")
                         nil "/home/jim/site-lisp/config/my-yas/web-mode/xdtd.yasnippet" nil nil)
+                       ("trdata" "{!!  \\App\\Helper\\Utils::gen_jquery_data($var )  !!}\n" "trdata" nil nil nil "/home/jim/site-lisp/config/my-yas/web-mode/trdata" nil nil)
                        ("tdopt" "<td class=\"remove-for-not-xs\" ></td>\n\n<td class=\"remove-for-xs\" >操作</td>\n\n<include: file=\"../al_common/td_xs_opt.html\" />\n\n<td class=\"remove-for-xs\" >\n    <div   data-userid=\"[$var.userid]\" data-stu_nick=\"[$var.nick]\">\n        <a href=\"javascript:;\" class=\"btn  fa fa-info td-info\"></a>\n        <a href=\"javascript:;\" class=\"btn fa fa-user opt-user \"></a>\n    </div>\n</td>\n" "tdopt" nil nil nil "/home/jim/site-lisp/config/my-yas/web-mode/tdopt.yasnippet" nil nil)
                        ("table" "<table   class=\"table table-bordered table-striped\"   >" "table" nil
                         ("twitter-bootstrap")
@@ -22,6 +23,7 @@
                        ("icon" "<span class=\"glyphicon glyphicon-$1\"></span>$0" "icon" nil
                         ("twitter-bootstrap")
                         nil "/home/jim/site-lisp/config/my-yas/web-mode/icon.yasnippet" nil nil)
+                       ("htmldata" "@extends('layouts.app')\n@section('content')\n\n    <section class=\"content \">\n        \n        <div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-md-5\">\n                    <div  id=\"id_date_range\" >\n                    </div>\n                </div>\n\n                <div class=\"col-xs-6 col-md-2\">\n                    <div class=\"input-group \" >\n                        <span >xx</span>\n                        <input type=\"text\" value=\"\"  class=\"opt-change\"  id=\"id_\"  placeholder=\"\"  />\n                    </div>\n                </div>\n            </div>\n        </div>\n        <hr/>\n        <table     class=\"common-table\"  > \n            <thead>\n                <tr>\n                    <td>字段1 </td>\n                    <td> 操作  </td>\n                </tr>\n            </thead>\n            <tbody>\n                @foreach ( $table_data_list as $var )\n                    <tr>\n                        <td>{{@$var[\"\"]}} </td>\n                        <td>\n                            <div\n                                {!!  \\App\\Helper\\Utils::gen_jquery_data($var )  !!}\n                            >\n                                <a class=\"fa fa-edit opt-edit\"  title=\"编辑\"> </a>\n                                <a class=\"fa fa-times opt-del\" title=\"删除\"> </a>\n\n                            </div>\n                        </td>\n                    </tr>\n                @endforeach\n            </tbody>\n        </table>\n        @include(\"layouts.page\")\n    </section>\n    \n@endsection\n\n" "htmldata" nil nil nil "/home/jim/site-lisp/config/my-yas/web-mode/htmldata" nil nil)
                        ("div" "<div class=\"$1\"${2: id=\"$3\"}>\n  $0 asdfa\n</div>" "div" nil
                         ("twitter-bootstrap")
                         nil "/home/jim/site-lisp/config/my-yas/web-mode/div.yasnippet" nil nil)
@@ -45,4 +47,4 @@
                         nil "/home/jim/site-lisp/config/my-yas/web-mode/abutton.yasnippet" "direct-keybinding" nil)))
 
 
-;;; Do not edit! File generated at Sat Jun 18 16:07:15 2016
+;;; Do not edit! File generated at Sat Aug  6 16:46:23 2016

@@ -25,6 +25,7 @@
                     ("\\.html\\'" . web-mode)
                     ("SConstruct". python-mode)
                     ("\\.asdf\\'" . lisp-mode)
+                    ;("\\.js\\'" . js2-mode)
                     ("\\.js\\'" . js2-mode)
                     ("\\.jsx\\'" . js2-mode)
                     ("\\.h\\'" . c++-mode)
@@ -64,6 +65,7 @@
 							 (modify-syntax-entry ?_ "w" php-mode-syntax-table) ;将 _ 加入 单词中
                              (require 'php-align)
                              (php-align-setup)
+                             ;;(phpcbf-enable-on-save)
 							 ))
 
 
