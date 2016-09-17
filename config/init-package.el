@@ -43,7 +43,7 @@
 				  'go-mode
 				  'erlang
 				  'lua-mode
-				  'markdown-mode+
+				  ;;'markdown-mode+
 				  'multi-term
 				  'org
 				  'yasnippet
@@ -66,9 +66,10 @@
                   'typescript-mode  
                   'flycheck
                   'tide
-                  'phpcbf
+                  ;;'phpcbf
+                  ;;'ivy-smex
+                  'jade-mode
 				  )
 (require 'auto-package-update)
-
 (provide 'init-package)
 

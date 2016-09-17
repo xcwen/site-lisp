@@ -51,7 +51,7 @@
 (setq ac-php-use-cscope-flag  nil)
 (setq vc-handled-backends nil) 
 
-(my-maximized)
+;;(my-maximized)
 
 (require 'ido)
 (ido-mode t)

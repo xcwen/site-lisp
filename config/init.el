@@ -49,6 +49,7 @@
   (require 'init-evil)
   ;;
   (require 'init-key)
+  (require 'init-xwidget)
   )
 
 (provide 'init)

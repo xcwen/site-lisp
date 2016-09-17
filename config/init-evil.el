@@ -352,6 +352,18 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
             (when (  f-exists? js-obj-file ) (setq obj-file js-obj-file)  )
             ))
           )
+         ((string= major-mode  "jade-mode" )
+          (setq tmp-arr (s-match  "/\\([a-zA-Z0-9_-]*\\)/\\([a-zA-Z0-9_-]*\\).jade"  path-name ) )
+          (when tmp-arr
+            (setq  ctrl-name   (nth 1 tmp-arr) )
+            (setq  action-name   (nth 2 tmp-arr) ))
+
+          (when (s-match "/views/" path-name )  
+            (setq  obj-file  (concat"../../web_public/page_ts/" ctrl-name  "/" action-name ".ts" ) )
+            
+            )
+          )
+
 
          ((string= major-mode  "js2-mode" )
           (setq tmp-arr (s-match  "page_js/\\([a-zA-Z0-9_-]*\\)/\\([a-zA-Z0-9_-]*\\).js"  path-name ) )
@@ -364,21 +376,49 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 
             ))
          ((string= major-mode  "typescript-mode" )
-          (setq tmp-arr (s-match  "page_ts/\\([a-zA-Z0-9_-]*\\)/\\([a-zA-Z0-9_-]*\\).ts"  path-name ) )
+          (setq tmp-arr (s-match  "/public/page_ts/\\([a-zA-Z0-9_-]*\\)/\\([a-zA-Z0-9_-]*\\).ts"  path-name ) )
+          ;; php ts
           (when tmp-arr
             (setq  ctrl-name   (nth 1 tmp-arr) )
-            (setq  action-name   (nth 2 tmp-arr) ))
-          (when (s-match "/public/page_ts/" path-name )  
-            (setq  obj-file  (concat"../../../app/Http/Controllers/" ctrl-name  ".php" ) )
-            (setq pos-info ( concat "/function[ \t]+" action-name "[ \t]*("  ) )
+            (setq  action-name   (nth 2 tmp-arr) )
+            (when (s-match "/public/page_ts/" path-name )  
+              (setq  obj-file  (concat"../../../app/Http/Controllers/" ctrl-name  ".php" ) )
+              (setq pos-info ( concat "/function[ \t]+" action-name "[ \t]*("  ) )
 
-            ))
+              ))
 
+          ;; nodejs javascript ts
+          (message "  nodejs javascript ts: %s" path-name)
+          (setq tmp-arr (s-match  "/web_public/page_ts/\\([a-zA-Z0-9_-]*\\)/\\([a-zA-Z0-9_-]*\\).ts"  path-name ) )
+          (when tmp-arr
 
+            (message " check OK " )
+            (setq  ctrl-name   (nth 1 tmp-arr) )
+            (setq  action-name   (nth 2 tmp-arr) )
+            (setq  obj-file  (concat "../../../routes/" ctrl-name  ".ts" ) )
+            (setq pos-info ( concat "/public[ \t]+" action-name "[ \t]*("  ) )
 
-          )
+            ) 
+          ;; nodejs  ts
 
-         ))
+          (when (s-match "/routes/" path-name )  
+            (progn
+              (setq ctrl-name (f-base  (f-base path-name )) )
+              (save-excursion
+                (let (line-txt  ) 
+                  (re-search-backward "[ \t]*public[ \t]+"  0 t 1 )
+                  (setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+                  (setq tmp-arr (s-match  ".*public[ \t]+\\([a-zA-Z0-9_]*\\)"  line-txt ) )
+                  (when tmp-arr
+                    (setq action-name (nth 1 tmp-arr) )
+                    )))
+              (when (and   (not (string= action-name "constructor")) )
+                (setq  obj-file  (concat "../views/" ctrl-name  "/" action-name ".jade" ) )
+                )
+              ))
+
+         
+          ))))
 
       (when obj-file
         (unless (f-exists? obj-file)
@@ -394,15 +434,20 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
             (when pos-info  
               (when (string=(substring-no-properties pos-info 0 1 )  "/")
 
-                (save-excursion
-                  ( evil-backward-section-begin)
-                     (setq line-txt (buffer-substring-no-properties
-                    (line-beginning-position)
-                    (line-end-position )))
-                     (when (s-matches-p (substring-no-properties pos-info 1 ) line-txt  ) ;;同一个区域
-                       (setq move-flag nil ))
-                      
-                  )
+
+                (when (> (line-number-at-pos )  2)   
+                  (save-excursion
+                    (if (string= major-mode "typescript-mode" )
+                        (re-search-backward "[ \t]*public[ \t]+" 0 t 1 )
+                      ( evil-backward-section-begin)
+                      )
+                    (setq line-txt (buffer-substring-no-properties
+                                    (line-beginning-position)
+                                    (line-end-position )))
+                    (message "line-txt:%s" line-txt)
+                    (when (s-matches-p (substring-no-properties pos-info 1 ) line-txt  ) ;;同一个区域
+                      (setq move-flag nil ))
+                    ))
                 (when move-flag
                   (goto-char (point-min))
                   (re-search-forward  (substring-no-properties pos-info 1 ) )
@@ -712,7 +757,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 ;; emacs-lisp-mode
 (defadvice find-function (before jim-find-funtion  activate compile)
   (interactive (find-function-read))
-  (ring-insert find-tag-marker-ring (point-marker))
+  ;;(ring-insert find-tag-marker-ring (point-marker))
   )
 
 

@@ -6,6 +6,7 @@
 (define-key ac-completing-map "\C-s" 'ac-isearch)
 (define-key ac-completing-map [f1] nil)
 (define-key ac-mode-map  [(control tab )] 'auto-complete)
+(define-key ac-mode-map (kbd "M-.")   'auto-complete)
 (define-key ac-mode-map  [(backtab)] 'my-ac-mode-complete ) 
 (require 'company)
 (define-key company-mode-map  [(control tab )] 'company-complete )
@@ -48,6 +49,8 @@
 (global-set-key (kbd "C-h")   'delete-backward-char)
 (global-set-key (kbd "C-S-h") 'multi-term-prev)
 (global-set-key (kbd "C-S-l") 'multi-term-next)
+ 
+
 (global-set-key (kbd "C-?")   'replace-regexp)
 
 
@@ -73,6 +76,8 @@
 (define-key global-map [f5] 'my-recentf-open) 
 
 ;; smex set key
+;;(require 'ivy-smex)
+;;(global-set-key (kbd "M-x") 'ivy-smex)
 (global-set-key (kbd "M-x") 'smex)
 
 
