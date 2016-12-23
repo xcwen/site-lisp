@@ -40,6 +40,7 @@ localhost:~/site-lisp/config$"
 	(add-to-list 'term-bind-key-alist '( "M-w". copy-region-or-whole-line ))
 	(add-to-list 'term-bind-key-alist '( "C-v". term-paste ))
 	(add-to-list 'term-bind-key-alist '( "C-y". term-paste ))
+	;;(add-to-list 'term-bind-key-alist '( "<up>". term-send-raw ))
 	))
 
 (defun open-term-file  ()

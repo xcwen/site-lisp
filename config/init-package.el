@@ -5,7 +5,8 @@
 (setq package-archives
       '(
         ("melpa" . "https://melpa.org/packages/")
-        ("gnu" . "http://elpa.gnu.org/packages/")
+        ;;("popkit" . "https://elpa.popkit.org/packages/")
+        ;;("gnu" . "http://elpa.gnu.org/packages/")
       ))
 
 (package-initialize)
@@ -33,7 +34,7 @@
 				  'evil-surround
 				  'evil-leader 
 				  'evil-numbers
-				  'emacs-eclim
+				  ;;'emacs-eclim
                   'cmake-mode
                   'ac-html-bootstrap 
                   'ac-html
@@ -45,6 +46,7 @@
 				  'lua-mode
 				  ;;'markdown-mode+
 				  'multi-term
+                  'ac-alchemist 
 				  'org
 				  'yasnippet
 				  'rtags

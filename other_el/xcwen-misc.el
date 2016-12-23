@@ -779,6 +779,10 @@ object satisfying `yas--field-p' to restrict the expansion to."
 		   ((and (string= major-mode "typescript-mode")  (eq ?\. c))
 			( company-complete ))
 
+		   ((and (string= major-mode "elixir-mode")  (eq ?\. c))
+			( company-complete ))
+
+
 
 
 

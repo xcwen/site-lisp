@@ -59,3 +59,4 @@ set previouspattern=\s*上一页|上一张|上页\s*,\bprev|previous\b,^<$,^(<<|
 
 map ,l gol<Esc>f4<Esc>gijim<Tab>xcwenxcwen<Tab><Tab><CR>gol
 
+js services.services.autoCompleteSearch.class_="@mozilla.org/autocomplete/search;1?name=unifiedcomplete"

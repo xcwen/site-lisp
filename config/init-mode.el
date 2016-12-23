@@ -33,6 +33,7 @@
                     ("\\.m\\'" . objc-mode)
                     ("\\.tpro\\'" . c++-mode)
                     ("\\.php\\'" . php-mode)
+                    ("\\.ex\\'" . elixir-mode)
                     ))
   (add-to-alist 'auto-mode-alist elt-cons))
 
@@ -100,6 +101,11 @@
 							(modify-syntax-entry ?_ "w" erlang-mode-syntax-table) ;将 _ 加入 单词中
 							 ))
 
+(add-hook 'elixir-mode-hook '(lambda ( )
+							(modify-syntax-entry ?_ "w" elixir-mode-syntax-table) ;将 _ 加入 单词中
+							 ))
+
+
 
 
 (add-hook 'nxml-mode-hook '(lambda ( )
@@ -137,6 +143,13 @@
 (add-hook 'emacs-lisp-mode-hook '(lambda ( )
 							(modify-syntax-entry ?- "w" emacs-lisp-mode-syntax-table) ;将 _ 加入 单词中
                             ) )
+(add-hook 'elixir-mode-hook '(lambda ( )
+                               (auto-complete-mode 0 )
+                               (company-mode 1)
+                               (alchemist-mode 1)
+                               ;;(ac-alchemist-setup)
+                            ) )
+
 
 
 
@@ -182,6 +195,38 @@
 ;; aligns annotation to the right hand side
 (setq company-tooltip-align-annotations t)
 
+
+(defun ts2js ()
+  "DOCSTRING"
+  (interactive)
+  (let ( obj-file  (obj-data ""))
+    (when ( and (string= major-mode "typescript-mode" )
+                (s-matches-p "/page_ts/" (buffer-file-name))
+                (not (s-matches-p "\\.d\\.ts$" (buffer-file-name) ))
+                             ) 
+      (setq obj-file  (s-replace ".ts" ".js" (s-replace "page_ts" "page_js" (buffer-file-name) ) ) )
+      (when (not (f-exists?  (f-dirname obj-file) ) )
+        (f-mkdir (f-dirname obj-file) )
+        )
+
+      (when (f-exists? obj-file  )
+        (setq obj-data ( f-read obj-file ) ))
+
+      (if (or (not (f-exists? obj-file  )) (s-matches-p "reference path" obj-data)
+              (string= (s-trim  obj-data ) "" )
+              )
+
+          (progn 
+            (when (f-exists? obj-file  )
+              (f-delete obj-file  ))
+
+            (if (s-matches-p "//TS_FLAG:true" (buffer-string) )
+                (compile (concat "tsc  --out  " obj-file " "  (buffer-file-name) ) ) 
+              (f-copy (buffer-file-name) obj-file  ))
+            (message "%s:生成完毕" obj-file  ))
+        (message "%s :不是 typescript 生成的文件, 请备份为其它文件." obj-file  ))
+      ))
+  )
 ;; formats the buffer before saving
 (add-hook 'after-save-hook 'ts2js)
 

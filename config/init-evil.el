@@ -223,7 +223,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
             (setq file-name-end (point))
             (setq cur-path (buffer-substring-no-properties file-name-begin file-name-end )) 
             (setq file-name ( concat  (nth 1  (s-split "/" cur-path  )) ".php" ) )
-            (setq pos-info ( concat "/function.*" (nth 2  (s-split "/" cur-path  )) ) )
+            (setq pos-info ( concat "/function[ \t]*" (nth 2  (s-split "/" cur-path  )) ) )
             (setq cur-path (concat (nth 0  (s-split "/public/" (buffer-file-name)) ) "/app/Http/Controllers/" file-name ))
             (message "xxx %s" cur-path)
             ))
@@ -475,6 +475,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 (evil-leader/set-key-for-mode 'php-mode "f"  'ac-php-gen-def)
 
 
+(evil-leader/set-key-for-mode 'elixir-mode "i"  'alchemist-help-search-at-point )
 
 
 (evil-leader/set-key-for-mode 'emacs-lisp-mode "e"  'eval-last-sexp)
@@ -487,37 +488,6 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 ;;编译
 
 (evil-leader/set-key-for-mode 'js2-mode "m"  'js2-mode-display-warnings-and-errors)
-(defun ts2js ()
-  "DOCSTRING"
-  (interactive)
-  (let ( obj-file  (obj-data ""))
-    (when ( and (string= major-mode "typescript-mode" )
-                (s-matches-p "/page_ts/" (buffer-file-name))
-                (not (s-matches-p "\\.d\\.ts$" (buffer-file-name) ))
-                             ) 
-      (setq obj-file  (s-replace ".ts" ".js" (s-replace "page_ts" "page_js" (buffer-file-name) ) ) )
-      (when (not (f-exists?  (f-dirname obj-file) ) )
-        (f-mkdir (f-dirname obj-file) )
-        )
-
-      (when (f-exists? obj-file  )
-        (setq obj-data ( f-read obj-file ) ))
-
-      (if (or (not (f-exists? obj-file  )) (s-matches-p "reference path" obj-data)
-              (string= (s-trim  obj-data ) "" )
-              )
-
-          (progn 
-            (when (f-exists? obj-file  )
-              (f-delete obj-file  ))
-
-            (if (s-matches-p "//TS_FLAG:true" (buffer-string) )
-                (compile (concat "tsc  --out  " obj-file " "  (buffer-file-name) ) ) 
-              (f-copy (buffer-file-name) obj-file  ))
-            (message "%s:生成完毕" obj-file  ))
-        (message "%s :不是 typescript 生成的文件, 请备份为其它文件." obj-file  ))
-      ))
-  )
 (evil-leader/set-key-for-mode 'typescript-mode "m" 'ts2js)
 
 
@@ -757,7 +727,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 ;; emacs-lisp-mode
 (defadvice find-function (before jim-find-funtion  activate compile)
   (interactive (find-function-read))
-  ;;(ring-insert find-tag-marker-ring (point-marker))
+  (xref-push-marker-stack )
   )
 
 
@@ -768,12 +738,22 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
     ( define-key evil-normal-state-local-map  (kbd "C-]") 'find-function)
     ( define-key evil-insert-state-local-map  (kbd "C-]") 'find-function )
     ))
+(add-hook
+ 'elixir-mode-hook
+ '(lambda()
+    (interactive)
+    ( define-key evil-normal-state-local-map  (kbd "C-]") 'alchemist-goto-definition-at-point )
+    ( define-key evil-insert-state-local-map  (kbd "C-]") 'alchemist-goto-definition-at-point )
+    ))
+
 
 ;; erlang-mode
 (defadvice edts-find-source-under-point (before  jim-edts-find-source-under-point activate compile)
   (interactive)
-  (ring-insert find-tag-marker-ring (point-marker))
+  (message "xxxx  edts-find-source-under-point ")
+  (xref-push-marker-stack )
   )
+
 
 
 (add-hook
