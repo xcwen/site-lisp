@@ -80,11 +80,11 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
                            (line-beginning-position)
                            (line-end-position )))
            (setq file-name (buffer-file-name) )
-           
+
 
            ;; /home/jim/telepresence-read-only/doubango-read-only/tinySIP/src/tsip_message.c:243
            ;; /home/jim/doubango-read-only/tinySIP/src/tsip_message.c:243
-           ;; 	tsk_size_t index = 0;
+           ;;   tsk_size_t index = 0;
            (cond
             ((s-match  "telepresence-read-only"    file-name   )
              (progn
@@ -136,12 +136,12 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
         (setq match-arr (s-match "\\(.*\\)\\(\\$[a-zA-Z_0-9]+\\)\\(.*\\)"  item ) )
         (concat (nth 1  match-arr)  (nth 2  match-arr) "=NULL " (nth 3 match-arr) )
           )))
-      
+
         )
-    
+
     (if (string= (s-trim args-str ) "void" )
         ""
-      (s-replace-all '(("["."" )  ("]"."" )) args-str  ))) 
+      (s-replace-all '(("["."" )  ("]"."" )) args-str  )))
   )
 
 (defun ac-php-reformat ()
@@ -155,7 +155,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
      ((not (s-matches-p ".*(.*).*" line-txt) )
       ;;const integer CALL_TOSTRING = 1 ;
       (setq m-data (s-match "^[\t ]*\\(\\w+\\)[ \t]+\\(\\w+\\)[ \t]+\\(.*\\)$" line-txt) )
-      (when m-data 
+      (when m-data
         (setq txt (format"\t/** @var %s */\n\t %s  %s"
                          (nth 2 m-data ) (nth 1 m-data) (nth 3 m-data)) )))
 
@@ -165,8 +165,8 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
         (setq m-data (s-match "^\\([^(]*\\)(\\(.*\\))[ \t]*$" line-txt) )
         (setq function-items (s-split " " (s-trim  (nth 1 m-data))))
         (setq function-args (ac-php-reformat-args (nth 2 m-data)))
-        
-        
+
+
         (dolist (item function-items )
           (if (or (string= item  "public")
                   (string= item  "static")
@@ -175,8 +175,8 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
                   (string= item  "private")
                   (string= item  "final")
                   (string= item  "abstract"))
-              
-              (progn 
+
+              (progn
                 (when (string= item  "abstract" ) (setq end-str ";"))
                 (when (not (string= item "readonly"  ) )
                   (setq items-str  (concat items-str  item  " " )))
@@ -184,7 +184,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 
             (if return-type
                 (setq function-name item )
-              (progn 
+              (progn
                 (if (string= "__construct" item)
                     (progn
                       (setq function-name item )
@@ -199,9 +199,9 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
         )
 
 
-      )) 
+      ))
 
-    (when txt 
+    (when txt
       (beginning-of-line)
       (kill-line)
       (insert txt )
@@ -215,15 +215,15 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
         (save-excursion
           (let (file-name-begin file-name-end file-name  )
 
-            (skip-chars-backward "a-zA-Z0-9._/"   ) 
+            (skip-chars-backward "a-zA-Z0-9._/"   )
             (setq file-name-begin (point))
 
-            (skip-chars-forward "a-zA-Z0-9._/"   ) 
+            (skip-chars-forward "a-zA-Z0-9._/"   )
 
             (setq file-name-end (point))
-            (setq cur-path (buffer-substring-no-properties file-name-begin file-name-end )) 
+            (setq cur-path (buffer-substring-no-properties file-name-begin file-name-end ))
             (setq file-name ( concat  (nth 1  (s-split "/" cur-path  )) ".php" ) )
-            (setq pos-info ( concat "/function[ \t]*" (nth 2  (s-split "/" cur-path  )) ) )
+            (setq pos-info ( concat "/function[ \t]*" (nth 2  (s-split "/" cur-path  )) "[ \t]*(" ) )
             (setq cur-path (concat (nth 0  (s-split "/public/" (buffer-file-name)) ) "/app/Http/Controllers/" file-name ))
             (message "xxx %s" cur-path)
             ))
@@ -235,18 +235,18 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
         (save-excursion
           (let (file-name-begin file-name-end file-name  )
 
-            (skip-chars-backward "a-zA-Z0-9._/"   ) 
+            (skip-chars-backward "a-zA-Z0-9._/"   )
             (setq file-name-begin (point))
 
-            (skip-chars-forward "a-zA-Z0-9._/"   ) 
+            (skip-chars-forward "a-zA-Z0-9._/"   )
 
 
             (setq file-name-end (point))
-            (setq cur-path (buffer-substring-no-properties file-name-begin file-name-end )) 
+            (setq cur-path (buffer-substring-no-properties file-name-begin file-name-end ))
 
             (if (s-match "\.js"  cur-path )
                 (setq cur-path (concat (nth 0  (s-split "/template/" (buffer-file-name)) ) "/webroot/" cur-path ))
-              (progn 
+              (progn
                 (setq file-name ( concat  (nth 1  (s-split "/" cur-path  )) ".class.php" ) )
                 (setq pos-info ( concat "/function.*" (nth 2  (s-split "/" cur-path  )) ) )
                 (setq cur-path (concat (nth 0  (s-split "/template/" (buffer-file-name)) ) "/handler/" file-name )))
@@ -270,14 +270,14 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
         ))
 
 
-    (if opt-dir 
+    (if opt-dir
         (save-excursion
           (let (file-name-begin file-name-end )
 
-            (skip-chars-backward "a-zA-Z0-9._/"   ) 
+            (skip-chars-backward "a-zA-Z0-9._/"   )
             (setq file-name-begin (point))
 
-            (skip-chars-forward "a-zA-Z0-9._/"   ) 
+            (skip-chars-forward "a-zA-Z0-9._/"   )
 
             (setq file-name-end (point))
 
@@ -324,7 +324,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
           (progn
             (setq ctrl-name (f-base  (f-base path-name )) )
             (save-excursion
-              (let (line-txt  ) 
+              (let (line-txt  )
                 (beginning-of-defun)
                 (setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
                 (setq tmp-arr (s-match  ".*function[ \t]+\\([a-zA-Z0-9_]*\\)"  line-txt ) )
@@ -342,9 +342,9 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
             (setq  ctrl-name   (nth 1 tmp-arr) )
             (setq  action-name   (nth 2 tmp-arr) ))
 
-          (when (s-match "/views/" path-name )  
+          (when (s-match "/views/" path-name )
             (setq  obj-file  (concat"../../../public/page_ts/" ctrl-name  "/" action-name ".ts" ) )
-            
+
             )
           (let (js-obj-file)
           (when ( and (not (f-exists? obj-file )) (s-match "/views/" path-name )   )
@@ -358,9 +358,9 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
             (setq  ctrl-name   (nth 1 tmp-arr) )
             (setq  action-name   (nth 2 tmp-arr) ))
 
-          (when (s-match "/views/" path-name )  
+          (when (s-match "/views/" path-name )
             (setq  obj-file  (concat"../../web_public/page_ts/" ctrl-name  "/" action-name ".ts" ) )
-            
+
             )
           )
 
@@ -370,7 +370,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
           (when tmp-arr
             (setq  ctrl-name   (nth 1 tmp-arr) )
             (setq  action-name   (nth 2 tmp-arr) ))
-          (when (s-match "/public/page_js/" path-name )  
+          (when (s-match "/public/page_js/" path-name )
             (setq  obj-file  (concat"../../../app/Http/Controllers/" ctrl-name  ".php" ) )
             (setq pos-info ( concat "/function[ \t]+" action-name "[ \t]*("  ) )
 
@@ -381,9 +381,10 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
           (when tmp-arr
             (setq  ctrl-name   (nth 1 tmp-arr) )
             (setq  action-name   (nth 2 tmp-arr) )
-            (when (s-match "/public/page_ts/" path-name )  
+            (when (s-match "/public/page_ts/" path-name )
               (setq  obj-file  (concat"../../../app/Http/Controllers/" ctrl-name  ".php" ) )
               (setq pos-info ( concat "/function[ \t]+" action-name "[ \t]*("  ) )
+              (message "pos-info:%s" pos-info )
 
               ))
 
@@ -398,14 +399,14 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
             (setq  obj-file  (concat "../../../routes/" ctrl-name  ".ts" ) )
             (setq pos-info ( concat "/public[ \t]+" action-name "[ \t]*("  ) )
 
-            ) 
+            )
           ;; nodejs  ts
 
-          (when (s-match "/routes/" path-name )  
+          (when (s-match "/routes/" path-name )
             (progn
               (setq ctrl-name (f-base  (f-base path-name )) )
               (save-excursion
-                (let (line-txt  ) 
+                (let (line-txt  )
                   (re-search-backward "[ \t]*public[ \t]+"  0 t 1 )
                   (setq line-txt (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
                   (setq tmp-arr (s-match  ".*public[ \t]+\\([a-zA-Z0-9_]*\\)"  line-txt ) )
@@ -417,7 +418,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
                 )
               ))
 
-         
+
           ))))
 
       (when obj-file
@@ -427,15 +428,15 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
           (setq obj-file nil)
           )
         )
-    
+
       (if obj-file
           (let(line-txt (move-flag t ))
             (find-file obj-file)
-            (when pos-info  
+            (when pos-info
               (when (string=(substring-no-properties pos-info 0 1 )  "/")
 
 
-                (when (> (line-number-at-pos )  2)   
+                (when (> (line-number-at-pos )  2)
                   (save-excursion
                     (if (string= major-mode "typescript-mode" )
                         (re-search-backward "[ \t]*public[ \t]+" 0 t 1 )
@@ -468,8 +469,8 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
   (interactive)
   (let (var1)
     (kill-new (concat "http://api.weiyi.com/" (f-base   (f-base (buffer-file-name) ) ) "/"  (current-word)  ) )
-    
-    )) 
+
+    ))
 ;;显示信息
 (evil-leader/set-key-for-mode 'php-mode "i"  'ac-php-show-tip)
 (evil-leader/set-key-for-mode 'php-mode "f"  'ac-php-gen-def)
@@ -545,17 +546,17 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
      (if (and mark-active
               (string-match "\n"
                             (buffer-substring-no-properties (region-beginning)(region-end))))
-         (progn 
+         (progn
            (mark-region-ex)
            (setq beg (region-beginning) )
            (setq end (region-end) )
            ))
      (align beg end)
-     )) 
+     ))
 
 
 
-(define-key evil-normal-state-map (kbd "g=") 'indent-buffer) 
+(define-key evil-normal-state-map (kbd "g=") 'indent-buffer)
 
 (defun indent-buffer ()
   "DOCSTRING"
@@ -587,8 +588,8 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
 (set-evil-all-state-key  (kbd "<tab>")  'yas-expand-for-vim )
 (set-evil-all-state-key "\M-h"  'backward-kill-word-without-_)
 
-(set-evil-all-state-key (kbd "C-c") 'copy-region-or-whole-line ) 
-(set-evil-all-state-key (kbd "C-v") 'yank ) 
+(set-evil-all-state-key (kbd "C-c") 'copy-region-or-whole-line )
+(set-evil-all-state-key (kbd "C-v") 'yank )
 
 (set-evil-all-state-key ( kbd "C-}") 'find-tag-next-ex)
 (set-evil-all-state-key "\C-x\C-o"  'other-window )
@@ -640,7 +641,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
       (find-file  (nth 0 file-info)  )
       ;;pos info
       (let ((pos-info (nth 1 file-info)) )
-        (when pos-info  
+        (when pos-info
           (when (string=(substring-no-properties pos-info 0 1 )  "/")
             (goto-char (point-min))
             (re-search-forward  (substring-no-properties pos-info 1 ) )
@@ -777,8 +778,8 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
       (set-evil-normal-or-insert-state-key-on-mode mode-map  (kbd "C-S-t") 'rtags-location-stack-forward)
       (set-evil-normal-state-key-on-mode mode-map  (kbd ",s") 'rtags-find-all-references-at-point)
       (set-evil-normal-state-key-on-mode mode-map  (kbd ",r") 'rtags-reparse-file)
-      ))) 
-;; C C++ tags 调整 
+      )))
+;; C C++ tags 调整
 (add-hook 'c++-mode-hook 'set-rtags-bind-key)
 (add-hook 'c-mode-hook 'set-rtags-bind-key)
 
@@ -808,7 +809,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
              (set-evil-normal-state-key-on-mode  java-mode-map (kbd ",s")  'eclim-java-find-references  )
              ))
 
-;; js2-mode 
+;; js2-mode
 ;; (defadvice  tern-find-definition(before jim-tern-find-definition activate compile)
 ;;   (interactive)
 ;;   (ring-insert find-tag-marker-ring (point-marker))
@@ -828,11 +829,11 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
   (let (parent cur-point  start-1 end-1 start-2 end-2   jump-pos )
     (setq cur-point (point)  )
     (setq parent (web-mode-element-boundaries (point)))
-    (when parent 
-      (setq start-1  (car (car parent)  )) 
-      (setq end-1  (cdr  ( car parent)  )) 
-      (setq start-2  (car (cdr parent)  )) 
-      (setq end-2  (cdr  ( cdr parent)  )) 
+    (when parent
+      (setq start-1  (car (car parent)  ))
+      (setq end-1  (cdr  ( car parent)  ))
+      (setq start-2  (car (cdr parent)  ))
+      (setq end-2  (cdr  ( cdr parent)  ))
 
       (unless (= start-1 start-2)
         (if  (and (>=  cur-point   start-1 )
@@ -840,7 +841,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
             (setq jump-pos  (+  start-2 2 ) )
           (setq jump-pos  (1+  start-1 )))
 
-        (goto-char jump-pos)) 
+        (goto-char jump-pos))
       )))
 
 (add-hook 'web-mode-hook
@@ -922,7 +923,7 @@ If `end' is nil `begin-or-fun' will be treated as a fun."
     (define-key compilation-mode-map  (kbd  ",o")   'other-window)
     ))
 
-;;切换buffer 时，调整 term-mode no in evil  
+;;切换buffer 时，调整 term-mode no in evil
 (add-hook 'buffer-list-update-hook '(lambda()
                                         (evil-check-close-local-mode )
                                       ))

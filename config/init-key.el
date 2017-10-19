@@ -35,6 +35,14 @@
 
 (define-key  minibuffer-inactive-mode-map (kbd "C-y")  '(lambda()(interactive)
 											   (insert (trim-string (current-kill 0) ))))
+(define-key  minibuffer-inactive-mode-map (kbd "M-p")  'previous-line-or-history-element)
+(define-key  minibuffer-inactive-mode-map (kbd "M-n")  'next-line-or-history-element)
+
+(define-key  minibuffer-inactive-mode-map (kbd "C-p")  'previous-line-or-history-element)
+(define-key  minibuffer-inactive-mode-map (kbd "C-n")  'next-line-or-history-element)
+
+
+
 
 (define-key  minibuffer-inactive-mode-map (kbd "C-v")  '(lambda()(interactive)
 											   (insert (trim-string (current-kill 0) ))))
