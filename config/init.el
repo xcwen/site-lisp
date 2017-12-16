@@ -1,4 +1,4 @@
-(setq g-test-ac-php  nil)
+(setq g-test-ac-php  t)
 (when g-test-ac-php  
   (setq package-archives
         '(("melpa" . "http://melpa.milkbox.net/packages/")) )

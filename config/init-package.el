@@ -4,7 +4,8 @@
 
 (setq package-archives
       '(
-        ("melpa" . "https://melpa.org/packages/")
+        ;;("melpa" . "https://melpa.org/packages/")
+     	("melpa-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
         ;;("popkit" . "https://elpa.popkit.org/packages/")
         ;;("gnu" . "http://elpa.gnu.org/packages/")
       ))
